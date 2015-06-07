@@ -1,0 +1,11 @@
+---
+- hosts: all
+  sudo: yes
+  gather_facts: no
+
+#- include: amazon.yml
+#- include: google.yml
+#- include: supervisor.yml
+#- include: java.yml
+#- include: zookeeper.yml
+#- include: kafka.yml

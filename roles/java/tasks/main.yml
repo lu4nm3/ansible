@@ -1,0 +1,19 @@
+---
+# Install Java
+- name: Installing Java
+  apt: name=python-software-properties update_cache=yes state=present
+- apt_repository: repo='ppa:webupd8team/java' state=present
+- shell: echo oracle-java{{ java_version }}-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+- apt: name=oracle-java{{ java_version }}-installer update_cache=yes state=latest
+
+# Update alternatives for java
+- name: Updating alternatives for java
+  alternatives: name=java path={{ java_path }}/jre/bin/java
+
+# Update alternatives for javac
+- name: Updating alternatives for javac
+  alternatives: name=javac path={{ java_path }}/bin/javac
+
+# Add JAVA_HOME environment variable
+- name: Adding JAVA_HOME environment variable
+  lineinfile: dest=/etc/environment line="JAVA_HOME={{ java_path }}"

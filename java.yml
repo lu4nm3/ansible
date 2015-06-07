@@ -1,0 +1,8 @@
+---
+# Set up Java
+- name: Java setup
+  hosts: java
+  sudo: yes
+
+  roles:
+    - java

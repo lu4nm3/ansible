@@ -1,0 +1,42 @@
+# The length of a single tick, which is the basic time
+# unit used by ZooKeeper, as measured in milliseconds.
+# It is used to regulate heartbeats, and timeouts. For
+# example, the minimum session timeout will be two ticks.
+tickTime={{ tick_time }}
+
+# The number of ticks that the initial
+# synchronization phase can take.
+initLimit={{ init_limit }}
+
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit={{ sync_limit }}
+
+# The location where ZooKeeper will store the
+# in-memory database snapshots and, unless specified
+# otherwise, the transaction log of updates to the database.
+dataDir={{ data_dir }}
+
+# This option will direct the machine to write the transaction
+# log to the dataLogDir rather than the dataDir. This allows
+# a dedicated log device to be used and helps avoid
+# competition between logging and snaphots.
+dataLogDir={{ data_log_dir }}
+
+# The port at which the clients will connect
+clientPort={{ client_port }}
+
+# The number of snapshots to retain in dataDir
+autopurge.snapRetainCount={{ auto_purge_snap_retain_count }}
+
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+autopurge.purgeInterval={{ auto_purge_purge_interval }}
+
+# List of servers in the ZooKeeper cluster in the format:
+# "server.X=hostname:nnnn:mmmm"
+# where X is the id of the server, nnnn is the quorum
+# election port and mmmm is the leader election port.
+{% for host in groups['zookeeper_private'] %}
+server.{{ host | regex_replace('\.', '') | int % 255 }}={{ host }}:2888:3888
+{% endfor %}

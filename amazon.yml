@@ -1,0 +1,21 @@
+---
+# Set up AWS environment
+- name: AWS setup
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  roles:
+    - amazon
+
+# Set up Ansible controller account
+- name: Ansible controller account setup
+  hosts:
+    - zookeeper
+    - kafka
+  gather_facts: no
+  sudo: yes
+  remote_user: ubuntu
+
+  roles:
+    - { role: account, user: lmedina, group: lmedina }

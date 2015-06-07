@@ -1,0 +1,76 @@
+---
+# Create Kafka mount directories
+- name: Creating Kafka mount directories
+  file: path={{ item }} state=directory
+  with_items: disk_mount_dirs
+
+# Format Kafka disks
+- name: Formatting Kafka disks
+  filesystem: dev={{ item }} fstype=ext4
+  with_items: disk_dirs
+
+# Mount Kafka disks
+- name: Mounting Kafka disks
+  mount: name={{ item.0 }} src={{ item.1 }} fstype=ext4 state=mounted
+  with_together:
+    - disk_mount_dirs
+    - disk_dirs
+
+# Create Kafka directories
+- name: Creating Kafka directories
+  file: path=/opt/kafka/{{ version }} state=directory owner={{ user }} group={{ group }}
+- file: path={{ item }}/kafka state=directory owner={{ user }} group={{ group }}
+  with_items: disk_mount_dirs
+- file: path=/var/log/kafka state=directory owner={{ user }} group={{ group }}
+
+# Download Kafka
+- name: Downloading Kafka
+  get_url: url={{ kafka_url }} dest={{ download_location }} mode=u=rwx,g=rx,o=rx
+
+# Unarchive Kafka
+- name: Unarchiving Kafka
+  unarchive: src={{ download_location }}/{{ archived_filename }} dest={{ download_location }} copy=no
+- shell: cp -nr {{ download_location }}/{{ unarchived_filename }}/* /opt/kafka/{{ version }}/
+- file: path=/opt/kafka state=directory recurse=yes owner={{ user }} group={{ group }}
+
+# Configure Kafka
+- name: Configuring Kafka
+  template: src=server.properties.j2 dest=/opt/kafka/{{ version }}/config/server.properties owner={{ user }}
+            group={{ group }}
+
+# Download missing SLF4J library
+- name: Downloading missing SLF4J library
+  get_url: url={{ slf4j_url }} dest=/opt/kafka/{{ version }}/libs mode=u=rw,g=r,o=r owner={{ user }} group={{ group }}
+
+# Update modified startup script
+- name: Updating modified startup script
+  template: src=kafka-server-start.sh.j2 dest=/opt/kafka/{{ version }}/bin/kafka-server-start.sh owner={{ user }}
+            group={{ group }} mode=u=rwx,g=rx,o=rx
+
+# Increase open file limit
+- name: Increasing open file limit
+  lineinfile: dest=/etc/sysctl.conf line="fs.file-max = {{ open_file_limit }}"
+- lineinfile: dest=/etc/security/limits.conf line="{{ user }} - nofile {{ open_file_limit }}"
+- lineinfile: dest=/etc/pam.d/common-session line="session required pam_limits.so"
+
+# Reboot Kafka instance
+- name: Rebooting Kafka instance(s)
+  command: reboot
+
+# Wait for Kafka instance to reboot
+- name: Waiting for Kafka instance(s) to reboot
+  wait_for: host={{ inventory_hostname }} port=22 delay=10 timeout=300
+  connection: local
+
+# Add Kafka to Supervisor
+- name: Adding Kafka to Supervisor
+  template: src=kafka.conf.j2 dest=/etc/supervisor/conf.d/kafka.conf mode=u=rw,g=r,o=r
+
+# In order to keep open file limit
+- name: Adding SSH key to kafka user
+  authorized_key: user=kafka key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+# Restart Supervisor
+- name: Restarting Supervisor
+  shell: sudo service supervisor restart
+  remote_user: kafka

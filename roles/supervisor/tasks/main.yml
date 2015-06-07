@@ -1,0 +1,16 @@
+---
+# Install Supervisor
+- name: Installing Supervisor
+  apt: name=supervisor update_cache=yes state=latest
+
+# Create Supervisor log directory
+- name: Creating Supervisor log directory
+  file: path={{ log_path }} state=directory
+
+# Configure Supervisor
+- name: Configuring Supervisor
+  template: src=supervisord.conf.j2 dest={{ configuration_path }}/supervisord.conf mode=u=rw,g=r,o=r
+
+# Restart Supervisor
+- name: Restarting Supervisor
+  shell: sudo service supervisor restart

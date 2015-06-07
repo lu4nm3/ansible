@@ -1,0 +1,4 @@
+---
+# Generate .pem RSA key
+- name: Generating .pem RSA key
+  shell: openssl pkcs12 -in {{ p12_file }} -passin pass:notasecret -nodes -nocerts | openssl rsa -out {{ pem_file }}

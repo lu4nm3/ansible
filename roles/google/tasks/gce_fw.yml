@@ -1,0 +1,8 @@
+---
+# Create firewall rules
+- name: Creating {{ description }} firewall rules
+  gce_net: service_account_email="{{ service_account_email }}" pem_file="{{ pem_file }}" project_id="{{ project_id }}"
+           name="{{ network_name }}" fwname="{{ item.0 }}" allowed="{{ item.1 }}"
+  with_together:
+    - firewall_rules
+    - allowed_connections

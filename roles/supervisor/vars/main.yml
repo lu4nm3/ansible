@@ -1,0 +1,10 @@
+---
+# Web Interface
+configuration_path: /etc/supervisor
+files: /etc/supervisor/conf.d/*.conf
+log_file: "{{ log_path }}/supervisord.log"
+log_path: /var/log/supervisor
+pid_file: /var/run/supervisord.pid
+port: "{{ supervisor_http_server_port }}"
+username: "{{ supervisor_http_server_username }}"
+password: "{{ supervisor_http_server_password }}"

@@ -1,0 +1,5 @@
+---
+# Create network
+- name: Creating {{ network_name }} network
+  gce_net: service_account_email="{{ service_account_email }}" pem_file="{{ pem_file }}" project_id="{{ project_id }}"
+           name="{{ network_name }}" ipv4_range="{{ ipv4_range }}"

@@ -1,0 +1,8 @@
+---
+# Set up Supervisor
+- name: Supervisor setup
+  hosts: supervisor
+  sudo: yes
+
+  roles:
+    - supervisor

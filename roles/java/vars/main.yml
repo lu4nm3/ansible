@@ -1,0 +1,2 @@
+---
+java_path: /usr/lib/jvm/java-{{ java_version }}-oracle

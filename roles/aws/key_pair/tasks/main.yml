@@ -1,0 +1,10 @@
+---
+# Create AWS Key Pair
+- name: Creating AWS Key Pair
+  ec2_key:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    key_material: "{{ key_pair_material | default(omit) }}"
+    name: "{{ key_pair_name }}"
+    region: "{{ region }}"
+    wait: "{{ wait }}"

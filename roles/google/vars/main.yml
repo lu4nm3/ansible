@@ -1,0 +1,41 @@
+---
+# Google Compute Engine Configuration
+p12_file: roles/google/files/Kafka-aac7a8ea2a44.p12
+pem_file: roles/google/files/pkey.pem
+project_id: learned-acolyte-801
+service_account_email: 517816055137-moqeprjim94jkshh7imbtr7a7ii1uqb2@developer.gserviceaccount.com
+zone: us-central1-a
+
+# Google Compute Engine Firewall Configuration
+network_name: trident
+ipv4_range: 10.240.0.0/16
+firewall_rules: [allow-icmp,allow-ssh,allow-supervisor-web]
+connections: ["icmp","tcp:22","tcp:9001"]
+
+# Google Compute Engine Instance Configuration
+image: ubuntu-1410-utopic-v20141030a
+machine_type: n1-standard-1
+metadata: { "sshKeys": "lmedina:{{ lookup('file', 'id_rsa.pub') }}" }
+
+# Google Compute Engine Disk Configuration
+mode: READ_WRITE
+boot_disk_size_gb: 10
+persistent_disk_size_gb: 200
+
+# ZooKeeper Configuration
+zookeeper_description: ZooKeeper
+zooKeeper_firewall_rules: ["allow-zookeeper"]
+zookeeper_connections: ["tcp:2181,2888,3888"]
+zookeeper_instance_names: [zookeeper1,zookeeper2,zookeeper3]
+zookeeper_disk_names: [disk1,disk2]
+zookeeper_ansible_groups: zookeeper,java,supervisor
+zookeeper_ansible_private_groups: zookeeper_private
+
+# Kafka Configuration
+kafka_description: Kafka
+kafka_firewall_rules: [allow-kafka]
+kafka_connections: ["tcp:9092"]
+kafka_instance_names: [kafka1,kafka2,kafka3]
+kafka_disk_names: [disk1]
+kafka_ansible_groups: kafka,java,supervisor
+kafka_ansible_private_groups: kafka_private

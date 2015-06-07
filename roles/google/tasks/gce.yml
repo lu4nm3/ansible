@@ -1,0 +1,36 @@
+---
+# Create boot disks for GCE instance(s)
+- name: Creating boot disk for GCE {{ description }} instance(s)
+  gce_pd: service_account_email="{{ service_account_email }}" pem_file="{{ pem_file }}" project_id="{{ project_id }}"
+          zone="{{ zone }}" name="{{ item }}-boot" mode="{{ mode }}" size_gb="{{ boot_disk_size_gb }}"
+          image="{{ image }}"
+  with_items: instance_names
+
+# Launch GCE instance(s)
+- name: Launching GCE {{ description }} instance(s)
+  gce: service_account_email="{{ service_account_email }}" pem_file="{{ pem_file }}" project_id="{{ project_id }}"
+       name="{{ item }}" zone="{{ zone }}" machine_type="{{ machine_type }}" network="{{ network_name }}"
+       disks="{{ item }}-boot" metadata="{{ metadata }}"
+  with_items: instance_names
+  register: gce_result
+
+# Wait for GCE instance(s) to come up
+- name: Waiting for GCE {{ description }} instance(s) to come up
+  wait_for: host="{{ item.1.public_ip }}" port=22 delay=10 timeout=120
+  with_subelements:
+    - gce_result.results
+    - instance_data
+
+# Add new GCE instance(s) to Ansible groups
+- name: Adding new {{ description }} GCE instance(s) to Ansible groups {{ ansible_groups }}
+  add_host: name="{{ item.1.public_ip }}" groups="{{ ansible_groups }}" private_ip="{{ item.1.private_ip }}"
+  with_subelements:
+    - gce_result.results
+    - instance_data
+
+# Add new GCE instance(s) to private Ansible groups
+- name: Adding new {{ description }} GCE instance(s) to private Ansible groups {{ ansible_private_groups }}
+  add_host: name="{{ item.1.private_ip }}" groups="{{ ansible_private_groups }}"
+  with_subelements:
+    - gce_result.results
+    - instance_data

@@ -1,0 +1,23 @@
+---
+# Set up ZooKeeper account
+- name: Zookeeper account setup
+  hosts: zookeeper
+  gather_facts: no
+  sudo: yes
+
+  roles:
+    - { role: account, user: zookeeper, group: zookeeper }
+#    - { role: account, user: zookeeper, group: zookeeper, ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}" }
+
+# Set up ZooKeeper
+- name: ZooKeeper setup
+  hosts: zookeeper
+#  remote_user: zookeeper
+  user: zookeeper
+#  sudo_user: zookeeper
+  remote_user: "{{ lookup('env', 'USER') }}"
+  sudo: yes
+
+  roles:
+    - docker
+#    - { role: zookeeper, user: zookeeper, group: zookeeper }

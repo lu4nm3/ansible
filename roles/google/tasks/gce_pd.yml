@@ -1,0 +1,9 @@
+---
+# Create persistent disks for GCE instances
+- name: Creating persistent disk(s) for GCE {{ description }} instance(s)
+  gce_pd: service_account_email="{{ service_account_email }}" pem_file="{{ pem_file }}" project_id="{{ project_id }}"
+          instance_name="{{ item[0] }}" zone="{{ zone }}" name="{{ item[0] }}-{{ item[1] }}" mode="{{ mode }}"
+          size_gb="{{ persistent_disk_size_gb }}"
+  with_nested:
+    - instance_names
+    - disk_names

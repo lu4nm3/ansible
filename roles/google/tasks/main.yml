@@ -1,0 +1,23 @@
+---
+# Generate GCE Authentication
+- include: gce_auth.yml
+
+# Create network and firewall rules
+#- include: gce_net.yml
+#- include: gce_fw.yml description=global firewall_rules={{ firewall_rules }} allowed_connections={{ connections }}
+
+# Launch ZooKeeper instances
+#- include: gce_fw.yml description={{ zookeeper_description }} firewall_rules={{ zooKeeper_firewall_rules }}
+#           allowed_connections={{ zookeeper_connections }}
+- include: gce.yml description={{ zookeeper_description }} instance_names={{ zookeeper_instance_names }}
+           ansible_groups={{ zookeeper_ansible_groups }} ansible_private_groups={{ zookeeper_ansible_private_groups }}
+- include: gce_pd.yml description={{ zookeeper_description }} instance_names={{ zookeeper_instance_names }}
+           disk_names={{ zookeeper_disk_names }}
+
+# Launch Kafka instances
+#- include: gce_fw.yml description={{ kafka_description }} firewall_rules={{ kafka_firewall_rules }}
+#           allowed_connections={{ kafka_connections }}
+- include: gce.yml description={{ kafka_description }} instance_names={{ kafka_instance_names }}
+           ansible_groups={{ kafka_ansible_groups }} ansible_private_groups={{ kafka_ansible_private_groups }}
+- include: gce_pd.yml description={{ kafka_description }} instance_names={{ kafka_instance_names }}
+           disk_names={{ kafka_disk_names }}

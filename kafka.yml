@@ -1,0 +1,18 @@
+---
+# Set up Kafka account
+- name: Kafka account setup
+  hosts: kafka
+  gather_facts: no
+  sudo: yes
+
+  roles:
+    - { role: account, user: kafka, group: kafka }
+
+# Set up Kafka
+- name: Kafka setup
+  hosts: kafka
+  remote_user: kafka
+  sudo: yes
+
+  roles:
+    - { role: kafka, user: kafka, group: kafka }

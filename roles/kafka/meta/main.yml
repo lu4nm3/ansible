@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: account, user: kafka, group: kafka }
+  - java
+  - supervisor

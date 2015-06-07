@@ -1,0 +1,11 @@
+---
+# Create AMI
+- name: Creating {{ task_name }} AMI
+  ec2_ami:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    description: "{{ description }}"
+    instance_id: "{{ instance_id }}"
+    name: "{{ name }}"
+    region: "{{ region }}"
+    wait: "{{ wait }}"
