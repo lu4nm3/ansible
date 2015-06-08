@@ -1,21 +1,26 @@
 ---
-# Check for apt-transport-https
-- name: Checking if "{{ https_path }}"
-  stat: path={{ https_path }}
-  register: https
+# Install wget if not already present
+- name: Installing wget
+  apt: name=wget update_cache=yes state=latest
 
-# Install apt-transport-https only if necessary
-- apt: name=apt-transport-https update_cache=yes state=latest
-  when: https.stat.exists == false
-
-# Add Docker repository key
-- name: Adding Docker repository key
-  apt_key: id={{ key_id }} keyserver={{ key_server }}
-
-# Add Docker repository
-- name: Adding Docker repository
-  apt_repository: repo="{{ repository }}"
+# Check if Docker is already installed
+- name: Checking if Docker is already installed
+  stat: path=/usr/bin/docker
+  register: docker_file
 
 # Install Docker
 - name: Installing Docker
-  apt: name=lxc-docker update_cache=yes state=latest
+  shell: wget -qO- https://get.docker.com/ | sh
+  when: not docker_file.stat.exists
+
+# Check if Docker Compose is already installed
+- name: Checking if Docker Compose is already installed
+  stat: path=/usr/local/bin/docker-compose
+  register: docker_compose_file
+
+# Install Docker Compose
+- name: Installing Docker Compose
+  shell: curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+  when: not docker_compose_file.stat.exists
+- file: path=/usr/local/bin/docker-compose mode=u+x,g+x,o+x
+  when: not docker_compose_file.stat.exists

@@ -1,0 +1,10 @@
+---
+# Set up Docker
+- name: Docker setup
+  hosts: all
+  connection: local
+  gather_facts: no
+  sudo: yes
+
+  roles:
+    - docker
