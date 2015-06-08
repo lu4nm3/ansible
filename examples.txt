@@ -2,4 +2,4 @@
 ansible all -i "localhost," -c local -m stat -a "path=/usr/bin/docker"
 
 # To run the Docker role using the docker.yml file
-ansible-playbook -i "localhost," docker.yml --ask-sudo-pass
+ansible-playbook -i "localhost," playbooks/local/docker.yml --ask-sudo-pass
