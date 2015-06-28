@@ -1,5 +1,4 @@
 ---
 dependencies:
   - { role: account, user: zookeeper, group: zookeeper }
-#  - java
-#  - supervisor
+  - docker

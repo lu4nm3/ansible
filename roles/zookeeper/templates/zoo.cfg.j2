@@ -38,5 +38,5 @@ autopurge.purgeInterval={{ auto_purge_purge_interval }}
 # where X is the id of the server, nnnn is the quorum
 # election port and mmmm is the leader election port.
 {% for host in groups['zookeeper_private'] %}
-server.{{ host | regex_replace('\.', '') | int % 255 }}={{ host }}:2888:3888
+server.{{ host | regex_replace('\.', '') | int % 255 }}={{ host }}:{{ quorum_election_port }}:{{ leader_election_port }}
 {% endfor %}

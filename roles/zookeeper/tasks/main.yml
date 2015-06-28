@@ -18,60 +18,25 @@
 
 # Create ZooKeeper directories
 - name: Creating ZooKeeper directories
-  file: path=/opt/zookeeper/{{ version }}/conf state=directory owner={{ user }} group={{ group }}
+  file: path={{ conf_dir }} state=directory owner={{ user }} group={{ group }}
 - file: path={{ log_dir }} state=directory owner={{ user }} group={{ group }}
 - file: path={{ item }} state=directory owner={{ user }} group={{ group }}
   with_items: data_log_dirs
 
-## Download ZooKeeper
-#- name: Downloading ZooKeeper
-#  get_url: url={{ zookeeper_url }} dest={{ download_location }} mode=u=rwx,g=rx,o=rx
-
-## Unarchive ZooKeeper
-#- name: Unarchiving ZooKeeper
-#  unarchive: src={{ download_location }}/{{ archived_filename }} dest={{ download_location }} copy=no
-#- shell: cp -nr {{ download_location }}/{{ unarchived_filename }}/* /opt/zookeeper/{{ version }}/
-#- file: path=/opt/zookeeper state=directory recurse=yes owner={{ user }} group={{ group }}
-
 # Configure ZooKeeper
 - name: Configuring ZooKeeper
-  template: src=zoo.cfg.j2 dest=/opt/zookeeper/{{ version }}/conf/zoo.cfg owner={{ user }} group={{ group }}
-- template: src=java.env.j2 dest=/opt/zookeeper/{{ version }}/conf/java.env owner={{ user }} group={{ group }}
+  template: src=zoo.cfg.j2 dest={{ conf_dir }}/zoo.cfg owner={{ user }} group={{ group }}
+- template: src=java.env.j2 dest={{ conf_dir }}/java.env owner={{ user }} group={{ group }}
 - template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
 
-## Set Java heap size
-#- name: Setting Java heap size
-#  copy: content='export JVMFLAGS="-Xmx{{ java_heap_size_mb }}m"' dest=/opt/zookeeper/{{ version }}/conf/java.env
-#        owner={{ user }} group={{ group }}
-
-## Create ZooKeeper myid file
-#- name: Creating ZooKeeper myid file
-#  template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
-
-## Increase open file limit
-#- name: Increasing open file limit
-#  lineinfile: dest=/etc/sysctl.conf line="fs.file-max = {{ open_file_limit }}"
-#- lineinfile: dest=/etc/security/limits.conf line="{{ user }} - nofile {{ open_file_limit }}"
-#- lineinfile: dest=/etc/pam.d/common-session line="session required pam_limits.so"
-#
-## Reboot ZooKeeper instance
-#- name: Rebooting ZooKeeper instance(s)
-#  command: reboot
-#
-## Wait for ZooKeeper instance to reboot
-#- name: Waiting for ZooKeeper instance(s) to reboot
-#  wait_for: host={{ inventory_hostname }} port=22 delay=10 timeout=300
-#  connection: local
-#
-## Add ZooKeeper to Supervisor
-#- name: Adding ZooKeeper to Supervisor
-#  template: src=zookeeper.conf.j2 dest=/etc/supervisor/conf.d/zookeeper.conf mode=u=rw,g=r,o=r
-#
-## In order to keep open file limit
-#- name: Adding SSH key to zookeeper user
-#  authorized_key: user=zookeeper key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-#
-## Restart Supervisor
-#- name: Restarting Supervisor
-#  shell: sudo service supervisor restart
-#  remote_user: zookeeper
+# Start ZooKeeper Docker container
+- name: Starting ZooKeeper Docker container
+  docker:
+    hostname: "{{ hostname }}"
+    image: "{{ image }}"
+    name: "{{ name }}"
+    ports: "{{ ports }}"
+    pull: "{{ pull }}"
+    restart_policy_retry: "{{ restart_policy_retry }}"
+    state: "{{ state }}"
+    volumes: "{{ volumes }}"
