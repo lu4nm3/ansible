@@ -37,6 +37,6 @@
     name: "{{ name }}"
     ports: "{{ ports }}"
     pull: "{{ pull }}"
-    restart_policy_retry: "{{ restart_policy_retry }}"
+    restart_policy: "{{ restart_policy }}"
     state: "{{ state }}"
     volumes: "{{ volumes }}"

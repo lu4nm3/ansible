@@ -32,7 +32,7 @@ ports:
   - "{{ quorum_election_port }}:{{ quorum_election_port }}"
   - "{{ leader_election_port }}:{{ leader_election_port }}"
 pull: "{{ docker_pull }}"
-restart_policy_retry: "{{ docker_restart_policy_retry }}"
+restart_policy: "{{ docker_restart_policy }}"
 state: "{{ docker_state }}"
 volumes:
   - "{{ log_dir }}:{{ log_dir }}"
