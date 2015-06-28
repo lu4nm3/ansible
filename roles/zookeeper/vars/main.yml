@@ -13,6 +13,7 @@ init_limit: "{{ zookeeper_init_limit }}"
 sync_limit: "{{ zookeeper_sync_limit }}"
 data_dir: "{{ data_mount }}/zookeeper"
 data_log_dir: "{{ log_mount }}/zookeeper"
+data_log_dirs: ["{{ data_dir }}", "{{ data_log_dir }}"]
 client_port: "{{ zookeeper_client_port }}"
 auto_purge_snap_retain_count: "{{ zookeeper_auto_purge_snap_retain_count }}"
 auto_purge_purge_interval: "{{ zookeeper_auto_purge_purge_interval }}"
@@ -21,7 +22,6 @@ log_mount: /log
 disk_mount_dirs: ["{{ data_mount }}", "{{ log_mount }}"]
 #disk_dirs: [/dev/sdb,/dev/sdc] # GCE
 disk_dirs: [/dev/xvdb, /dev/xvdc] # AWS
-data_log_dirs: ["{{ data_dir }}", "{{ data_log_dir }}"]
 
 ############### SUPERVISOR ###############
 auto_start: "true"

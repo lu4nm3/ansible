@@ -68,7 +68,7 @@ zookeeper_ebs_optimized: true
 zookeeper_exact_count: 1
 zookeeper_security_groups: ["SSH", "Ping", "ZooKeeper"]
 zookeeper_instance_tags: { "type": zookeeper }
-zookeeper_instance_type: m4.xlarge
+zookeeper_instance_type: m4.large
 zookeeper_volumes:
   - { "device_name": /dev/sda1, "volume_size": 25, "device_type": gp2, "delete_on_termination": true }
 
