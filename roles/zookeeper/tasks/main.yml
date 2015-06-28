@@ -19,7 +19,7 @@
 # Create ZooKeeper directories
 - name: Creating ZooKeeper directories
   file: path=/opt/zookeeper/{{ version }}/conf state=directory owner={{ user }} group={{ group }}
-- file: path=/var/log/zookeeper state=directory owner={{ user }} group={{ group }}
+- file: path={{ log_dir }} state=directory owner={{ user }} group={{ group }}
 - file: path={{ item }} state=directory owner={{ user }} group={{ group }}
   with_items: data_log_dirs
 
@@ -36,15 +36,17 @@
 # Configure ZooKeeper
 - name: Configuring ZooKeeper
   template: src=zoo.cfg.j2 dest=/opt/zookeeper/{{ version }}/conf/zoo.cfg owner={{ user }} group={{ group }}
+- template: src=java.env.j2 dest=/opt/zookeeper/{{ version }}/conf/java.env owner={{ user }} group={{ group }}
+- template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
 
-# Set Java heap size
-- name: Setting Java heap size
-  copy: content='export JVMFLAGS="-Xmx{{ java_heap_size_mb }}m"' dest=/opt/zookeeper/{{ version }}/conf/java.env
-        owner={{ user }} group={{ group }}
+## Set Java heap size
+#- name: Setting Java heap size
+#  copy: content='export JVMFLAGS="-Xmx{{ java_heap_size_mb }}m"' dest=/opt/zookeeper/{{ version }}/conf/java.env
+#        owner={{ user }} group={{ group }}
 
-# Create ZooKeeper myid file
-- name: Creating ZooKeeper myid file
-  template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
+## Create ZooKeeper myid file
+#- name: Creating ZooKeeper myid file
+#  template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
 
 ## Increase open file limit
 #- name: Increasing open file limit
