@@ -12,7 +12,7 @@ cidr_block: 10.0.0.0/16
 dns_hostnames: yes
 dns_support: yes
 vpc_resource_tags: { "Name": "Trident" }
-instance_tenancy: "dedicated"
+instance_tenancy: "default"
 internet_gateway: true
 subnets:
   - { "cidr": 10.0.1.0/24, "az": us-west-2a }
@@ -56,7 +56,7 @@ kafka_security_group_tags: { "Name": "Kafka" }
 
 ############### EC2 COMMON ###############
 assign_public_ip: yes
-image: ami-df6a8b9b
+image: ami-5189a661
 monitoring: no
 placement_group: Trident
 
