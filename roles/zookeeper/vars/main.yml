@@ -8,35 +8,35 @@ unarchived_filename: zookeeper-{{ version }}
 java_heap_size_mb: "{{ (ansible_memtotal_mb * zookeeper_java_heap_size_mb_percentage) | round | int }}"
 open_file_limit: "{{ zookeeper_open_file_limit }}"
 
+data_dir: /zookeeper/data
+data_log_dir: /zookeeper/log
+data_log_dirs: ["{{ data_dir }}", "{{ data_log_dir }}"]
+disk_dirs: [/dev/xvdb, /dev/xvdc] # AWS
+#disk_dirs: [/dev/sdb,/dev/sdc] # GCE
 tick_time: "{{ zookeeper_tick_time }}"
 init_limit: "{{ zookeeper_init_limit }}"
 sync_limit: "{{ zookeeper_sync_limit }}"
-data_dir: "{{ data_mount }}/zookeeper"
-data_log_dir: "{{ log_mount }}/zookeeper"
-data_log_dirs: ["{{ data_dir }}", "{{ data_log_dir }}"]
+#data_dir: "{{ data_mount }}/zookeeper"
+#data_log_dir: "{{ log_mount }}/zookeeper"
+#data_log_dirs: ["{{ data_dir }}", "{{ data_log_dir }}"]
 client_port: "{{ zookeeper_client_port }}"
 auto_purge_snap_retain_count: "{{ zookeeper_auto_purge_snap_retain_count }}"
 auto_purge_purge_interval: "{{ zookeeper_auto_purge_purge_interval }}"
-data_mount: /data
-log_mount: /log
-disk_mount_dirs: ["{{ data_mount }}", "{{ log_mount }}"]
-#disk_dirs: [/dev/sdb,/dev/sdc] # GCE
-disk_dirs: [/dev/xvdb, /dev/xvdc] # AWS
 
 ############### SUPERVISOR ###############
-auto_start: "true"
-auto_restart: "true"
-command: /opt/zookeeper/{{ version }}/bin/zkServer.sh start-foreground
-directory: /opt/zookeeper/{{ version }}/bin
-log_file: /var/log/supervisor/supervisord.log
-log_file_backups: "{{ supervisor_log_file_backups }}"
-log_file_max_bytes: "{{ supervisor_log_file_max_bytes }}"
-start_retries: "{{ supervisor_start_retries }}"
-start_secs: "{{ supervisor_start_secs }}"
-std_err_log_file: /var/log/zookeeper/zookeeper_supervisor_err.log
-std_err_log_file_backups: "{{ supervisor_std_err_log_file_backups }}"
-std_err_log_file_max_bytes: "{{ supervisor_std_err_log_file_max_bytes }}"
-std_out_log_file: /var/log/zookeeper/zookeeper_supervisor_out.log
-std_out_log_file_backups: "{{ supervisor_std_out_log_file_backups }}"
-std_out_log_file_max_bytes: "{{ supervisor_std_out_log_file_max_bytes }}"
-stop_as_group: "true"
+#auto_start: "true"
+#auto_restart: "true"
+#command: /opt/zookeeper/{{ version }}/bin/zkServer.sh start-foreground
+#directory: /opt/zookeeper/{{ version }}/bin
+#log_file: /var/log/supervisor/supervisord.log
+#log_file_backups: "{{ supervisor_log_file_backups }}"
+#log_file_max_bytes: "{{ supervisor_log_file_max_bytes }}"
+#start_retries: "{{ supervisor_start_retries }}"
+#start_secs: "{{ supervisor_start_secs }}"
+#std_err_log_file: /var/log/zookeeper/zookeeper_supervisor_err.log
+#std_err_log_file_backups: "{{ supervisor_std_err_log_file_backups }}"
+#std_err_log_file_max_bytes: "{{ supervisor_std_err_log_file_max_bytes }}"
+#std_out_log_file: /var/log/zookeeper/zookeeper_supervisor_out.log
+#std_out_log_file_backups: "{{ supervisor_std_out_log_file_backups }}"
+#std_out_log_file_max_bytes: "{{ supervisor_std_out_log_file_max_bytes }}"
+#stop_as_group: "true"

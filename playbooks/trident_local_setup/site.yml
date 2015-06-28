@@ -62,13 +62,13 @@
       authorized_key: user="{{ lookup('env', 'USER') }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 # Set up ZooKeeper
-#- name: ZooKeeper setup
-#  hosts: zookeeper
-#  remote_user: "{{ lookup('env', 'USER') }}"
-#  sudo: yes
-#
-#  roles:
-#    - { role: zookeeper, user: zookeeper, group: zookeeper }
+- name: ZooKeeper setup
+  hosts: zookeeper
+  remote_user: "{{ lookup('env', 'USER') }}"
+  sudo: yes
+
+  roles:
+    - { role: zookeeper, user: zookeeper, group: zookeeper }
 
 # Set up Kafka
 #- name: Kafka setup

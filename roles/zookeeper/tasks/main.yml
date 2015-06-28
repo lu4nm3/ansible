@@ -2,7 +2,7 @@
 # Create ZooKeeper mount directories
 - name: Creating ZooKeeper {{ data_mount }} and {{ log_mount }} mount directories
   file: path={{ item }} state=directory
-  with_items: disk_mount_dirs
+  with_items: data_log_dirs
 
 # Format ZooKeeper disks
 - name: Formatting ZooKeeper disks
@@ -13,25 +13,25 @@
 - name: Mounting ZooKeeper disks
   mount: name={{ item.0 }} src={{ item.1 }} fstype=ext4 state=mounted
   with_together:
-    - disk_mount_dirs
+    - data_log_dirs
     - disk_dirs
 
 # Create ZooKeeper directories
 - name: Creating ZooKeeper directories
-  file: path=/opt/zookeeper/{{ version }} state=directory owner={{ user }} group={{ group }}
+  file: path=/opt/zookeeper/{{ version }}/conf state=directory owner={{ user }} group={{ group }}
 - file: path=/var/log/zookeeper state=directory owner={{ user }} group={{ group }}
 - file: path={{ item }} state=directory owner={{ user }} group={{ group }}
   with_items: data_log_dirs
 
-# Download ZooKeeper
-- name: Downloading ZooKeeper
-  get_url: url={{ zookeeper_url }} dest={{ download_location }} mode=u=rwx,g=rx,o=rx
+## Download ZooKeeper
+#- name: Downloading ZooKeeper
+#  get_url: url={{ zookeeper_url }} dest={{ download_location }} mode=u=rwx,g=rx,o=rx
 
-# Unarchive ZooKeeper
-- name: Unarchiving ZooKeeper
-  unarchive: src={{ download_location }}/{{ archived_filename }} dest={{ download_location }} copy=no
-- shell: cp -nr {{ download_location }}/{{ unarchived_filename }}/* /opt/zookeeper/{{ version }}/
-- file: path=/opt/zookeeper state=directory recurse=yes owner={{ user }} group={{ group }}
+## Unarchive ZooKeeper
+#- name: Unarchiving ZooKeeper
+#  unarchive: src={{ download_location }}/{{ archived_filename }} dest={{ download_location }} copy=no
+#- shell: cp -nr {{ download_location }}/{{ unarchived_filename }}/* /opt/zookeeper/{{ version }}/
+#- file: path=/opt/zookeeper state=directory recurse=yes owner={{ user }} group={{ group }}
 
 # Configure ZooKeeper
 - name: Configuring ZooKeeper
@@ -46,30 +46,30 @@
 - name: Creating ZooKeeper myid file
   template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
 
-# Increase open file limit
-- name: Increasing open file limit
-  lineinfile: dest=/etc/sysctl.conf line="fs.file-max = {{ open_file_limit }}"
-- lineinfile: dest=/etc/security/limits.conf line="{{ user }} - nofile {{ open_file_limit }}"
-- lineinfile: dest=/etc/pam.d/common-session line="session required pam_limits.so"
-
-# Reboot ZooKeeper instance
-- name: Rebooting ZooKeeper instance(s)
-  command: reboot
-
-# Wait for ZooKeeper instance to reboot
-- name: Waiting for ZooKeeper instance(s) to reboot
-  wait_for: host={{ inventory_hostname }} port=22 delay=10 timeout=300
-  connection: local
-
-# Add ZooKeeper to Supervisor
-- name: Adding ZooKeeper to Supervisor
-  template: src=zookeeper.conf.j2 dest=/etc/supervisor/conf.d/zookeeper.conf mode=u=rw,g=r,o=r
-
-# In order to keep open file limit
-- name: Adding SSH key to zookeeper user
-  authorized_key: user=zookeeper key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-
-# Restart Supervisor
-- name: Restarting Supervisor
-  shell: sudo service supervisor restart
-  remote_user: zookeeper
+## Increase open file limit
+#- name: Increasing open file limit
+#  lineinfile: dest=/etc/sysctl.conf line="fs.file-max = {{ open_file_limit }}"
+#- lineinfile: dest=/etc/security/limits.conf line="{{ user }} - nofile {{ open_file_limit }}"
+#- lineinfile: dest=/etc/pam.d/common-session line="session required pam_limits.so"
+#
+## Reboot ZooKeeper instance
+#- name: Rebooting ZooKeeper instance(s)
+#  command: reboot
+#
+## Wait for ZooKeeper instance to reboot
+#- name: Waiting for ZooKeeper instance(s) to reboot
+#  wait_for: host={{ inventory_hostname }} port=22 delay=10 timeout=300
+#  connection: local
+#
+## Add ZooKeeper to Supervisor
+#- name: Adding ZooKeeper to Supervisor
+#  template: src=zookeeper.conf.j2 dest=/etc/supervisor/conf.d/zookeeper.conf mode=u=rw,g=r,o=r
+#
+## In order to keep open file limit
+#- name: Adding SSH key to zookeeper user
+#  authorized_key: user=zookeeper key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+#
+## Restart Supervisor
+#- name: Restarting Supervisor
+#  shell: sudo service supervisor restart
+#  remote_user: zookeeper
