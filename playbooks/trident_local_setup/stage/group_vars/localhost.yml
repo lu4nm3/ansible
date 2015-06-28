@@ -70,7 +70,9 @@ zookeeper_security_groups: ["SSH", "Ping", "ZooKeeper"]
 zookeeper_instance_tags: { "type": zookeeper }
 zookeeper_instance_type: m4.large
 zookeeper_volumes:
-  - { "device_name": /dev/sda1, "volume_size": 25, "device_type": gp2, "delete_on_termination": true }
+  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+  - { "device_name": /dev/sdb, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
+  - { "device_name": /dev/sdc, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
 
 ############### EC2 KAFKA ###############
 #kafka_ansible_public_ip_groups: ec2, kafka, java, supervisor
