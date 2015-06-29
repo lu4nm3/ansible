@@ -6,6 +6,6 @@ zookeeper:
     "{{ ports }}"
   restart: "{{ restart_policy }}"
   volumes:
-    {% for port in {{ ports }} %}
+    {% for port in "{{ ports }}" %}
     - "{{ port }}"
     {% endfor %}
