@@ -4,7 +4,7 @@ zookeeper:
   name: "{{ name }}"
   ports:
   {% for port in ports %}
-    - "{{ port }}"
+  - "{{ port }}"
   {% endfor %}
   restart: "{{ restart_policy }}"
   volumes:
