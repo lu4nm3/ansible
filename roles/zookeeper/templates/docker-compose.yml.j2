@@ -4,8 +4,9 @@ zookeeper:
   name: {{ name }}
   ports:
   {% for port in ports %}
-  - {{ port }} {% endfor %}
-  restart: {{ restart_policy }}
+  - {{ port }}
+  {% endfor %}
+restart: {{ restart_policy }}
   volumes:
   {% for volume in volumes %}
   - {{ volume }}
