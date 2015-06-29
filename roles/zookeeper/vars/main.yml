@@ -37,6 +37,6 @@ state: "{{ docker_state }}"
 volumes:
   - "{{ log_dir }}:{{ log_dir }}"
   - "{{ conf_dir }}:{{ conf_dir }}"
-  - "{{ data_dir }}/myid:{{ data_dir }}/myid"
+#  - "{{ data_dir }}/myid:{{ data_dir }}/myid"
   - "{{ data_dir }}:{{ data_dir }}"
   - "{{ data_log_dir }}:{{ data_log_dir }}"
