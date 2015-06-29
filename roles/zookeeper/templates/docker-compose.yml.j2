@@ -3,11 +3,11 @@ zookeeper:
   image: "{{ image }}"
   name: "{{ name }}"
   ports:
-    "{% for port in {{ ports }} %}"
-      - "{{ port }}"
-    {% endfor %}
+  {% for port in ports %}
+    - "{{ port }}"
+  {% endfor %}
   restart: "{{ restart_policy }}"
   volumes:
-    {% for volume in volumes %}
+  {% for volume in volumes %}
     - "{{ volume }}"
-    {% endfor %}
+  {% endfor %}
