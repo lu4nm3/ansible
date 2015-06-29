@@ -28,15 +28,16 @@
   template: src=zoo.cfg.j2 dest={{ conf_dir }}/zoo.cfg owner={{ user }} group={{ group }}
 - template: src=java.env.j2 dest={{ conf_dir }}/java.env owner={{ user }} group={{ group }}
 - template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
+- template: src=docker-compose.yml.j2 dest=~/docker-compose.yml owner={{ user }} group={{ group }}
 
 # Start ZooKeeper Docker container
-- name: Starting ZooKeeper Docker container
-  docker:
-    hostname: "{{ hostname }}"
-    image: "{{ image }}"
-    name: "{{ name }}"
-    ports: "{{ ports }}"
-    pull: "{{ pull }}"
-    restart_policy: "{{ restart_policy }}"
-    state: "{{ state }}"
-    volumes: "{{ volumes }}"
+#- name: Starting ZooKeeper Docker container
+#  docker:
+#    hostname: "{{ hostname }}"
+#    image: "{{ image }}"
+#    name: "{{ name }}"
+#    ports: "{{ ports }}"
+#    pull: "{{ pull }}"
+#    restart_policy: "{{ restart_policy }}"
+#    state: "{{ state }}"
+#    volumes: "{{ volumes }}"

@@ -1,0 +1,11 @@
+zookeeper:
+  hostname: "{{ hostname }}"
+  image: "{{ image }}"
+  name: "{{ name }}"
+  ports:
+    "{{ ports }}"
+  restart: "{{ restart_policy }}"
+  volumes:
+    {% for port in {{ ports }} %}
+    - "{{ port }}"
+    {% endfor %}
