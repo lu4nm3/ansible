@@ -20,8 +20,9 @@
 - name: Creating ZooKeeper directories
   file: path={{ conf_dir }} state=directory owner={{ user }} group={{ group }}
 - file: path={{ log_dir }} state=directory owner={{ user }} group={{ group }}
-- file: path={{ item }} state=directory owner={{ user }} group={{ group }}
-  with_items: data_log_dirs
+- file: path=/zookeeper state=directory recurse=yes owner={{ user }} group={{ group }}
+#- file: path={{ item }} state=directory owner={{ user }} group={{ group }}
+#  with_items: data_log_dirs
 
 # Configure ZooKeeper
 - name: Configuring ZooKeeper
