@@ -16,13 +16,39 @@
     - data_log_dirs
     - disk_dirs
 
+################################################################
+# Install wget if not already present
+- name: Installing wget
+  apt: name=wget update_cache=yes state=latest
+
+# Check if Docker is already installed
+- name: Checking if Docker is already installed
+  stat: path=/usr/bin/docker
+  register: docker_file
+
+# Install Docker
+- name: Installing Docker
+  shell: wget -qO- https://get.docker.com/ | sh
+  when: not docker_file.stat.exists
+
+# Check if Docker Compose is already installed
+- name: Checking if Docker Compose is already installed
+  stat: path=/usr/local/bin/docker-compose
+  register: docker_compose_file
+
+# Install Docker Compose
+- name: Installing Docker Compose
+  shell: curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+  when: not docker_compose_file.stat.exists
+- file: path=/usr/local/bin/docker-compose mode=u+x,g+x,o+x
+  when: not docker_compose_file.stat.exists
+################################################################
+
 # Create ZooKeeper directories
 - name: Creating ZooKeeper directories
   file: path={{ conf_dir }} state=directory owner={{ user }} group={{ group }}
 - file: path={{ log_dir }} state=directory owner={{ user }} group={{ group }}
 - file: path=/zookeeper state=directory recurse=yes owner={{ user }} group={{ group }}
-#- file: path={{ item }} state=directory owner={{ user }} group={{ group }}
-#  with_items: data_log_dirs
 
 # Configure ZooKeeper
 - name: Configuring ZooKeeper
