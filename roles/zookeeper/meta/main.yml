@@ -1,4 +1,4 @@
 ---
 dependencies:
   - { role: account, user: zookeeper, group: zookeeper }
-  - docker
+#  - docker
