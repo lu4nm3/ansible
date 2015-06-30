@@ -18,6 +18,6 @@ docker_hostname: zookeeper
 docker_image: lu4nm3/zookeeper:{{ zookeeper_version }}
 docker_name: zookeeper
 docker_pull: always
-docker_privileged: true
+docker_privileged: "true"
 docker_restart_policy: always
 docker_state: reloaded
