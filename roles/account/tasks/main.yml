@@ -1,10 +1,10 @@
 # Create group
 - name: Creating {{ group }} group
-  group: name={{ group }}
+  group: name={{ group }} system=yes
 
 # Create user
 - name: Creating {{ user }} user
-  user: name={{ user }} groups="{{ group }},sudo" shell=/bin/bash generate_ssh_key=yes
+  user: name={{ user }} groups="{{ group }},sudo" shell=/bin/bash generate_ssh_key=yes system=yes
 
 # Add user to sudoers
 - name: Adding {{ user }} user to sudoers
