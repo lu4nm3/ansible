@@ -28,9 +28,9 @@ hostname: "{{ docker_hostname }}"
 image: "{{ docker_image }}"
 name: "{{ docker_name }}"
 ports:
-  - "{{ client_port }}:{{ client_port }}"
-  - "{{ quorum_election_port }}:{{ quorum_election_port }}"
-  - "{{ leader_election_port }}:{{ leader_election_port }}"
+  - "127.0.0.1:{{ client_port }}:{{ client_port }}"
+  - "127.0.0.1:{{ quorum_election_port }}:{{ quorum_election_port }}"
+  - "127.0.0.1:{{ leader_election_port }}:{{ leader_election_port }}"
 restart_policy: "{{ docker_restart_policy }}"
 state: "{{ docker_state }}"
 volumes:
