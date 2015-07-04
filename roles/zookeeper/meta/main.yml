@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - { role: account, user: zookeeper, group: zookeeper }
+  - { role: account, gid: 333, group: zookeeper, uid: 333, user: zookeeper }
   - docker
