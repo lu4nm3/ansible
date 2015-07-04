@@ -65,7 +65,7 @@ zookeeper_ansible_public_ip_groups: ec2, zookeeper
 zookeeper_ansible_private_ip_groups: zookeeper_private
 zookeeper_count_tag: { "type": zookeeper }
 zookeeper_ebs_optimized: true
-zookeeper_exact_count: 1
+zookeeper_exact_count: 3
 zookeeper_security_groups: ["SSH", "Ping", "ZooKeeper"]
 zookeeper_instance_tags: { "type": zookeeper }
 zookeeper_instance_type: m4.large

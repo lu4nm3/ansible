@@ -33,15 +33,3 @@
 # Start ZooKeeper through Docker Compose
 - name: Starting ZooKeeper through Docker Compose
   shell: docker-compose -f /home/zookeeper/docker-compose.yml up -d
-
-# Start ZooKeeper Docker container
-#- name: Starting ZooKeeper Docker container
-#  docker:
-#    hostname: "{{ hostname }}"
-#    image: "{{ image }}"
-#    name: "{{ name }}"
-#    ports: "{{ ports }}"
-#    pull: "{{ pull }}"
-#    restart_policy: "{{ restart_policy }}"
-#    state: "{{ state }}"
-#    volumes: "{{ volumes }}"
