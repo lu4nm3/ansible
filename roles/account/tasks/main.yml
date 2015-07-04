@@ -19,4 +19,4 @@
 - name: Adding {{ user }} user to sudoers
   lineinfile:
     dest: /etc/sudoers
-    line: "%sudo ALL=(ALL) NOPASSWD{{ ":" }}ALL"
+    line: "%sudo ALL=(ALL) NOPASSWD:ALL"
