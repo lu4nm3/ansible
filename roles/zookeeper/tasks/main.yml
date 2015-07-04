@@ -30,6 +30,10 @@
 - template: src=myid.j2 dest={{ data_dir }}/myid owner={{ user }} group={{ group }}
 - template: src=docker-compose.yml.j2 dest=/home/zookeeper/docker-compose.yml owner={{ user }} group={{ group }}
 
+# Start ZooKeeper through Docker Compose
+- name: Starting ZooKeeper through Docker Compose
+  shell: docker-compose up -d
+
 # Start ZooKeeper Docker container
 #- name: Starting ZooKeeper Docker container
 #  docker:

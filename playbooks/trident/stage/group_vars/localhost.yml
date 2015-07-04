@@ -12,7 +12,7 @@ cidr_block: 10.0.0.0/16
 dns_hostnames: yes
 dns_support: yes
 vpc_resource_tags: { "Name": "Trident" }
-instance_tenancy: "dedicated"
+instance_tenancy: "default"
 internet_gateway: true
 subnets:
   - { "cidr": 10.0.1.0/24, "az": us-west-2a }
@@ -38,13 +38,6 @@ ping_security_group_rules_ingress:
   - { "proto": icmp, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
 ping_security_group_tags: { "Name": "Ping" }
 
-# Supervisor
-supervisor_security_group_description: Supervisor Security Group
-supervisor_security_group_name: Supervisor
-supervisor_security_group_rules_ingress:
-  - { "proto": tcp, "from_port": 9001, "to_port": 9001, "cidr_ip": 0.0.0.0/0 }
-supervisor_security_group_tags: { "Name": "Supervisor" }
-
 # ZooKeeper
 zookeeper_security_group_name: ZooKeeper
 zookeeper_security_group_description: ZooKeeper Security Group
@@ -63,35 +56,35 @@ kafka_security_group_tags: { "Name": "Kafka" }
 
 ############### EC2 COMMON ###############
 assign_public_ip: yes
-image: ami-d05e75b8
+image: ami-5189a661
 monitoring: no
 placement_group: Trident
 
 ############### EC2 ZOOKEEPER ###############
-zookeeper_ansible_public_ip_groups: ec2, zookeeper, java, supervisor
+zookeeper_ansible_public_ip_groups: ec2, zookeeper
 zookeeper_ansible_private_ip_groups: zookeeper_private
 zookeeper_count_tag: { "type": zookeeper }
 zookeeper_ebs_optimized: true
 zookeeper_exact_count: 1
 zookeeper_security_groups: ["SSH", "Ping", "ZooKeeper"]
 zookeeper_instance_tags: { "type": zookeeper }
-zookeeper_instance_type: r3.2xlarge
+zookeeper_instance_type: m4.large
 zookeeper_volumes:
   - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-  - { "device_name": /dev/sdb, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
-  - { "device_name": /dev/sdc, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
+  - { "device_name": /dev/sdb, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
+  - { "device_name": /dev/sdc, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
 
 ############### EC2 KAFKA ###############
-kafka_ansible_public_ip_groups: ec2, kafka, java, supervisor
-kafka_ansible_private_ip_groups: kafka_private
-kafka_count_tag: { "type": kafka }
-kafka_ebs_optimized: true
-kafka_exact_count: 1
-kafka_security_groups: ["SSH", "Ping", "Kafka"]
-kafka_instance_tags: { "type": kafka }
-kafka_instance_type: r3.2xlarge
-kafka_volumes:
-  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-  - { "device_name": /dev/sdb, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
-  - { "device_name": /dev/sdc, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
-  - { "device_name": /dev/sdd, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
+#kafka_ansible_public_ip_groups: ec2, kafka, java, supervisor
+#kafka_ansible_private_ip_groups: kafka_private
+#kafka_count_tag: { "type": kafka }
+#kafka_ebs_optimized: true
+#kafka_exact_count: 1
+#kafka_security_groups: ["SSH", "Ping", "Kafka"]
+#kafka_instance_tags: { "type": kafka }
+#kafka_instance_type: r3.2xlarge
+#kafka_volumes:
+#  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdb, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdc, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdd, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }

@@ -6,7 +6,6 @@ zookeeper:
   {% for port in ports %}
   - {{ port }}
   {% endfor %}
-privileged: {{ privileged }}
   restart: {{ restart_policy }}
   volumes:
   {% for volume in volumes %}
