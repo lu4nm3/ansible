@@ -2,6 +2,7 @@ zookeeper:
   hostname: {{ hostname }}
   image: {{ image }}
   name: {{ name }}
+  net: {{ net }}
   ports:
   {% for port in ports %}
   - {{ port }}
