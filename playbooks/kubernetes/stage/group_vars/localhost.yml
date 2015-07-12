@@ -1,0 +1,112 @@
+---
+############### COMMON ###############
+region: us-west-2
+wait: yes
+
+############### KEY PAIR ###############
+key_pair_name: Trident
+key_pair_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+############### VPC ###############
+cidr_block: 10.0.0.0/16
+dns_hostnames: yes
+dns_support: yes
+vpc_resource_tags: { "Name": "Trident" }
+instance_tenancy: "default"
+internet_gateway: true
+subnets:
+  - { "cidr": 10.0.1.0/24, "az": us-west-2a }
+route_tables:
+  - { "subnets": [10.0.1.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
+
+############### SECURITY GROUPS ###############
+# Egress
+security_group_rules_egress:
+  - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+
+# SSH
+ssh_security_group_description: SSH Security Group
+ssh_security_group_name: SSH
+ssh_security_group_rules_ingress:
+  - { "proto": tcp, "from_port": 22, "to_port": 22, "cidr_ip": 0.0.0.0/0 }
+ssh_security_group_tags: { "Name": "SSH" }
+
+# Ping
+ping_security_group_description: Ping Security Group
+ping_security_group_name: Ping
+ping_security_group_rules_ingress:
+  - { "proto": icmp, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+ping_security_group_tags: { "Name": "Ping" }
+
+# Kubernetes
+kubernetes_security_group_description: Kubernetes Security Group
+kubernetes_security_group_name: Kubernetes
+kubernetes_security_group_rules_ingress:
+  - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 0.0.0.0/0 }
+  - { "proto": tcp, "from_port": 7001, "to_port": 7001, "cidr_ip": 0.0.0.0/0 }
+kubernetes_security_group_tags: { "Name": "Kubernetes" }
+
+# ZooKeeper
+zookeeper_security_group_name: ZooKeeper
+zookeeper_security_group_description: ZooKeeper Security Group
+zookeeper_security_group_rules_ingress:
+  - { "proto": tcp, "from_port": 2181, "to_port": 2181, "cidr_ip": 0.0.0.0/0 }
+  - { "proto": tcp, "from_port": 2888, "to_port": 2888, "cidr_ip": 0.0.0.0/0 }
+  - { "proto": tcp, "from_port": 3888, "to_port": 3888, "cidr_ip": 0.0.0.0/0 }
+zookeeper_security_group_tags: { "Name": "ZooKeeper" }
+
+# Kafka
+kafka_security_group_name: Kafka
+kafka_security_group_description: Kafka security group
+kafka_security_group_rules_ingress:
+  - { "proto": tcp, "from_port": 9092, "to_port": 9092, "cidr_ip": 0.0.0.0/0 }
+kafka_security_group_tags: { "Name": "Kafka" }
+
+############### EC2 COMMON ###############
+assign_public_ip: yes
+image: ami-5189a661
+monitoring: no
+placement_group: Trident
+
+############### EC2 KUBERNETES ###############
+kubernetes_ansible_public_ip_groups: ec2, kubernetes
+kubernetes_ansible_private_ip_groups: kubernetes_private
+kubernetes_count_tag: { "type": kubernetes }
+kubernetes_ebs_optimized: true
+kubernetes_exact_count: 3
+kubernetes_security_groups: ["SSH", "Ping", "Kubernetes"]
+kubernetes_instance_tags: { "type": kubernetes }
+kubernetes_instance_type: m4.large
+kubernetes_volumes:
+  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+  - { "device_name": /dev/sdb, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
+  - { "device_name": /dev/sdc, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
+
+############### EC2 ZOOKEEPER ###############
+#zookeeper_ansible_public_ip_groups: ec2, zookeeper
+#zookeeper_ansible_private_ip_groups: zookeeper_private
+#zookeeper_count_tag: { "type": zookeeper }
+#zookeeper_ebs_optimized: true
+#zookeeper_exact_count: 3
+#zookeeper_security_groups: ["SSH", "Ping", "ZooKeeper"]
+#zookeeper_instance_tags: { "type": zookeeper }
+#zookeeper_instance_type: m4.large
+#zookeeper_volumes:
+#  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdb, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdc, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
+
+############### EC2 KAFKA ###############
+#kafka_ansible_public_ip_groups: ec2, kafka, java, supervisor
+#kafka_ansible_private_ip_groups: kafka_private
+#kafka_count_tag: { "type": kafka }
+#kafka_ebs_optimized: true
+#kafka_exact_count: 1
+#kafka_security_groups: ["SSH", "Ping", "Kafka"]
+#kafka_instance_tags: { "type": kafka }
+#kafka_instance_type: r3.2xlarge
+#kafka_volumes:
+#  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdb, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdc, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
+#  - { "device_name": /dev/sdd, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
