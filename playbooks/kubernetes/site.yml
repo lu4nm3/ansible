@@ -42,9 +42,13 @@
 #    - { role: security_group, security_group_description: "{{ kafka_security_group_description }}", security_group_name: "{{ kafka_security_group_name }}",
 #        security_group_rules_ingress: "{{ kafka_security_group_rules_ingress }}", security_group_tags: "{{ kafka_security_group_tags }}", task_name: Kafka }
 
-    - { role: ec2, ansible_public_ip_groups: "{{ zookeeper_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ zookeeper_ansible_private_ip_groups }}",
-        count_tag: "{{ zookeeper_count_tag }}", ebs_optimized: "{{ zookeeper_ebs_optimized }}", exact_count: "{{ zookeeper_exact_count }}", security_groups: "{{ zookeeper_security_groups }}",
-        instance_tags: "{{ zookeeper_instance_tags }}", instance_type: "{{ zookeeper_instance_type }}", task_name: ZooKeeper, volumes: "{{ zookeeper_volumes }}" }
+    - { role: ec2, ansible_public_ip_groups: "{{ kubernetes_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ kubernetes_ansible_private_ip_groups }}",
+        count_tag: "{{ kubernetes_count_tag }}", ebs_optimized: "{{ kubernetes_ebs_optimized }}", exact_count: "{{ kubernetes_exact_count }}", security_groups: "{{ kubernetes_security_groups }}",
+        instance_tags: "{{ kubernetes_instance_tags }}", instance_type: "{{ kubernetes_instance_type }}", task_name: Kubernetes, volumes: "{{ kubernetes_volumes }}" }
+
+#    - { role: ec2, ansible_public_ip_groups: "{{ zookeeper_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ zookeeper_ansible_private_ip_groups }}",
+#        count_tag: "{{ zookeeper_count_tag }}", ebs_optimized: "{{ zookeeper_ebs_optimized }}", exact_count: "{{ zookeeper_exact_count }}", security_groups: "{{ zookeeper_security_groups }}",
+#        instance_tags: "{{ zookeeper_instance_tags }}", instance_type: "{{ zookeeper_instance_type }}", task_name: ZooKeeper, volumes: "{{ zookeeper_volumes }}" }
 
 #    - { role: ec2, ansible_public_ip_groups: "{{ kafka_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ kafka_ansible_private_ip_groups }}",
 #        count_tag: "{{ kafka_count_tag }}", ebs_optimized: "{{ kafka_ebs_optimized }}", exact_count: "{{ kafka_exact_count }}", security_groups: "{{ kafka_security_groups }}",
@@ -65,13 +69,13 @@
       authorized_key: user="{{ lookup('env', 'USER') }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 # Set up ZooKeeper
-- name: ZooKeeper setup
-  hosts: zookeeper
-  remote_user: "{{ lookup('env', 'USER') }}"
-  sudo: yes
-
-  roles:
-    - { role: zookeeper, user: zookeeper, group: zookeeper }
+#- name: ZooKeeper setup
+#  hosts: zookeeper
+#  remote_user: "{{ lookup('env', 'USER') }}"
+#  sudo: yes
+#
+#  roles:
+#    - { role: zookeeper, user: zookeeper, group: zookeeper }
 
 # Set up Kafka
 #- name: Kafka setup

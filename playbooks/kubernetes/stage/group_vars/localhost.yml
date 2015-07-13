@@ -77,10 +77,9 @@ kubernetes_exact_count: 3
 kubernetes_security_groups: ["SSH", "Ping", "Kubernetes"]
 kubernetes_instance_tags: { "type": kubernetes }
 kubernetes_instance_type: m4.large
+kubernetes_user_data: "{{ lookup('template', 'templates/cloud-config.yml.j2') }}"
 kubernetes_volumes:
   - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-  - { "device_name": /dev/sdb, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
-  - { "device_name": /dev/sdc, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
 
 ############### EC2 ZOOKEEPER ###############
 #zookeeper_ansible_public_ip_groups: ec2, zookeeper
