@@ -13,8 +13,8 @@ coreos:
     advertise-client-urls: http://$private_ipv4:4001
     discovery: https://discovery.etcd.io/5c9c5236e83c18f3eacf57f8a170431f # https://discovery.etcd.io/new?size=3
     initial-advertise-peer-urls: http://$private_ipv4:7001
-    listen-client-urls: http://$private_ipv4:4001,http://localhost:4001
-    listen-peer-urls: http://$private_ipv4:7001,http://localhost:7001
+    listen-client-urls: http://$private_ipv4:4001,http://localhost:4001 # or just http://localhost:4001
+    listen-peer-urls: http://$private_ipv4:7001,http://localhost:7001 # or just http://$private_ipv4:7001
     name: master
   flannel:
     etcd_endpoints: http://localhost:4001
@@ -111,17 +111,17 @@ coreos:
         [Unit]
         Description=Kubernetes API Server
         Documentation=https://github.com/GoogleCloudPlatform/kubernetes
-        Requires=etcd2-waiter.service
-        After=etcd2-waiter.service
+        Requires=docker.service etcd2.service
+        After=docker.service etcd2.service
         [Service]
         ExecStartPre=/usr/bin/wget -N -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/v0.17.0/bin/linux/amd64/kube-apiserver
         ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-apiserver
         ExecStart=/opt/bin/kube-apiserver \
         --insecure-bind-address=0.0.0.0 \
         --service-cluster-ip-range=10.100.0.0/16 \
-        --etcd-servers=http://localhost:2379
+        --etcd-servers=http://localhost:4001
         Restart=always
-        RestartSec=10
+        RestartSec=5
     - name: kube-controller-manager.service
       command: start
       content: |
