@@ -1,0 +1,18 @@
+[Unit]
+Description=etcd2
+Conflicts=etcd.service
+
+[Service]
+User=etcd
+Environment=ETCD_ADVERTISE_CLIENT_URLS=http://10.0.1.207:4001
+Environment=ETCD_DATA_DIR=/var/lib/etcd2
+Environment=ETCD_DISCOVERY=https://discovery.etcd.io/5c9c5236e83c18f3eacf57f8a170431f
+Environment=ETCD_ELECTION_TIMEOUT=1200
+Environment=ETCD_NAME=%m
+ExecStart=/usr/bin/etcd2 \
+--name=master2
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
