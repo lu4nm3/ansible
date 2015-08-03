@@ -1,0 +1,20 @@
+[Unit]
+Description=etcd2
+Conflicts=etcd.service
+
+[Service]
+User=etcd
+Environment=ETCD_ADVERTISE_CLIENT_URLS=http://{{ private_ip }}:4001
+Environment=ETCD_DATA_DIR=/var/lib/etcd2
+Environment=ETCD_DISCOVERY=https://discovery.etcd.io/5c9c5236e83c18f3eacf57f8a170431f #https://discovery.etcd.io/new?size=3
+Environment=ETCD_ELECTION_TIMEOUT=1200
+Environment=ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{ private_ip }}:7001
+Environment=ETCD_LISTEN_CLIENT_URLS=http://{{ private_ip }}:4001,http://localhost:4001 #or just http://localhost:4001
+Environment=ETCD_LISTEN_PEER_URLS=http://{{ private_ip }}:7001,http://localhost:7001 #or just http://$private_ipv4:7001
+Environment=ETCD_NAME=MASTER
+ExecStart=/usr/bin/etcd2
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
