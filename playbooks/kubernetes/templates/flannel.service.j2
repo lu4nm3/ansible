@@ -1,12 +1,15 @@
 [Unit]
-After=etcd2.service,docker.service
+After=etcd2.service
 Description=flannel
-Wants=etcd2.service,docker.service
+Wants=etcd2.service
 
 [Service]
 User=etcd
-ExecStartPre=docker run -i -t google/golang /bin/bash -c "go get github.com/coreos/flannel"
-ExecStartPre=sudo docker cp $(docker ps -l -q):/gopath/bin/flannel /opt/bin/
+ExecStartPre=/usr/bin/wget -O /home/core/flannel-0.5.2-linux-amd64.tar.gz https://github.com/coreos/flannel/releases/download/v0.5.2/flannel-0.5.2-linux-amd64.tar.gz
+ExecStartPre=/usr/bin/tar zxvf flannel-0.5.2-linux-amd64.tar.gz -C /home/core
+ExecStartPre=/usr/bin/mkdir -p /opt/bin
+ExecStartPre=/usr/bin/cp /home/core/flannel-0.5.2/flanneld /opt/bin
+ExecStartPre=/usr/bin/rm -r /home/core/flannel-0.5.2-linux-amd64.tar.gz /home/core/flannel-0.5.2
 ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "10.0.0.0/16", "Backend": {"Type": "vxlan"}}'
 ExecStart=/opt/bin/flannel -iface={{ private_ip }}
 Restart=always
