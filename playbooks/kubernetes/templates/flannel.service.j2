@@ -1,0 +1,16 @@
+[Unit]
+After=etcd2.service,docker.service
+Description=flannel
+Wants=etcd2.service,docker.service
+
+[Service]
+User=etcd
+ExecStartPre=docker run -i -t google/golang /bin/bash -c "go get github.com/coreos/flannel"
+ExecStartPre=sudo docker cp $(docker ps -l -q):/gopath/bin/flannel /opt/bin/
+ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "10.0.0.0/16", "Backend": {"Type": "vxlan"}}'
+ExecStart=/opt/bin/flannel -iface={{ private_ip }}
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
