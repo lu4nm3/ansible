@@ -20,6 +20,9 @@ coreos:
     name: master
   flannel:
     etcd_endpoints: http://localhost:4001
+  fleet:
+    etcd_servers: http://localhost:4001
+    metadata: role=master
   units:
     - name: etcd2.service
       command: start
