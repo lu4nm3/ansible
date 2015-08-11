@@ -10,7 +10,7 @@ ExecStartPre=/usr/bin/mkdir -p /opt/bin
 ExecStartPre=/usr/bin/cp /home/core/flannel-0.5.2/flanneld /opt/bin
 ExecStartPre=/usr/bin/rm -r /home/core/flannel-0.5.2-linux-amd64.tar.gz /home/core/flannel-0.5.2
 ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "10.244.0.0/16", "Backend": {"Type": "vxlan"}}'
-ExecStart=/opt/bin/flanneld -etcd-endpoints http://127.0.0.1:4001
+ExecStart=/opt/bin/flanneld
 Restart=always
 RestartSec=5s
 
