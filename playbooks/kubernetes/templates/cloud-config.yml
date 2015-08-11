@@ -77,7 +77,7 @@ coreos:
         ExecStartPre=/usr/bin/wget -N -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/v1.0.1/bin/linux/amd64/kube-apiserver
         ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-apiserver
         ExecStart=/opt/bin/kube-apiserver \
-        --service-cluster-ip-range=10.0.0.0/16 \
+        --service-cluster-ip-range=10.100.0.0/16 \
         --etcd-servers=http://127.0.0.1:4001
         Restart=always
         RestartSec=5
