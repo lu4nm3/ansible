@@ -28,20 +28,20 @@ coreos:
       command: start
     - name: fleet.service
       command: start
-    - name: etcd2-waiter.service
-      command: start
-      content: |
-        [Unit]
-        After=etcd2.service
-        After=network-online.target
-        Before=flanneld.service fleet.service locksmithd.service
-        Description=Etcd waiter
-        Wants=network-online.target
-        Wants=etcd2.service
-        [Service]
-        ExecStart=/usr/bin/bash /opt/bin/waiter.sh
-        RemainAfterExit=true
-        Type=oneshot
+    # - name: etcd2-waiter.service
+    #   command: start
+    #   content: |
+    #     [Unit]
+    #     After=etcd2.service
+    #     After=network-online.target
+    #     Before=flanneld.service fleet.service locksmithd.service
+    #     Description=Etcd waiter
+    #     Wants=network-online.target
+    #     Wants=etcd2.service
+    #     [Service]
+    #     ExecStart=/usr/bin/bash /opt/bin/waiter.sh
+    #     RemainAfterExit=true
+    #     Type=oneshot
     - name: flanneld.service
       command: start
       drop-ins:
