@@ -4,7 +4,7 @@ coreos:
   etcd2:
     advertise-client-urls: http://$private_ipv4:4001
     data-dir: /var/lib/etcd2
-    discovery: $(curl https://discovery.etcd.io/new?size=1)
+    discovery: eval $(curl https://discovery.etcd.io/new?size=1)
     election-timeout: 1200
     initial-advertise-peer-urls: http://$private_ipv4:7001
     listen-client-urls: http://$private_ipv4:4001,http://localhost:4001
