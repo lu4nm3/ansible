@@ -20,7 +20,7 @@ coreos:
       command: start
     - name: fleet.service
       command: start
-    - name: flanneld.service
+    - name: flannel.service
       command: start
       content: |
         [Unit]
