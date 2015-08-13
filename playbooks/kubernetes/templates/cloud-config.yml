@@ -51,19 +51,19 @@ coreos:
         RestartSec=5
         [Install]
         WantedBy=multi-user.target
-    - name: kubernetes-download.service
-      command: start
-      content: |
-        [Unit]
-        Description=Download Kubernetes downloads
-        [Service]
-        ExecStart=/usr/bin/wget -N -P /opt/bin https://github.com/kubernetes/kubernetes/releases/download/v1.0.3/kubernetes.tar.gz
-        ExecStart=/usr/bin/tar zxvf /opt/bin/kubernetes.tar.gz -C /opt/bin
-        ExecStart=/usr/bin/tar zxvf /opt/bin/kubernetes/server/kubernetes-server-linux-amd64.tar.gz -C /opt/bin/kubernetes/server
-        ExecStart=/usr/bin/cp /opt/bin/kubernetes/server/kubernetes/server/bin/{kube-apiserver,kube-controller-manager,kube-proxy,kube-scheduler,kubectl,kubelet} /opt/bin
-        ExecStart=/usr/bin/rm -r /opt/bin/kubernetes.tar.gz /opt/bin/kubernetes
-        RemainAfterExit=yes
-        Type=oneshot
+    # - name: kubernetes-download.service
+    #   command: start
+    #   content: |
+    #     [Unit]
+    #     Description=Download Kubernetes downloads
+    #     [Service]
+    #     ExecStart=/usr/bin/wget -N -P /opt/bin https://github.com/kubernetes/kubernetes/releases/download/v1.0.3/kubernetes.tar.gz
+    #     ExecStart=/usr/bin/tar zxvf /opt/bin/kubernetes.tar.gz -C /opt/bin
+    #     ExecStart=/usr/bin/tar zxvf /opt/bin/kubernetes/server/kubernetes-server-linux-amd64.tar.gz -C /opt/bin/kubernetes/server
+    #     ExecStart=/usr/bin/cp /opt/bin/kubernetes/server/kubernetes/server/bin/{kube-apiserver,kube-controller-manager,kube-proxy,kube-scheduler,kubectl,kubelet} /opt/bin
+    #     ExecStart=/usr/bin/rm -r /opt/bin/kubernetes.tar.gz /opt/bin/kubernetes
+    #     RemainAfterExit=yes
+    #     Type=oneshot
     - name: get-kubectl.service
       command: start
       content: |
