@@ -63,7 +63,7 @@ coreos:
         ExecStartPre=/usr/bin/tar zxvf /opt/bin/kubernetes.tar.gz -C /opt/bin
         ExecStartPre=/usr/bin/tar zxvf /opt/bin/kubernetes/server/kubernetes.tar.gz -C /opt/bin/opt/bin/kubernetes/server
         ExecStartPre=/usr/bin/cp /opt/bin/kubernetes/server/kubernetes/server/bin/kube* /opt/bin
-        ExecStartPre=/usr/bin/rm -r /opt/bin/kubernetes.tar.gz /opt/bin/kubernetes/ /opt/bin/kubernetes
+        ExecStart=/usr/bin/rm -r /opt/bin/kubernetes.tar.gz /opt/bin/kubernetes/ /opt/bin/kubernetes
         RemainAfterExit=yes
         Type=oneshot
     - name: get-kubectl.service
