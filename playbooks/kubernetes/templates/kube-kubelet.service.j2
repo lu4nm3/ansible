@@ -1,0 +1,17 @@
+[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+Requires=etcd2.service docker.service
+After=etcd2.service docker.service
+
+[Service]
+EnvironmentFile=/etc/network-environment
+ExecStartPre=/usr/bin/wget -N -P /opt/bin https://storage.googleapis.com/kubernetes-release/release/v1.0.1/bin/linux/amd64/kubelet
+ExecStartPre=/usr/bin/chmod +x /opt/bin/kubelet
+ExecStart=/opt/bin/kubelet
+Restart=always
+RestartSec=5
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=kubernetes
