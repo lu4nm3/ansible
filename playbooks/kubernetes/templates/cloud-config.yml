@@ -60,8 +60,12 @@ coreos:
         Requires=etcd2.service
         [Service]
         ExecStartPre=/usr/bin/wget -N -O /opt/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
+        ExecStartPre=/usr/bin/chmod +x /opt/bin/confd
+        ExecStartPre=/usr/bin/mkdir -p /etc/confd
         ExecStart=/opt/bin/confd -watch
         Restart=always
+        [Install]
+        WantedBy=multi-user.target
     # - name: kubernetes-download.service
     #   command: start
     #   content: |
