@@ -51,6 +51,17 @@ coreos:
         RestartSec=5
         [Install]
         WantedBy=multi-user.target
+    - name: confd.service
+      command: start
+      content: |
+        [Unit]
+        After=etcd2.service
+        Description=Confd
+        Requires=etcd2.service
+        [Service]
+        ExecStartPre=/usr/bin/wget -N -O /opt/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
+        ExecStart=/opt/bin/confd -watch
+        Restart=always
     # - name: kubernetes-download.service
     #   command: start
     #   content: |
