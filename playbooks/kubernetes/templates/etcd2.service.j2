@@ -11,7 +11,6 @@ Environment="ETCD_ELECTION_TIMEOUT=1200"
 Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{ private_ip }}:7001"
 Environment="ETCD_LISTEN_CLIENT_URLS=http://{{ private_ip }}:4001,http://localhost:4001"
 Environment="ETCD_LISTEN_PEER_URLS=http://{{ private_ip }}:7001,http://localhost:7001"
-Environment="ETCD_NAME=master"
 ExecStart=/usr/bin/etcd2
 LimitNOFILE=40000
 Restart=always
