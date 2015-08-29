@@ -15,6 +15,35 @@ coreos:
     etcd_servers: http://localhost:4001
     metadata: role=kubernetes
   units:
+    - name: confd.service
+      command: start
+      content: |
+        [Unit]
+        After=etcd2.service
+        Description=Confd
+        Requires=etcd2.service
+        [Service]
+        ExecStartPre=/usr/bin/wget -O /opt/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
+        ExecStartPre=/usr/bin/chmod +x /opt/bin/confd
+        ExecStartPre=/usr/bin/mkdir -p /etc/confd
+        ExecStart=/opt/bin/confd
+        Restart=always
+        [Install]
+        WantedBy=multi-user.target
+    - name: docker.service
+      command: start
+      content: |
+        [Unit]
+        After=flannel.service
+        Description=Docker
+        Requires=flannel.service
+        [Service]
+        EnvironmentFile=/run/flannel/subnet.env
+        ExecStart=/usr/bin/docker -d --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU}
+        Restart=always
+        RestartSec=5
+        [Install]
+        WantedBy=multi-user.target
     - name: etcd2.service
       command: start
     - name: flannel.service
@@ -37,35 +66,6 @@ coreos:
         WantedBy=multi-user.target
     - name: fleet.service
       command: start
-    - name: docker.service
-      command: start
-      content: |
-        [Unit]
-        After=flannel.service
-        Description=Docker
-        Requires=flannel.service
-        [Service]
-        EnvironmentFile=/run/flannel/subnet.env
-        ExecStart=/usr/bin/docker -d --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU}
-        Restart=always
-        RestartSec=5
-        [Install]
-        WantedBy=multi-user.target
-    - name: confd.service
-      command: start
-      content: |
-        [Unit]
-        After=etcd2.service
-        Description=Confd
-        Requires=etcd2.service
-        [Service]
-        ExecStartPre=/usr/bin/wget -O /opt/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
-        ExecStartPre=/usr/bin/chmod +x /opt/bin/confd
-        ExecStartPre=/usr/bin/mkdir -p /etc/confd
-        ExecStart=/opt/bin/confd
-        Restart=always
-        [Install]
-        WantedBy=multi-user.target
     # - name: kubernetes-download.service
     #   command: start
     #   content: |
