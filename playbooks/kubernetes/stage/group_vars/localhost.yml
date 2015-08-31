@@ -64,7 +64,7 @@ kafka_security_group_tags: { "Name": "Kafka" }
 
 ############### EC2 COMMON ###############
 assign_public_ip: yes
-image: ami-5189a661
+image: ami-25425215
 monitoring: no
 placement_group: Trident
 
@@ -73,7 +73,7 @@ kubernetes_ansible_public_ip_groups: ec2, kubernetes
 kubernetes_ansible_private_ip_groups: kubernetes_private
 kubernetes_count_tag: { "type": kubernetes }
 kubernetes_ebs_optimized: true
-kubernetes_exact_count: 3
+kubernetes_exact_count: 1
 kubernetes_security_groups: ["SSH", "Ping", "Kubernetes"]
 kubernetes_instance_tags: { "type": kubernetes }
 kubernetes_instance_type: m4.large
