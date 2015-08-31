@@ -1,0 +1,31 @@
+#cloud-config
+
+coreos:
+  etcd2:
+    advertise-client-urls: http://$private_ipv4:4001
+    data-dir: /var/lib/etcd2
+    discovery: https://discovery.etcd.io/9afa9beaf7ae2a37807369e8cd56eb43
+    initial-advertise-peer-urls: http://$private_ipv4:7001
+    listen-client-urls: http://$private_ipv4:4001,http://localhost:4001
+    listen-peer-urls: http://$private_ipv4:7001,http://localhost:7001
+  flannel:
+    etcd_endpoints: http://localhost:4001
+  fleet:
+    etcd_servers: http://localhost:4001
+    metadata: role=kubernetes
+  units:
+    - name: docker.service
+      command: start
+    - name: etcd2.service
+      command: start
+    - name: flanneld.service
+      command: start
+      drop-ins:
+        - name: 50-network-config.conf
+          content: |
+            [Unit]
+            Requires=etcd2.service
+            [Service]
+            ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "10.244.0.0/16", "Backend": {"Type": "vxlan"}}'
+    - name: fleet.service
+      command: start
