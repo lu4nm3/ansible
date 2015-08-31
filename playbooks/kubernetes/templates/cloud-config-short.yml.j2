@@ -4,7 +4,7 @@ coreos:
   etcd2:
     advertise-client-urls: http://$private_ipv4:4001
     data-dir: /var/lib/etcd2
-    discovery: https://discovery.etcd.io/9afa9beaf7ae2a37807369e8cd56eb43
+    discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
     initial-advertise-peer-urls: http://$private_ipv4:7001
     listen-client-urls: http://$private_ipv4:4001,http://localhost:4001
     listen-peer-urls: http://$private_ipv4:7001,http://localhost:7001
