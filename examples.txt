@@ -1,5 +1,9 @@
 # To run a module locally
 ansible all -i "localhost," -c local -m stat -a "path=/usr/bin/docker"
 
+# To run playbook
+ansible-playbook -i stage site.yml
+
 # To run the Docker role using the docker.yml file
 ansible-playbook -i "localhost," playbooks/local/docker.yml
+
