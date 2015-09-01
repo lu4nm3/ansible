@@ -44,7 +44,7 @@
 
     - { role: ec2, ansible_public_ip_groups: "{{ kubernetes_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ kubernetes_ansible_private_ip_groups }}",
         count_tag: "{{ kubernetes_count_tag }}", ebs_optimized: "{{ kubernetes_ebs_optimized }}", exact_count: "{{ kubernetes_exact_count }}", security_groups: "{{ kubernetes_security_groups }}",
-        instance_tags: "{{ kubernetes_instance_tags }}", instance_type: "{{ kubernetes_instance_type }}", task_name: Kubernetes, volumes: "{{ kubernetes_volumes }}" }
+        instance_tags: "{{ kubernetes_instance_tags }}", instance_type: "{{ kubernetes_instance_type }}", task_name: Kubernetes, user_data: "{{ kubernetes_user_data }}", volumes: "{{ kubernetes_volumes }}" }
 
 #    - { role: ec2, ansible_public_ip_groups: "{{ zookeeper_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ zookeeper_ansible_private_ip_groups }}",
 #        count_tag: "{{ zookeeper_count_tag }}", ebs_optimized: "{{ zookeeper_ebs_optimized }}", exact_count: "{{ zookeeper_exact_count }}", security_groups: "{{ zookeeper_security_groups }}",

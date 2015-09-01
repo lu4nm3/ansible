@@ -77,7 +77,7 @@ kubernetes_exact_count: 1
 kubernetes_security_groups: ["SSH", "Ping", "Kubernetes"]
 kubernetes_instance_tags: { "type": kubernetes }
 kubernetes_instance_type: m4.large
-kubernetes_user_data: "{{ lookup('template', 'templates/cloud-config.yml.j2') }}"
+kubernetes_user_data: "{{ lookup('template', 'templates/cloud-config-short.yml.j2') }}"
 kubernetes_volumes:
   - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
 
