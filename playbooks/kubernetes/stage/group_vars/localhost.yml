@@ -1,4 +1,12 @@
 ---
+############### COREOS ###############
+advertise_client_urls: http://$private_ipv4:4001
+data_dir: /var/lib/etcd2
+discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
+initial_advertise_peer_urls: http://$private_ipv4:7001
+listen_client_urls: http://$private_ipv4:4001,http://localhost:4001
+listen_peer_urls: http://$private_ipv4:7001,http://localhost:7001
+
 ############### COMMON ###############
 region: us-west-2
 wait: yes
