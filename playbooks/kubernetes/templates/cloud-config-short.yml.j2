@@ -2,12 +2,12 @@
 
 coreos:
   etcd2:
-    advertise-client-urls: http://$private_ipv4:4001
-    data-dir: /var/lib/etcd2
-    discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
-    initial-advertise-peer-urls: http://$private_ipv4:7001
-    listen-client-urls: http://$private_ipv4:4001,http://localhost:4001
-    listen-peer-urls: http://$private_ipv4:7001,http://localhost:7001
+    advertise-client-urls: {{ advertise_client_urls }}
+    data-dir: {{ data_dir }}
+    discovery: {{ discovery }}
+    initial-advertise-peer-urls: {{ initial_advertise_peer_urls }}
+    listen-client-urls: {{ listen_client_urls }}
+    listen-peer-urls: {{ listen_peer_urls }}
   flannel:
     etcd_endpoints: http://localhost:4001
   fleet:
