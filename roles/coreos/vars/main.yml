@@ -1,5 +1,5 @@
 ---
-coreos_user_data: "{{ kubernetes_user_data }}"
+coreos_user_data: "{{ lookup('template', 'cloud-config-short.yml.j2') }}"
 
 
 ############### ZOOKEEPER ###############
