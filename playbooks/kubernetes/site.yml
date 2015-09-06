@@ -23,36 +23,51 @@
   gather_facts: no
 
   roles:
-    - { role: key_pair }
+    - role: key_pair
 
-    - { role: vpc, resource_tags: "{{ vpc_resource_tags }}" }
+    - role: vpc
+      resource_tags: "{{ vpc_resource_tags }}"
 
-    - { role: security_group, security_group_description: "{{ ssh_security_group_description }}", security_group_name: "{{ ssh_security_group_name }}",
-        security_group_rules_ingress: "{{ ssh_security_group_rules_ingress }}", security_group_tags: "{{ ssh_security_group_tags }}", task_name: SSH }
+    - role: security_group
+      security_group_description: "{{ ssh_security_group_description }}"
+      security_group_name: "{{ ssh_security_group_name }}"
+      security_group_rules_ingress: "{{ ssh_security_group_rules_ingress }}"
+      security_group_tags: "{{ ssh_security_group_tags }}"
+      task_name: SSH
 
-    - { role: security_group, security_group_description: "{{ ping_security_group_description }}", security_group_name: "{{ ping_security_group_name }}",
-        security_group_rules_ingress: "{{ ping_security_group_rules_ingress }}", security_group_tags: "{{ ping_security_group_tags }}", task_name: Ping }
+    - role: security_group
+      security_group_description: "{{ ping_security_group_description }}"
+      security_group_name: "{{ ping_security_group_name }}"
+      security_group_rules_ingress: "{{ ping_security_group_rules_ingress }}"
+      security_group_tags: "{{ ping_security_group_tags }}"
+      task_name: Ping
 
-    - { role: security_group, security_group_description: "{{ kubernetes_security_group_description }}", security_group_name: "{{ kubernetes_security_group_name }}",
-        security_group_rules_ingress: "{{ kubernetes_security_group_rules_ingress }}", security_group_tags: "{{ kubernetes_security_group_tags }}", task_name: Kubernetes }
+    - role: security_group
+      security_group_description: "{{ kubernetes_security_group_description }}"
+      security_group_name: "{{ kubernetes_security_group_name }}",
+      security_group_rules_ingress: "{{ kubernetes_security_group_rules_ingress }}"
+      security_group_tags: "{{ kubernetes_security_group_tags }}"
+      task_name: Kubernetes
 
-    - { role: security_group, security_group_description: "{{ zookeeper_security_group_description }}", security_group_name: "{{ zookeeper_security_group_name }}",
-        security_group_rules_ingress: "{{ zookeeper_security_group_rules_ingress }}", security_group_tags: "{{ zookeeper_security_group_tags }}", task_name: ZooKeeper }
+    - role: security_group
+      security_group_description: "{{ zookeeper_security_group_description }}"
+      security_group_name: "{{ zookeeper_security_group_name }}"
+      security_group_rules_ingress: "{{ zookeeper_security_group_rules_ingress }}"
+      security_group_tags: "{{ zookeeper_security_group_tags }}"
+      task_name: ZooKeeper
 
-#    - { role: security_group, security_group_description: "{{ kafka_security_group_description }}", security_group_name: "{{ kafka_security_group_name }}",
-#        security_group_rules_ingress: "{{ kafka_security_group_rules_ingress }}", security_group_tags: "{{ kafka_security_group_tags }}", task_name: Kafka }
-
-    - { role: ec2, ansible_public_ip_groups: "{{ kubernetes_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ kubernetes_ansible_private_ip_groups }}",
-        count_tag: "{{ kubernetes_count_tag }}", ebs_optimized: "{{ kubernetes_ebs_optimized }}", exact_count: "{{ kubernetes_exact_count }}", security_groups: "{{ kubernetes_security_groups }}",
-        instance_tags: "{{ kubernetes_instance_tags }}", instance_type: "{{ kubernetes_instance_type }}", task_name: Kubernetes, user_data: "{{ kubernetes_user_data }}", volumes: "{{ kubernetes_volumes }}" }
-
-#    - { role: ec2, ansible_public_ip_groups: "{{ zookeeper_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ zookeeper_ansible_private_ip_groups }}",
-#        count_tag: "{{ zookeeper_count_tag }}", ebs_optimized: "{{ zookeeper_ebs_optimized }}", exact_count: "{{ zookeeper_exact_count }}", security_groups: "{{ zookeeper_security_groups }}",
-#        instance_tags: "{{ zookeeper_instance_tags }}", instance_type: "{{ zookeeper_instance_type }}", task_name: ZooKeeper, volumes: "{{ zookeeper_volumes }}" }
-
-#    - { role: ec2, ansible_public_ip_groups: "{{ kafka_ansible_public_ip_groups }}", ansible_private_ip_groups: "{{ kafka_ansible_private_ip_groups }}",
-#        count_tag: "{{ kafka_count_tag }}", ebs_optimized: "{{ kafka_ebs_optimized }}", exact_count: "{{ kafka_exact_count }}", security_groups: "{{ kafka_security_groups }}",
-#        instance_tags: "{{ kafka_instance_tags }}", instance_type: "{{ kafka_instance_type }}", task_name: Kafka, volumes: "{{ kafka_volumes }}" }
+    - role: ec2
+      ansible_public_ip_groups: "{{ kubernetes_ansible_public_ip_groups }}"
+      ansible_private_ip_groups: "{{ kubernetes_ansible_private_ip_groups }}"
+      count_tag: "{{ kubernetes_count_tag }}"
+      ebs_optimized: "{{ kubernetes_ebs_optimized }}"
+      exact_count: "{{ kubernetes_exact_count }}"
+      security_groups: "{{ kubernetes_security_groups }}"
+      instance_tags: "{{ kubernetes_instance_tags }}"
+      instance_type: "{{ kubernetes_instance_type }}"
+      task_name: Kubernetes
+      user_data: "{{ kubernetes_user_data }}"
+      volumes: "{{ kubernetes_volumes }}"
 
 # Set up Ansible controller account
 - name: Ansible controller account setup
@@ -62,7 +77,9 @@
   remote_user: "{{ remote_user }}"
 
   roles:
-    - { role: account, user: "{{ lookup('env', 'USER') }}", group: "{{ lookup('env', 'USER') }}" }
+    - role: account
+      user: "{{ lookup('env', 'USER') }}"
+      group: "{{ lookup('env', 'USER') }}"
 
   post_tasks:
     - name: Adding "{{ lookup('env', 'USER') }}" SSH key to "{{ remote_user }}" user
