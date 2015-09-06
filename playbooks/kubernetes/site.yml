@@ -45,7 +45,7 @@
 #
 #    - role: security_group
 #      security_group_description: "{{ kubernetes_security_group_description }}"
-#      security_group_name: "{{ kubernetes_security_group_name }}",
+#      security_group_name: "{{ kubernetes_security_group_name }}"
 #      security_group_rules_ingress: "{{ kubernetes_security_group_rules_ingress }}"
 #      security_group_tags: "{{ kubernetes_security_group_tags }}"
 #      task_name: Kubernetes
