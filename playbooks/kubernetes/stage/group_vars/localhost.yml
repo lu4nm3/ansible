@@ -80,7 +80,7 @@ placement_group: Trident
 kubernetes_ansible_public_ip_groups: ec2, kubernetes
 kubernetes_ansible_private_ip_groups: kubernetes_private
 kubernetes_count_tag: { "type": kubernetes }
-kubernetes_ebs_optimized: true
+kubernetes_ebs_optimized: false
 kubernetes_exact_count: 1
 kubernetes_security_groups: ["SSH", "Ping", "Kubernetes"]
 kubernetes_instance_tags: { "type": kubernetes }
