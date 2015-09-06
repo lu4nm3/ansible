@@ -43,5 +43,5 @@ dependencies:
     instance_tags: "{{ kubernetes_instance_tags }}"
     instance_type: "{{ kubernetes_instance_type }}"
     task_name: Kubernetes
-    user_data: "{{ lookup('template', 'cloud-config-short.yml.j2') }}"
+    user_data: "{{ coreos_user_data }}"
     volumes: "{{ kubernetes_volumes }}"

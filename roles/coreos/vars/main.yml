@@ -1,4 +1,7 @@
 ---
+coreos_user_data: "{{ lookup('template', 'cloud-config-short.yml.j2') }}"
+
+
 ############### ZOOKEEPER ###############
 version: "{{ zookeeper_version }}"
 java_heap_size_mb: "{{ (ansible_memtotal_mb * zookeeper_java_heap_size_mb_percentage) | round | int }}"
