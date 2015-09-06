@@ -3,41 +3,41 @@
 
 
 ############### ZOOKEEPER ###############
-version: "{{ zookeeper_version }}"
-java_heap_size_mb: "{{ (ansible_memtotal_mb * zookeeper_java_heap_size_mb_percentage) | round | int }}"
-
-############### DIRECTORIES ###############
-conf_dir: /opt/zookeeper/{{ version }}/conf
-data_dir: /zookeeper/data
-data_log_dir: /zookeeper/log
-data_log_dirs: ["{{ data_dir }}", "{{ data_log_dir }}"]
-disk_dirs: [/dev/xvdb, /dev/xvdc] # AWS
-#disk_dirs: [/dev/sdb,/dev/sdc] # GCE
-log_dir: /var/log/zookeeper
-
-############### SERVER ###############
-auto_purge_purge_interval: "{{ zookeeper_auto_purge_purge_interval }}"
-auto_purge_snap_retain_count: "{{ zookeeper_auto_purge_snap_retain_count }}"
-client_port: "{{ zookeeper_client_port }}"
-init_limit: "{{ zookeeper_init_limit }}"
-leader_election_port: "{{ zookeeper_leader_election_port }}"
-log4j_prop: "{{ zookeeper_log4j_prop }}"
-quorum_election_port: "{{ zookeeper_quorum_election_port }}"
-sync_limit: "{{ zookeeper_sync_limit }}"
-tick_time: "{{ zookeeper_tick_time }}"
-
-############### DOCKER ###############
-hostname: "{{ docker_hostname }}"
-image: "{{ docker_image }}"
-name: "{{ docker_name }}"
-net: "{{ docker_net }}"
-ports:
-  - "{{ client_port }}:{{ client_port }}"
-  - "{{ quorum_election_port }}:{{ quorum_election_port }}"
-  - "{{ leader_election_port }}:{{ leader_election_port }}"
-restart_policy: "{{ docker_restart_policy }}"
-volumes:
-  - "{{ log_dir }}:{{ log_dir }}"
-  - "{{ conf_dir }}:{{ conf_dir }}"
-  - "{{ data_dir }}:{{ data_dir }}"
-  - "{{ data_log_dir }}:{{ data_log_dir }}"
+#version: "{{ zookeeper_version }}"
+#java_heap_size_mb: "{{ (ansible_memtotal_mb * zookeeper_java_heap_size_mb_percentage) | round | int }}"
+#
+################ DIRECTORIES ###############
+#conf_dir: /opt/zookeeper/{{ version }}/conf
+#data_dir: /zookeeper/data
+#data_log_dir: /zookeeper/log
+#data_log_dirs: ["{{ data_dir }}", "{{ data_log_dir }}"]
+#disk_dirs: [/dev/xvdb, /dev/xvdc] # AWS
+##disk_dirs: [/dev/sdb,/dev/sdc] # GCE
+#log_dir: /var/log/zookeeper
+#
+################ SERVER ###############
+#auto_purge_purge_interval: "{{ zookeeper_auto_purge_purge_interval }}"
+#auto_purge_snap_retain_count: "{{ zookeeper_auto_purge_snap_retain_count }}"
+#client_port: "{{ zookeeper_client_port }}"
+#init_limit: "{{ zookeeper_init_limit }}"
+#leader_election_port: "{{ zookeeper_leader_election_port }}"
+#log4j_prop: "{{ zookeeper_log4j_prop }}"
+#quorum_election_port: "{{ zookeeper_quorum_election_port }}"
+#sync_limit: "{{ zookeeper_sync_limit }}"
+#tick_time: "{{ zookeeper_tick_time }}"
+#
+################ DOCKER ###############
+#hostname: "{{ docker_hostname }}"
+#image: "{{ docker_image }}"
+#name: "{{ docker_name }}"
+#net: "{{ docker_net }}"
+#ports:
+#  - "{{ client_port }}:{{ client_port }}"
+#  - "{{ quorum_election_port }}:{{ quorum_election_port }}"
+#  - "{{ leader_election_port }}:{{ leader_election_port }}"
+#restart_policy: "{{ docker_restart_policy }}"
+#volumes:
+#  - "{{ log_dir }}:{{ log_dir }}"
+#  - "{{ conf_dir }}:{{ conf_dir }}"
+#  - "{{ data_dir }}:{{ data_dir }}"
+#  - "{{ data_log_dir }}:{{ data_log_dir }}"
