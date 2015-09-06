@@ -23,51 +23,52 @@
   gather_facts: no
 
   roles:
-    - role: key_pair
-
-    - role: vpc
-      resource_tags: "{{ vpc_resource_tags }}"
-
-    - role: security_group
-      security_group_description: "{{ ssh_security_group_description }}"
-      security_group_name: "{{ ssh_security_group_name }}"
-      security_group_rules_ingress: "{{ ssh_security_group_rules_ingress }}"
-      security_group_tags: "{{ ssh_security_group_tags }}"
-      task_name: SSH
-
-    - role: security_group
-      security_group_description: "{{ ping_security_group_description }}"
-      security_group_name: "{{ ping_security_group_name }}"
-      security_group_rules_ingress: "{{ ping_security_group_rules_ingress }}"
-      security_group_tags: "{{ ping_security_group_tags }}"
-      task_name: Ping
-
-    - role: security_group
-      security_group_description: "{{ kubernetes_security_group_description }}"
-      security_group_name: "{{ kubernetes_security_group_name }}",
-      security_group_rules_ingress: "{{ kubernetes_security_group_rules_ingress }}"
-      security_group_tags: "{{ kubernetes_security_group_tags }}"
-      task_name: Kubernetes
-
-    - role: security_group
-      security_group_description: "{{ zookeeper_security_group_description }}"
-      security_group_name: "{{ zookeeper_security_group_name }}"
-      security_group_rules_ingress: "{{ zookeeper_security_group_rules_ingress }}"
-      security_group_tags: "{{ zookeeper_security_group_tags }}"
-      task_name: ZooKeeper
-
-    - role: ec2
-      ansible_public_ip_groups: "{{ kubernetes_ansible_public_ip_groups }}"
-      ansible_private_ip_groups: "{{ kubernetes_ansible_private_ip_groups }}"
-      count_tag: "{{ kubernetes_count_tag }}"
-      ebs_optimized: "{{ kubernetes_ebs_optimized }}"
-      exact_count: "{{ kubernetes_exact_count }}"
-      security_groups: "{{ kubernetes_security_groups }}"
-      instance_tags: "{{ kubernetes_instance_tags }}"
-      instance_type: "{{ kubernetes_instance_type }}"
-      task_name: Kubernetes
-      user_data: "{{ kubernetes_user_data }}"
-      volumes: "{{ kubernetes_volumes }}"
+    - role: coreos
+#    - role: key_pair
+#
+#    - role: vpc
+#      resource_tags: "{{ vpc_resource_tags }}"
+#
+#    - role: security_group
+#      security_group_description: "{{ ssh_security_group_description }}"
+#      security_group_name: "{{ ssh_security_group_name }}"
+#      security_group_rules_ingress: "{{ ssh_security_group_rules_ingress }}"
+#      security_group_tags: "{{ ssh_security_group_tags }}"
+#      task_name: SSH
+#
+#    - role: security_group
+#      security_group_description: "{{ ping_security_group_description }}"
+#      security_group_name: "{{ ping_security_group_name }}"
+#      security_group_rules_ingress: "{{ ping_security_group_rules_ingress }}"
+#      security_group_tags: "{{ ping_security_group_tags }}"
+#      task_name: Ping
+#
+#    - role: security_group
+#      security_group_description: "{{ kubernetes_security_group_description }}"
+#      security_group_name: "{{ kubernetes_security_group_name }}",
+#      security_group_rules_ingress: "{{ kubernetes_security_group_rules_ingress }}"
+#      security_group_tags: "{{ kubernetes_security_group_tags }}"
+#      task_name: Kubernetes
+#
+#    - role: security_group
+#      security_group_description: "{{ zookeeper_security_group_description }}"
+#      security_group_name: "{{ zookeeper_security_group_name }}"
+#      security_group_rules_ingress: "{{ zookeeper_security_group_rules_ingress }}"
+#      security_group_tags: "{{ zookeeper_security_group_tags }}"
+#      task_name: ZooKeeper
+#
+#    - role: ec2
+#      ansible_public_ip_groups: "{{ kubernetes_ansible_public_ip_groups }}"
+#      ansible_private_ip_groups: "{{ kubernetes_ansible_private_ip_groups }}"
+#      count_tag: "{{ kubernetes_count_tag }}"
+#      ebs_optimized: "{{ kubernetes_ebs_optimized }}"
+#      exact_count: "{{ kubernetes_exact_count }}"
+#      security_groups: "{{ kubernetes_security_groups }}"
+#      instance_tags: "{{ kubernetes_instance_tags }}"
+#      instance_type: "{{ kubernetes_instance_type }}"
+#      task_name: Kubernetes
+#      user_data: "{{ kubernetes_user_data }}"
+#      volumes: "{{ kubernetes_volumes }}"
 
 # Set up Ansible controller account
 - name: Ansible controller account setup
