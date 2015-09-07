@@ -27,8 +27,8 @@
 
   pre_tasks:
     - debug: var=kubernetes_user_data
-    - debug: "var={{ kubernetes_user_data | to_nice_yaml }}"
-    - debug: var=kubernetes_user_data2
+#    - debug: "var={{ kubernetes_user_data | to_nice_yaml }}"
+#    - debug: var=kubernetes_user_data2
 
   roles:
     - role: coreos
