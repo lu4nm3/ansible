@@ -25,6 +25,9 @@
   vars:
     - kubernetes_user_data: "{{ lookup('template', 'templates/cloud-config-short.yml.j2') }}"
 
+  pre_tasks:
+    - debug: var=kubernetes_user_data
+
   roles:
     - role: coreos
 #    - role: key_pair
