@@ -1,5 +1,5 @@
 ---
-coreos_user_data: "{{ kubernetes_user_data2 }}"
+coreos_user_data: "{{ kubernetes_user_data }}"
 
 
 ############### ZOOKEEPER ###############
