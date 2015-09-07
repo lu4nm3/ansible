@@ -22,6 +22,9 @@
   connection: local
   gather_facts: no
 
+  vars:
+    - kubernetes_user_data: "{{ lookup('template', 'templates/cloud-config-short.yml.j2') }}"
+
   roles:
     - role: coreos
 #    - role: key_pair
