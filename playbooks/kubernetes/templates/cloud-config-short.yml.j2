@@ -29,3 +29,15 @@ coreos:
             ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "10.244.0.0/16", "Backend": {"Type": "vxlan"}}'
     - name: fleet.service
       command: start
+    - name: download-python.service
+      command: start
+      content: |
+        [Unit]
+        Description=Download Kubernetes downloads
+        [Service]
+        ExecStartPre=/usr/bin/wget -N -P /tmp https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.1-linux64.tar.bz2
+        ExecStartPre=/usr/bin/tar xjf /tmp/pypy-2.6.1-linux64.tar.bz2 -C /usr/local
+        ExecStartPre=/bin/ln -s /usr/local/pypy-2.6.1-linux64/bin/pypy /usr/bin/python
+        ExecStart=/usr/bin/rm -r /tmp/pypy-2.6.1-linux64.tar.bz2
+        RemainAfterExit=yes
+        Type=oneshot
