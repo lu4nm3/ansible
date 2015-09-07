@@ -23,7 +23,7 @@
   gather_facts: no
 
   vars:
-    - kubernetes_user_data2: "{{ kubernetes_user_data | to_nice_yaml }}"
+    - kubernetes_user_data2: "{{ kubernetes_user_data }}"
 
   pre_tasks:
     - debug: var=kubernetes_user_data
