@@ -22,8 +22,11 @@
   connection: local
   gather_facts: no
 
+  vars:
+    - kubernetes_user_data: "{{ kubernetes_user_data | to_nice_yaml }}"
+
   pre_tasks:
-    - debug: var=kubernetes_user_data
+    - debug: var= {{ kubernetes_user_data | to_nice_yaml }}
 
   roles:
     - role: coreos
