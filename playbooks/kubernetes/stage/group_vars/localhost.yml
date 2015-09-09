@@ -74,7 +74,7 @@ kafka_security_group_tags: { "Name": "Kafka" }
 
 ############### EC2 COMMON ###############
 assign_public_ip: yes
-image: ami-25425215
+image: ami-3faebd0f
 monitoring: no
 placement_group: Trident
 
