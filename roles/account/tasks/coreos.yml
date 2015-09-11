@@ -1,12 +1,7 @@
+# Create user and group
+#
+# The "*" creates a user that cannot login with a password but can log in via SSH key. -U creates a group for
+# the user, -G adds the user to the existing sudo group and -m creates a home directory.
 - name: Create {{ user }} and group
-  shell: useradd -p "*" -U -m {{ user }} -G sudo
+  shell: useradd -p "*" -U -m {{ user }} -G sudo # The "*" creates a user that cannot login with a password but can log in via SSH key. -U creates a group for the user, -G adds the user to the existing sudo group and -m creates a home directory.
   ignore_errors: yes
-
-#- name: Create test and group
-#  shell: useradd -p "*" -U best -m test -G sudo
-
-- name: Create test3 and group
-  raw: useradd -p "*" -U -m test3 -G sudo
-
-- name: Create test4 and group
-  raw: sudo useradd -p "*" -U -m test4 -G sudo
