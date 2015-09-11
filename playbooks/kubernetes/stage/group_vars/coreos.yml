@@ -1,3 +1,2 @@
 ---
 ansible_python_interpreter: "/home/core/python"
-remote_user: core
