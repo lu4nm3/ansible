@@ -45,3 +45,13 @@
     shell: /bin/bash
     system: yes
     uid: "{{ uid | default(omit) }}"
+
+# Create user
+- name: Creating huhu user
+  user:
+    name: hehe
+    generate_ssh_key: yes
+    groups: "sudo"
+    shell: /bin/bash
+    system: yes
+    uid: "{{ uid | default(omit) }}"
