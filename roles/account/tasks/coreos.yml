@@ -6,7 +6,8 @@
 #  shell: useradd -p "*" -U -m {{ user }} -G sudo
 #  ignore_errors: yes
 #
-- Create {{ user }} user and group
+# Create user and group
+- name: Create {{ user }} user and group
   command: useradd -p "*" -U -m {{ user }} -G sudo
   args:
     creates: /home/{{ user }}
