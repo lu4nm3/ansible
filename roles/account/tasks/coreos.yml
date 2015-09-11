@@ -1,5 +1,6 @@
 - name: Create {{ user }} and group
   shell: useradd -p "*" -U -m {{ user }} -G sudo
+  ignore_errors: yes
 
 #- name: Create test and group
 #  shell: useradd -p "*" -U best -m test -G sudo
