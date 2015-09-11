@@ -1,22 +1,5 @@
-# Create group
-- name: Creating {{ group }} group
-  group:
-    gid: "{{ gid | default(omit) }}"
-    name: "{{ group }}"
-    system: yes
+- include: coreos.yml
+  when: ansible_distribution=='CoreOS'
 
-# Create user
-- name: Creating {{ user }} user
-  user:
-    name: "{{ user }}"
-    generate_ssh_key: yes
-    groups: "{{ group }},sudo"
-    shell: /bin/bash
-    system: yes
-    uid: "{{ uid | default(omit) }}"
-
-# Add user to sudoers
-- name: Adding {{ user }} user to sudoers
-  lineinfile:
-    dest: /etc/sudoers
-    line: "%sudo ALL=(ALL) NOPASSWD:ALL"
+- include: ubuntu.yml
+  when: ansible_distribution=='Ubuntu'

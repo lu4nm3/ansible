@@ -7,3 +7,5 @@ ansible-playbook -i stage site.yml
 # To run the Docker role using the docker.yml file
 ansible-playbook -i "localhost," playbooks/local/docker.yml
 
+# To run single module on remote host (with "aws" host specified in inventory file)
+ansible aws -i stage/inventory -u core -m setup -e ansible_python_interpreter=/home/core/python

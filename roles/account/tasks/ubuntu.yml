@@ -1,0 +1,22 @@
+# Create group
+- name: Creating {{ group }} group
+  group:
+    gid: "{{ gid | default(omit) }}"
+    name: "{{ group }}"
+    system: yes
+
+# Create user
+- name: Creating {{ user }} user
+  user:
+    name: "{{ user }}"
+    generate_ssh_key: yes
+    groups: "{{ group }},sudo"
+    shell: /bin/bash
+    system: yes
+    uid: "{{ uid | default(omit) }}"
+
+# Add user to sudoers
+- name: Adding {{ user }} user to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    line: "%sudo ALL=(ALL) NOPASSWD:ALL"
