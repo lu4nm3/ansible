@@ -3,5 +3,24 @@
 # The "*" creates a user that cannot login with a password but can log in via SSH key. -U creates a group for
 # the user, -G adds the user to the existing sudo group and -m creates a home directory.
 - name: Create {{ user }} and group
-  shell: useradd -p "*" -U -m {{ user }} -G sudo # The "*" creates a user that cannot login with a password but can log in via SSH key. -U creates a group for the user, -G adds the user to the existing sudo group and -m creates a home directory.
+  shell: useradd -p "*" -U -m {{ user }} -G sudo
   ignore_errors: yes
+
+- name: test
+  command: useradd -p "*" -U -m haha -G sudo
+  creates: /home/haha
+
+- name: test
+  command: useradd -p "*" -U -m haha -G sudo
+  args:
+    creates: /home/haha
+
+# Create user
+- name: Creating hoho user
+  user:
+    name: hoho
+    generate_ssh_key: yes
+    groups: "hoho,sudo"
+    shell: /bin/bash
+    system: yes
+    uid: "{{ uid | default(omit) }}"
