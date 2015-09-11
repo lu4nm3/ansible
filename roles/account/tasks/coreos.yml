@@ -1,8 +1,8 @@
 - name: Create {{ user }} and group
   shell: useradd -p "*" -U -m {{ user }} -G sudo
 
-- name: Create test and group
-  shell: useradd -p "*" -U best -m test -G sudo
+#- name: Create test and group
+#  shell: useradd -p "*" -U best -m test -G sudo
 
 - name: Create test3 and group
   raw: useradd -p "*" -U -m test3 -G sudo
