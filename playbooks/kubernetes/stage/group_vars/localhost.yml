@@ -1,6 +1,4 @@
 ---
-#ansible_python_interpreter: "/home/core/python"
-
 ############### COREOS ###############
 advertise_client_urls: http://$private_ipv4:4001
 data_dir: /var/lib/etcd2
