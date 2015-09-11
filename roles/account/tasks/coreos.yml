@@ -11,12 +11,37 @@
   args:
     creates: /home/haha
 
+# Create group
+- name: Creating {{ group }} group
+  group:
+    gid: "{{ gid | default(omit) }}"
+    name: "{{ group }}"
+    system: yes
+
+# Create group
+- name: Creating hoho group
+  group:
+    gid: "{{ gid | default(omit) }}"
+    name: hoho
+    system: yes
+  ignore_errors: yes
+
 # Create user
 - name: Creating hoho user
   user:
     name: hoho
     generate_ssh_key: yes
     groups: "hoho,sudo"
+    shell: /bin/bash
+    system: yes
+    uid: "{{ uid | default(omit) }}"
+  ignore_errors: yes
+
+# Create user
+- name: Creating hihi user
+  user:
+    name: hoho
+    generate_ssh_key: yes
     shell: /bin/bash
     system: yes
     uid: "{{ uid | default(omit) }}"
