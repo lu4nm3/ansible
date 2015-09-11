@@ -1,3 +1,5 @@
+- include: "{{ ansible_distribution }}.yml"
+
 - include: coreos.yml
   when: ansible_distribution == 'CoreOS'
 
