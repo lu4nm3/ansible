@@ -71,7 +71,7 @@
 
 # Set up CoreOS
 - name: CoreOS Setup
-  hosts: ec2
+  hosts: coreos
   gather_facts: yes
   sudo: yes
   remote_user: "{{ remote_user }}"
