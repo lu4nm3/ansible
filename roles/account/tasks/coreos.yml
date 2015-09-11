@@ -6,10 +6,10 @@
 #  shell: useradd -p "*" -U -m {{ user }} -G sudo
 #  ignore_errors: yes
 #
-#- name: test
-#  command: useradd -p "*" -U -m haha -G sudo
-#  args:
-#    creates: /home/haha
+- Create {{ user }} user and group
+  command: useradd -p "*" -U -m {{ user }} -G sudo
+  args:
+    creates: /home/{{ user }}
 
 ## Create group
 #- name: Creating {{ group }} group
@@ -18,22 +18,22 @@
 #    name: "{{ group }}"
 #    system: yes
 
-# Create group
-- name: Creating hoho group
-  group:
-    gid: "{{ gid | default(omit) }}"
-    name: hoho
-  ignore_errors: yes
-
-# Create user and group
-- name: Creating hoho user
-  user:
-    name: hoho
-    generate_ssh_key: yes
-    groups: "sudo"
-    shell: /bin/bash
-    system: yes
-    uid: "{{ uid | default(omit) }}"
+## Create group
+#- name: Creating hoho group
+#  group:
+#    gid: "{{ gid | default(omit) }}"
+#    name: hoho
+#  ignore_errors: yes
+#
+## Create user and group
+#- name: Creating hoho user
+#  user:
+#    name: hoho
+#    generate_ssh_key: yes
+#    groups: "sudo"
+#    shell: /bin/bash
+#    system: yes
+#    uid: "{{ uid | default(omit) }}"
 
 ## Create user
 #- name: Creating hoho user
@@ -55,11 +55,11 @@
 #    system: yes
 #    uid: "{{ uid | default(omit) }}"
 
-# Create user and group
-- name: Creating {{ user }} user
-  user:
-    name: "{{ user }}"
-    generate_ssh_key: yes
-    groups: "sudo"
-    shell: /bin/bash
-    uid: "{{ uid | default(omit) }}"
+## Create user and group
+#- name: Creating {{ user }} user
+#  user:
+#    name: "{{ user }}"
+#    generate_ssh_key: yes
+#    groups: "sudo"
+#    shell: /bin/bash
+#    uid: "{{ uid | default(omit) }}"
