@@ -23,7 +23,6 @@
   gather_facts: no
 
   roles:
-#    - role: coreos
     - role: key_pair
 
     - role: vpc
@@ -70,6 +69,16 @@
       user_data: "{{ kubernetes_user_data }}"
       volumes: "{{ kubernetes_volumes }}"
 
+# Set up CoreOS
+- name: CoreOS Setup
+  hosts: ec2
+  gather_facts: yes
+  sudo: yes
+  remote_user: "{{ remote_user }}"
+
+  roles:
+    - role: coreos
+      
 # Set up Ansible controller account
 - name: Ansible controller account setup
   hosts: ec2
