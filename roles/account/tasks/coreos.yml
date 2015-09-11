@@ -2,65 +2,7 @@
 #
 # The "*" creates a user that cannot login with a password but can log in via SSH key. -U creates a group for
 # the user, -G adds the user to the existing sudo group and -m creates a home directory.
-#- name: Create {{ user }} and group
-#  shell: useradd -p "*" -U -m {{ user }} -G sudo
-#  ignore_errors: yes
-#
-# Create user and group
-- name: Create {{ user }} user and group
+- name: Create "{{ user }}" user and group
   command: useradd -p "*" -U -m {{ user }} -G sudo
   args:
     creates: /home/{{ user }}
-
-## Create group
-#- name: Creating {{ group }} group
-#  group:
-#    gid: "{{ gid | default(omit) }}"
-#    name: "{{ group }}"
-#    system: yes
-
-## Create group
-#- name: Creating hoho group
-#  group:
-#    gid: "{{ gid | default(omit) }}"
-#    name: hoho
-#  ignore_errors: yes
-#
-## Create user and group
-#- name: Creating hoho user
-#  user:
-#    name: hoho
-#    generate_ssh_key: yes
-#    groups: "sudo"
-#    shell: /bin/bash
-#    system: yes
-#    uid: "{{ uid | default(omit) }}"
-
-## Create user
-#- name: Creating hoho user
-#  user:
-#    name: hoho
-#    generate_ssh_key: yes
-#    groups: "hoho,sudo"
-#    shell: /bin/bash
-#    system: yes
-#    uid: "{{ uid | default(omit) }}"
-#  ignore_errors: yes
-
-## Create user
-#- name: Creating huhu user
-#  user:
-#    name: huhu
-#    generate_ssh_key: yes
-#    shell: /bin/bash
-#    system: yes
-#    uid: "{{ uid | default(omit) }}"
-
-## Create user and group
-#- name: Creating {{ user }} user
-#  user:
-#    name: "{{ user }}"
-#    generate_ssh_key: yes
-#    groups: "sudo"
-#    shell: /bin/bash
-#    uid: "{{ uid | default(omit) }}"
