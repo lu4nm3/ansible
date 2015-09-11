@@ -38,9 +38,9 @@
   ignore_errors: yes
 
 # Create user
-- name: Creating hihi user
+- name: Creating huhu user
   user:
-    name: hoho
+    name: huhu
     generate_ssh_key: yes
     shell: /bin/bash
     system: yes
