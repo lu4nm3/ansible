@@ -23,7 +23,6 @@
   group:
     gid: "{{ gid | default(omit) }}"
     name: hoho
-    system: yes
   ignore_errors: yes
 
 # Create user and group
@@ -63,5 +62,4 @@
     generate_ssh_key: yes
     groups: "sudo"
     shell: /bin/bash
-    system: yes
     uid: "{{ uid | default(omit) }}"
