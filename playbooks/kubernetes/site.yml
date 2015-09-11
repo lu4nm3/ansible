@@ -81,7 +81,7 @@
 # Set up Ansible controller account
 - name: Ansible controller account setup
   hosts: ec2
-  gather_facts: no
+  gather_facts: yes
   sudo: yes
   remote_user: "{{ remote_user }}"
 
