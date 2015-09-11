@@ -8,10 +8,6 @@
 
 - name: test
   command: useradd -p "*" -U -m haha -G sudo
-  creates: /home/haha
-
-- name: test
-  command: useradd -p "*" -U -m haha -G sudo
   args:
     creates: /home/haha
 
