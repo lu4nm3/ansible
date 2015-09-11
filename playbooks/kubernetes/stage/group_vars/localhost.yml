@@ -77,7 +77,7 @@ monitoring: no
 placement_group: Trident
 
 ############### EC2 KUBERNETES ###############
-kubernetes_ansible_public_ip_groups: ec2, kubernetes
+kubernetes_ansible_public_ip_groups: ec2, kubernetes, coreos
 kubernetes_ansible_private_ip_groups: kubernetes_private
 kubernetes_count_tag: { "type": kubernetes }
 kubernetes_ebs_optimized: true
