@@ -1,5 +1,5 @@
 - include: coreos.yml
-  when: ansible_distribution=='CoreOS'
+  when: ansible_distribution == 'CoreOS'
 
 - include: ubuntu.yml
-  when: ansible_distribution=='Ubuntu'
+  when: ansible_distribution == 'Ubuntu'
