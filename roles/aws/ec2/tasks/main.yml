@@ -39,4 +39,4 @@
 
 # Pause for SSH to come up
 - name: Pausing for SSH to come up
-  pause: seconds=30
+  pause: seconds=10
