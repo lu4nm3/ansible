@@ -1,5 +1,5 @@
 ---
-#ansible_python_interpreter: "/home/core/python"
+ansible_python_interpreter: "/home/core/python"
 
 ############### EC2 INSTANCES ###############
 remote_user: core

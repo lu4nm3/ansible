@@ -7,6 +7,6 @@
 - raw: rm -r /tmp/pypy-2.6.1-linux_x86_64-portable.tar.bz2
 
 # Set Python interpreter
-- name: Setting Python interpreter
-  set_fact:
-    ansible_python_interpreter: /home/core/python
+#- name: Setting Python interpreter
+#  set_fact:
+#    ansible_python_interpreter: /home/core/python
