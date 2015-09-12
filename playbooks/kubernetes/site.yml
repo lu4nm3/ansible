@@ -72,7 +72,7 @@
 # Set up CoreOS
 - name: CoreOS Setup
   hosts: coreos
-  gather_facts: yes
+  gather_facts: no
   sudo: yes
   remote_user: "{{ remote_user }}"
 
