@@ -9,10 +9,10 @@ coreos:
     listen-client-urls: {{ listen_client_urls }}
     listen-peer-urls: {{ listen_peer_urls }}
   flannel:
-    etcd_endpoints: http://localhost:4001
+    etcd_endpoints: {{ etcd_endpoints }}
   fleet:
-    etcd_servers: http://localhost:4001
-    metadata: role=kubernetes
+    etcd_servers: {{ etcd_servers }}
+    metadata: {{ metadata }}
   units:
     - name: docker.service
       command: start
@@ -26,6 +26,6 @@ coreos:
             [Unit]
             Requires=etcd2.service
             [Service]
-            ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "10.244.0.0/16", "Backend": {"Type": "vxlan"}}'
+            ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "{{ network_cidr }}", "Backend": {"Type": "{{ backend_type }}"}}'
     - name: fleet.service
       command: start

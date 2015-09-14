@@ -66,7 +66,6 @@
       instance_tags: "{{ kubernetes_instance_tags }}"
       instance_type: "{{ kubernetes_instance_type }}"
       task_name: Kubernetes
-      user_data: "{{ kubernetes_user_data }}"
       volumes: "{{ kubernetes_volumes }}"
 
 # Set up CoreOS

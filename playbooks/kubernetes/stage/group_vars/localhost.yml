@@ -1,12 +1,4 @@
 ---
-############### COREOS ###############
-advertise_client_urls: http://$private_ipv4:4001
-data_dir: /var/lib/etcd2
-discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
-initial_advertise_peer_urls: http://$private_ipv4:7001
-listen_client_urls: http://$private_ipv4:4001,http://localhost:4001
-listen_peer_urls: http://$private_ipv4:7001,http://localhost:7001
-
 ############### COMMON ###############
 region: us-west-2
 wait: yes
@@ -85,7 +77,7 @@ kubernetes_exact_count: 1
 kubernetes_security_groups: ["SSH", "Ping", "Kubernetes"]
 kubernetes_instance_tags: { "type": kubernetes }
 kubernetes_instance_type: m4.large
-kubernetes_user_data: "{{ lookup('template', 'templates/cloud-config-short.yml.j2') }}"
+#kubernetes_user_data: "{{ lookup('template', 'templates/cloud-config-short.yml.j2') }}"
 kubernetes_volumes:
   - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
 
