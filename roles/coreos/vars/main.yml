@@ -1,5 +1,5 @@
 ---
-python_interpreter_location: "{{ ansible_python_interpreter }}"
+core_home_dir: /home/core
 
 ############### ETCD ###############
 advertise_client_urls: "{{ etcd_advertise_client_urls }}"

@@ -3,11 +3,15 @@
 - name: Python Setup
   raw: wget -N -P /tmp https://bitbucket.org/squeaky/portable-pypy/downloads/pypy-2.6.1-linux_x86_64-portable.tar.bz2
 - raw: tar xjf /tmp/pypy-2.6.1-linux_x86_64-portable.tar.bz2 -C /home/core/
-- raw: ln -s /home/core/pypy-2.6.1-linux_x86_64-portable/bin/pypy {{ python_interpreter_location }}
+- raw: ln -s /home/core/pypy-2.6.1-linux_x86_64-portable/bin/pypy {{ core_home_dir }}/python
 - raw: rm -r /tmp/pypy-2.6.1-linux_x86_64-portable.tar.bz2
 
-# Set up cloud-config
-- name: Setting up cloud-config
+# Create cloud-config
+- name: Creating cloud-config
   template:
     src: cloud-config.yml.j2
-    dest:
+    dest: {{ core_home_dir }}/cloud-config.yml
+
+# Apply cloud-config
+- name: Applying cloud-config
+  command: coreos-cloudinit --from-file={{ core_home_dir }}/cloud-config.yml
