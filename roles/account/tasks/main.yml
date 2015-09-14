@@ -1,5 +1,7 @@
 - include: coreos.yml
   when: ansible_distribution == 'CoreOS'
+  no_log: true
 
 - include: ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
+  no_log: true
