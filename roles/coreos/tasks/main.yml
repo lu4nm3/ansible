@@ -6,3 +6,8 @@
 - raw: ln -s /home/core/pypy-2.6.1-linux_x86_64-portable/bin/pypy {{ python_interpreter_location }}
 - raw: rm -r /tmp/pypy-2.6.1-linux_x86_64-portable.tar.bz2
 
+# Set up cloud-config
+- name: Setting up cloud-config
+  template:
+    src: cloud-config.yml.j2
+    dest:
