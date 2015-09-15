@@ -2,7 +2,7 @@
 # Set up Python
 - name: Downloading Python
   raw: wget -N -P /tmp https://bitbucket.org/squeaky/portable-pypy/downloads/pypy-2.6.1-linux_x86_64-portable.tar.bz2
-  ignore_errors: true
+  ignore_errors: yes
   
 # Extract Python
 - name: Extracting Python
