@@ -16,6 +16,7 @@
   get_url: 
     url: https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
     dest: /opt/bin
+    force: yes
     mode: a+x
   environment:
     SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
@@ -23,7 +24,9 @@
 # Rename confd executable
 - name: Renaming confd executable
   command: mv /opt/bin/confd-0.10.0-linux-amd64 /opt/bin/confd
-  
+  args:
+    creates: /opt/bin/confd
+    
 # [Unit]
 # After=etcd2.service
 # Description=Confd
