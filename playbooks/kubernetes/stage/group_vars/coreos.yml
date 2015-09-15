@@ -1,5 +1,5 @@
 ---
-ansible_python_interpreter: /home/core/python
+ansible_python_interpreter: /home/core/bin/python
 
 ############### ETCD ###############
 etcd_advertise_client_urls: http://$private_ipv4:4001
