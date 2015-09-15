@@ -15,8 +15,7 @@
 - name: Downloading confd
   get_url: 
     url: https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
-    dest: /opt/bin
-    force: yes
+    dest: /opt/bin/confd
     mode: a+x
   environment:
     SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
