@@ -17,3 +17,6 @@ network_cidr: "{{ flannel_network_cidr }}"
 ############### FLEET ###############
 etcd_servers: "{{ fleet_etcd_servers }}"
 metadata: "{{ fleet_metadata }}"
+
+############### SYSTEMD ###############
+systemd_config_dir: /etc/systemd/system
