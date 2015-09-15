@@ -14,10 +14,14 @@
 # Download confd
 - name: Downloading confd
   get_url: 
-    url: https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64 
-    dest: /opt/bin/python
+    url: https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
+    dest: /opt/bin
     mode: a+x
-
+    
+# Rename confd executable
+- name: Renaming confd executable
+  command: mv /opt/bin/confd-0.10.0-linux-amd64 /opt/bin/confd
+  
 # [Unit]
 # After=etcd2.service
 # Description=Confd
