@@ -1,0 +1,13 @@
+[Unit]
+After=etcd2.service
+Description=Confd
+Requires=etcd2.service
+[Service]
+ExecStartPre=/usr/bin/mkdir -p /opt/bin
+ExecStartPre=/usr/bin/wget -O /opt/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
+ExecStartPre=/usr/bin/chmod +x /opt/bin/confd
+ExecStartPre=/usr/bin/mkdir -p /etc/confd
+ExecStart=/opt/bin/confd
+Restart=always
+[Install]
+WantedBy=multi-user.target
