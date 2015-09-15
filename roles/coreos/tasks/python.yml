@@ -11,6 +11,6 @@
 - name: Creating symlink to Python executable
   raw: ln -sf /home/core/pypy-2.6.1-linux_x86_64-portable/bin/pypy {{ core_home_dir }}/python
   
-# Clean up unnecessary files
-- name: Cleaning up unnecessary files
+# Clean up files
+- name: Cleaning up
   raw: rm -r /tmp/pypy-2.6.1-linux_x86_64-portable.tar.bz2
