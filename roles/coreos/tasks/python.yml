@@ -9,7 +9,7 @@
   
 # Create symlink to Python executable
 - name: Creating symlink to Python executable
-  raw: ln -sf /home/core/pypy-2.6.1-linux_x86_64-portable/bin/pypy {{ core_home_dir }}/python
+  raw: ln -sf /home/core/pypy-2.6.1-linux_x86_64-portable/bin/pypy {{ core_home_dir }}/bin/python
   
 # Clean up files
 - name: Cleaning up
