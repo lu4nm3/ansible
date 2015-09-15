@@ -5,5 +5,5 @@
 # Apply cloud-config
 - include: cloud_config.yml
   
-# Set up confd
-- include: confd.yml
+# # Set up confd
+# - include: confd.yml
