@@ -1,30 +1,6 @@
 #cloud-config
 
 coreos:
-  etcd2:
-    advertise-client-urls: {{ advertise_client_urls }}
-    data-dir: {{ data_dir }}
-    discovery: {{ discovery }}
-    initial-advertise-peer-urls: {{ initial_advertise_peer_urls }}
-    listen-client-urls: {{ listen_client_urls }}
-    listen-peer-urls: {{ listen_peer_urls }}
   flannel:
     etcd_endpoints: {{ etcd_endpoints }}
     public_ip: $private_ipv4
-  fleet:
-    etcd_servers: {{ etcd_servers }}
-    metadata: {{ metadata }}
-  units:
-    - name: docker.service
-      command: start
-    - name: etcd2.service
-      command: start
-    - name: flanneld.service
-      command: start
-      drop-ins:
-        - name: 50-network-config.conf
-          content: |
-            [Service]
-            ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "{{ network_cidr }}", "Backend": {"Type": "{{ backend_type }}"}}'
-    - name: fleet.service
-      command: start
