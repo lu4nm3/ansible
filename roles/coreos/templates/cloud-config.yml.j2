@@ -10,7 +10,6 @@ coreos:
     listen-peer-urls: {{ listen_peer_urls }}
   flannel:
     etcd_endpoints: {{ etcd_endpoints }}
-    public_ip: $private_ipv4
   fleet:
     etcd_servers: {{ etcd_servers }}
     metadata: {{ metadata }}
