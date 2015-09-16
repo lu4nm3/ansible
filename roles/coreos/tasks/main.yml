@@ -1,7 +1,4 @@
 ---
-# Set up Python
-- include: python.yml
-
 # Apply cloud-config
 - include: cloud_config.yml
   
