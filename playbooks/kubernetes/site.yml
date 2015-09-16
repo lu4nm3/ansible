@@ -87,8 +87,8 @@
 
   roles:
     - role: account
-      user: "{{ lookup('env', 'USER') }}"
       group: "{{ lookup('env', 'USER') }}"
+      user: "{{ lookup('env', 'USER') }}"
 
   post_tasks:
     - name: Adding "{{ lookup('env', 'USER') }}" SSH key to "{{ remote_user }}" user
