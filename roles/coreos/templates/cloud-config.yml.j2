@@ -8,6 +8,8 @@ coreos:
     initial-advertise-peer-urls: {{ initial_advertise_peer_urls }}
     listen-client-urls: {{ listen_client_urls }}
     listen-peer-urls: {{ listen_peer_urls }}
+  flannel:
+    etcd_endpoints: {{ etcd_endpoints }}
   fleet:
     etcd_servers: {{ etcd_servers }}
     metadata: {{ metadata }}
