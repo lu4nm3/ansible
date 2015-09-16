@@ -1,8 +1,6 @@
 #cloud-config
 
 coreos:
-  flannel:
-    etcd_endpoints: {{ etcd_endpoints }}
   etcd2:
     advertise-client-urls: {{ advertise_client_urls }}
     data-dir: {{ data_dir }}
@@ -10,6 +8,9 @@ coreos:
     initial-advertise-peer-urls: {{ initial_advertise_peer_urls }}
     listen-client-urls: {{ listen_client_urls }}
     listen-peer-urls: {{ listen_peer_urls }}
+  flannel:
+    etcd_endpoints: {{ etcd_endpoints }}
+    public_ip: $private_ipv4
   fleet:
     etcd_servers: {{ etcd_servers }}
     metadata: {{ metadata }}
