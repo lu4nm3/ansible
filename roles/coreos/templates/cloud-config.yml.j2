@@ -25,9 +25,5 @@ coreos:
           content: |
             [Service]
             ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "{{ network_cidr }}", "Backend": {"Type": "{{ backend_type }}"}}'
-        - name: 10-env-config.conf
-          content: |
-            [Service]
-            EnvironmentFile=/run/flannel/options.env
     - name: fleet.service
       command: start
