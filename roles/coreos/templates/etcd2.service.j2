@@ -10,7 +10,7 @@ Environment="ETCD_ELECTION_TIMEOUT="{{ election_timeout }}"
 Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS={{ initial_advertise_peer_urls }}"
 Environment="ETCD_LISTEN_CLIENT_URLS={{ listen_client_urls }}"
 Environment="ETCD_LISTEN_PEER_URLS={{ listen_peer_urls }}"
-ExecStart=/usr/bin/etcd2
+ExecStart=/opt/bin/etcd2
 LimitNOFILE=40000
 Restart=always
 RestartSec=10s
