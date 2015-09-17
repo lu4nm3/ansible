@@ -2,8 +2,10 @@
 After=etcd2.service
 Description=Confd
 Requires=etcd2.service
+
 [Service]
 ExecStart=/opt/bin/confd
 Restart=always
+
 [Install]
 WantedBy=multi-user.target
