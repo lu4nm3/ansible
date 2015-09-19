@@ -14,7 +14,7 @@
     instance_type: "{{ instance_type }}"
     key_name: "{{ key_pair_name }}"
     monitoring: "{{ monitoring }}"
-    placement_group: "{{ placement_group }}"
+    placement_group: "{{ placement_group | default(omit) }}"
     region: "{{ region }}"
     user_data: "{{ user_data | default(omit) }}"
     volumes: "{{ volumes | default(omit) }}"
