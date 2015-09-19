@@ -35,5 +35,5 @@
 - name: Starting etcd
   service:
     enabled: yes
-    name: etcd2.service
+    name: etcd.service
     state: started
