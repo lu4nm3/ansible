@@ -1,5 +1,4 @@
 ---
----
 # Create etcd directories
 - name: Creating etcd directories
   file:
