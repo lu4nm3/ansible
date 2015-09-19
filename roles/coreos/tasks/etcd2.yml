@@ -26,14 +26,14 @@
     state: absent
 
 # Create etcd2.service file
-- name: Creating etcd2.service file
+- name: Creating etcd.service file
   template:
-    src: etcd2.service.j2
-    dest: "{{ systemd_config_dir }}/etcd2.service"
+    src: etcd.service.j2
+    dest: "{{ systemd_config_dir }}/etcd.service"
 
-# Start etcd2
-- name: Starting etcd2
+# Start etcd
+- name: Starting etcd
   service:
     enabled: yes
     name: etcd2.service
-    state: restarted
+    state: started
