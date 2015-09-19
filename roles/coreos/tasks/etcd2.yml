@@ -14,13 +14,16 @@
     SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 - unarchive:
     copy: no
-    dest: /tmp/etcd
+    dest: /tmp
     src: /tmp/etcd-v2.2.0-linux-amd64.tar.gz
-- command: mv /tmp/etcd/etcd /opt/bin
+- command: mv /tmp/etcd-v2.2.0-linux-amd64/etcd /opt/bin
 - file:
     mode: a+x
     path: /opt/bin/etcd
     state: file
+- file:
+    name: /tmp/etcd-v2.2.0-linux-amd64.tar.gz
+    state: absent
 
 # Create etcd2.service file
 - name: Creating etcd2.service file
