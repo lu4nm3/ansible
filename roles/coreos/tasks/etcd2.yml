@@ -10,8 +10,8 @@
   get_url:
     url: https://github.com/coreos/etcd/releases/download/v2.2.0/etcd-v2.2.0-linux-amd64.tar.gz
     dest: /opt/bin/
-#  environment:
-#    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+  environment:
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 - unarchive:
     copy: no
     dest: /tmp/etcd
