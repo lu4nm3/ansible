@@ -9,7 +9,7 @@
 - name: Downloading etcd
   get_url:
     url: https://github.com/coreos/etcd/releases/download/v2.2.0/etcd-v2.2.0-linux-amd64.tar.gz
-    dest: /opt/bin/
+    dest: /tmp
   environment:
     SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 - unarchive:
