@@ -78,21 +78,21 @@
   roles:
     - role: coreos
       
-# Set up Ansible controller account
-- name: Ansible controller account setup
-  hosts: ec2
-  gather_facts: yes
-  sudo: yes
-  remote_user: "{{ remote_user }}"
-
-  roles:
-    - role: account
-      group: "{{ lookup('env', 'USER') }}"
-      user: "{{ lookup('env', 'USER') }}"
-
-  post_tasks:
-    - name: Adding "{{ lookup('env', 'USER') }}" SSH key to "{{ remote_user }}" user
-      authorized_key: user="{{ lookup('env', 'USER') }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+## Set up Ansible controller account
+#- name: Ansible controller account setup
+#  hosts: ec2
+#  gather_facts: yes
+#  sudo: yes
+#  remote_user: "{{ remote_user }}"
+#
+#  roles:
+#    - role: account
+#      group: "{{ lookup('env', 'USER') }}"
+#      user: "{{ lookup('env', 'USER') }}"
+#
+#  post_tasks:
+#    - name: Adding "{{ lookup('env', 'USER') }}" SSH key to "{{ remote_user }}" user
+#      authorized_key: user="{{ lookup('env', 'USER') }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 # Set up ZooKeeper
 #- name: ZooKeeper setup
