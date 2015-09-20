@@ -1,0 +1,9 @@
+---
+advertise_client_urls: "{{ etcd_advertise_client_urls }}"
+data_dir: "{{ etcd_data_dir }}"
+discovery: "{{ etcd_discovery }}"
+election_timeout: "{{ etcd_election_timeout }}"
+initial_advertise_peer_urls: "{{ etcd_initial_advertise_peer_urls }}"
+listen_client_urls: "{{ etcd_listen_client_urls }}"
+listen_peer_urls: "{{ etcd_listen_peer_urls }}"
+version: "{{ etcd_version }}"

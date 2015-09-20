@@ -1,6 +1,4 @@
 ---
-core_home_dir: /home/core
-
 ############### ETCD ###############
 advertise_client_urls: "{{ etcd_advertise_client_urls }}"
 data_dir: "{{ etcd_data_dir }}"
@@ -19,6 +17,3 @@ network_cidr: "{{ flannel_network_cidr }}"
 ############### FLEET ###############
 etcd_servers: "{{ fleet_etcd_servers }}"
 metadata: "{{ fleet_metadata }}"
-
-############### SYSTEMD ###############
-systemd_config_dir: /etc/systemd/system

@@ -1,9 +1,0 @@
----
-## Apply cloud-config
-#- include: cloud_config.yml
-  
-# # Set up confd
-# - include: confd.yml
-
-- include: etcd2.yml
-- include: flannel.yml

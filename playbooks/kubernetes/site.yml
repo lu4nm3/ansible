@@ -76,7 +76,9 @@
   remote_user: "{{ remote_user }}"
 
   roles:
-    - role: coreos
+    - role: python
+    - role: etcd
+    - role: flannel
       
 ## Set up Ansible controller account
 #- name: Ansible controller account setup

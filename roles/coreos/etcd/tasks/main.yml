@@ -1,0 +1,46 @@
+---
+# Create etcd directory
+- name: Creating etcd directory
+  file:
+    path: /opt/bin
+    state: directory
+
+# Set up etcd
+- name: Setting up etcd
+  get_url:
+    url: https://github.com/coreos/etcd/releases/download/v{{ version }}/etcd-v{{ version }}-linux-amd64.tar.gz
+    dest: /tmp
+  environment:
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+- unarchive:
+    copy: no
+    dest: /tmp
+    group: root
+    owner: root
+    src: /tmp/etcd-v{{ version }}-linux-amd64.tar.gz
+- command: mv /tmp/etcd-v{{ version }}-linux-amd64/{{ item }} /opt/bin
+  args:
+    creates: /opt/bin/{{ item }}
+  with_items:
+    - etcd
+    - etcdctl
+- file:
+    path: /tmp/{{ item }}
+    state: absent
+  with_items:
+    - etcd-v{{ version }}-linux-amd64
+    - etcd-v{{ version }}-linux-amd64.tar.gz
+#- command: rm -rf /tmp/etcd-v{{ version }}-linux-amd64 /tmp/etcd-v{{ version }}-linux-amd64.tar.gz
+
+# Create etcd2.service file
+- name: Creating etcd2.service file
+  template:
+    dest: /etc/systemd/system/etcd2.service
+    src: etcd2.service.j2
+
+# Start etcd2
+- name: Starting etcd2
+  service:
+    enabled: yes
+    name: etcd2.service
+    state: started
