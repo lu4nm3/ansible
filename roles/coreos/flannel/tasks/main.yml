@@ -22,12 +22,12 @@
 - command: mv /tmp/flannel-{{ version }}/flanneld /opt/bin
   args:
     creates: /opt/bin/flanneld
-- file:
-    path: /tmp/{{ item }}
-    state: absent
-  with_items:
-    - flannel-{{ version }}
-    - flannel-{{ version }}-linux-amd64.tar.gz
+#- file:
+#    path: /tmp/{{ item }}
+#    state: absent
+#  with_items:
+#    - flannel-{{ version }}
+#    - flannel-{{ version }}-linux-amd64.tar.gz
 
 # Create flannel.service file
 - name: Creating flannel.service file

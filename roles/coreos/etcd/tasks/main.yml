@@ -25,12 +25,12 @@
   with_items:
     - etcd
     - etcdctl
-- file:
-    path: /tmp/{{ item }}
-    state: absent
-  with_items:
-    - etcd-v{{ version }}-linux-amd64
-    - etcd-v{{ version }}-linux-amd64.tar.gz
+#- file:
+#    path: /tmp/{{ item }}
+#    state: absent
+#  with_items:
+#    - etcd-v{{ version }}-linux-amd64
+#    - etcd-v{{ version }}-linux-amd64.tar.gz
 
 # Create etcd2.service file
 - name: Creating etcd2.service file
