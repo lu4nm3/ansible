@@ -16,14 +16,12 @@
     copy: no
     dest: /tmp
     src: /tmp/etcd-v2.2.0-linux-amd64.tar.gz
-- command: mv /tmp/etcd-v2.2.0-linux-amd64/etcd /opt/bin
+- command: mv /tmp/etcd-v2.2.0-linux-amd64/etcd /tmp/etcd-v2.2.0-linux-amd64/etcdctl /opt/bin
 - file:
     mode: a+x
     path: /opt/bin/etcd
     state: file
-- file:
-    name: /tmp/etcd-v2.2.0-linux-amd64.tar.gz
-    state: absent
+- command: rm -rf /tmp/*
 
 # Create etcd2.service file
 - name: Creating etcd2.service file
