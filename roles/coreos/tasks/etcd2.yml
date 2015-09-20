@@ -1,6 +1,6 @@
 ---
-# Create etcd directories
-- name: Creating etcd directories
+# Create etcd directory
+- name: Creating etcd directory
   file:
     path: /opt/bin
     state: directory

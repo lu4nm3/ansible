@@ -1,0 +1,37 @@
+---
+# Create flannel directory
+- name: Creating flannel directory
+  file:
+    path: /opt/bin
+    state: directory
+
+# Set up flannel
+- name: Setting up flannel
+  get_url:
+    url: https://github.com/coreos/flannel/releases/download/v0.5.3/flannel-0.5.3-linux-amd64.tar.gz
+    dest: /tmp
+  environment:
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+- unarchive:
+    copy: no
+    dest: /tmp
+    group: root
+    owner: root
+    src: /tmp/flannel-0.5.3-linux-amd64.tar.gz
+- command: mv /tmp/flannel-0.5.3/flanneld /opt/bin
+  args:
+    creates: /opt/bin/flanneld
+- command: rm -rf /tmp/flannel-0.5.3 /tmp/flannel-0.5.3-linux-amd64.tar.gz
+
+# Create flannel.service file
+- name: Creating flannel.service file
+  template:
+    dest: "{{ systemd_config_dir }}/flannel.service"
+    src: flannel.service.j2
+
+# Start etcd2
+- name: Starting flannel
+  service:
+    enabled: yes
+    name: flannel.service
+    state: started
