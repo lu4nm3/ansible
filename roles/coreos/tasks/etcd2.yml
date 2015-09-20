@@ -15,6 +15,8 @@
 - unarchive:
     copy: no
     dest: /tmp
+    group: root
+    owner: root
     src: /tmp/etcd-v2.2.0-linux-amd64.tar.gz
 - command: mv /tmp/etcd-v2.2.0-linux-amd64/etcd /tmp/etcd-v2.2.0-linux-amd64/etcdctl /opt/bin
 - file:
