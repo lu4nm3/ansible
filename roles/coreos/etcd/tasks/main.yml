@@ -30,6 +30,7 @@
 - name: Creating etcd2.service file
   template:
     dest: /etc/systemd/system/etcd2.service
+    force: no
     src: etcd2.service.j2
 
 # Start etcd2
