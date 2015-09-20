@@ -13,6 +13,7 @@ listen_peer_urls: "{{ etcd_listen_peer_urls }}"
 ############### FLANNEL ###############
 backend_type: "{{ flannel_backend_type }}"
 etcd_endpoints: "{{ flannel_etcd_endpoints }}"
+iface: "{{ flannel_iface }}"
 network_cidr: "{{ flannel_network_cidr }}"
 
 ############### FLEET ###############

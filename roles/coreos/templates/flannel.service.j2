@@ -5,7 +5,7 @@ Wants=etcd2.service
 
 [Service]
 Environment="FLANNELD_ETCD_ENDPOINTS={{ etcd_endpoints }}"
-Environment="FLANNELD_IFACE={{ private_ip }}"
+Environment="FLANNELD_IFACE={{ iface }}"
 ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "{{ network_cidr }}", "Backend": {"Type": "{{ backend_type }}"}}'
 ExecStart=/opt/bin/flanneld
 Restart=always
