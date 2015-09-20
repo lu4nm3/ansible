@@ -14,6 +14,7 @@
     SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 - unarchive:
     copy: no
+    creates: /opt/bin/flanneld
     dest: /tmp
     group: root
     owner: root
@@ -27,7 +28,6 @@
   with_items:
     - flannel-{{ version }}
     - flannel-{{ version }}-linux-amd64.tar.gz
-#- command: rm -rf /tmp/flannel-{{ version }} /tmp/flannel-{{ version }}-linux-amd64.tar.gz
 
 # Create flannel.service file
 - name: Creating flannel.service file

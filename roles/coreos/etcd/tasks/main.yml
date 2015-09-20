@@ -14,6 +14,7 @@
     SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 - unarchive:
     copy: no
+    creates: /opt/bin/etcd
     dest: /tmp
     group: root
     owner: root
@@ -30,7 +31,6 @@
   with_items:
     - etcd-v{{ version }}-linux-amd64
     - etcd-v{{ version }}-linux-amd64.tar.gz
-#- command: rm -rf /tmp/etcd-v{{ version }}-linux-amd64 /tmp/etcd-v{{ version }}-linux-amd64.tar.gz
 
 # Create etcd2.service file
 - name: Creating etcd2.service file
