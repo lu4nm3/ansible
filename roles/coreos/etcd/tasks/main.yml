@@ -20,6 +20,7 @@
     owner: root
     src: /tmp/etcd-v{{ version }}-linux-amd64.tar.gz
 - command: mv /tmp/etcd-v{{ version }}-linux-amd64/{{ item }} /opt/bin
+  args:
     creates: /opt/bin/{{ item }}
   with_items:
     - etcd
