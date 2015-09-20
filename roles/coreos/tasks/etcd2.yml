@@ -5,8 +5,8 @@
     path: /opt/bin
     state: directory
 
-# Download etcd
-- name: Downloading etcd
+# Set up etcd
+- name: Setting up etcd
   get_url:
     url: https://github.com/coreos/etcd/releases/download/v2.2.0/etcd-v2.2.0-linux-amd64.tar.gz
     dest: /tmp
@@ -19,7 +19,11 @@
     owner: root
     src: /tmp/etcd-v2.2.0-linux-amd64.tar.gz
 - command: mv /tmp/etcd-v2.2.0-linux-amd64/etcd /opt/bin/etcd2
+  args:
+    creates: /opt/bin/etcd2
 - command: mv /tmp/etcd-v2.2.0-linux-amd64/etcdctl /opt/bin
+  args:
+    creates: /opt/bin/etcdctl
 - command: rm -rf /tmp/etcd-v2.2.0-linux-amd64 /tmp/etcd-v2.2.0-linux-amd64.tar.gz
 
 # Create etcd2.service file
