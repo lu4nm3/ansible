@@ -18,12 +18,9 @@
     group: root
     owner: root
     src: /tmp/etcd-v2.2.0-linux-amd64.tar.gz
-- command: mv /tmp/etcd-v2.2.0-linux-amd64/etcd /tmp/etcd-v2.2.0-linux-amd64/etcdctl /opt/bin
-- file:
-    mode: a+x
-    path: /opt/bin/etcd
-    state: file
-- command: /usr/bin/rm -rf /tmp/*
+- command: mv /tmp/etcd-v2.2.0-linux-amd64/etcd /opt/bin/etcd2
+- command: mv /tmp/etcd-v2.2.0-linux-amd64/etcdctl /opt/bin
+- command: rm -rf /tmp/etcd-v2.2.0-linux-amd64 /tmp/etcd-v2.2.0-linux-amd64.tar.gz
 
 # Create etcd2.service file
 - name: Creating etcd2.service file
