@@ -23,7 +23,7 @@
     mode: a+x
     path: /opt/bin/etcd
     state: file
-- shell: rm -rf /tmp/*
+- command: /usr/bin/rm -rf /tmp/*
 
 # Create etcd2.service file
 - name: Creating etcd2.service file
