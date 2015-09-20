@@ -27,7 +27,6 @@
 - name: Creating etcd2.service file
   template:
     dest: "{{ systemd_config_dir }}/etcd2.service"
-    mode: 0644
     src: etcd2.service.j2
 
 # Start etcd2
