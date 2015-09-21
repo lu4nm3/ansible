@@ -1,0 +1,29 @@
+---
+# Create docker directory
+- name: Creating docker directory
+  file:
+    path: /opt/bin
+    state: directory
+
+# Set up docker
+- name: Setting up docker
+  get_url:
+    url: https://get.docker.com/builds/Linux/x86_64/docker-{{ version }}
+    dest: /opt/bin/docker
+    mode: a+x
+  environment:
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+
+# Create docker.service file
+- name: Creating docker.service file
+  template:
+    dest: /etc/systemd/system/docker.service
+    force: no
+    src: docker.service.j2
+
+# Start docker
+- name: Starting docker
+  service:
+    enabled: yes
+    name: docker.service
+    state: started

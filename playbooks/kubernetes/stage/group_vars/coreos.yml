@@ -2,6 +2,9 @@
 ansible_python_interpreter: /home/core/bin/python
 python_version: 2.6.1
 
+############### DOCKER ###############
+docker_version: 1.8.2
+
 ############### ETCD ###############
 etcd_advertise_client_urls: http://{{ private_ip }}:4001
 etcd_data_dir: /var/lib/etcd2
