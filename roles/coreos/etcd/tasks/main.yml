@@ -16,8 +16,8 @@
     copy: no
     creates: /opt/bin/etcd
     dest: /tmp
-#    group: root
-#    owner: root
+    group: root
+    owner: root
     src: /tmp/etcd-v{{ version }}-linux-amd64.tar.gz
 - command: mv /tmp/etcd-v{{ version }}-linux-amd64/{{ item }} /opt/bin
   args:
