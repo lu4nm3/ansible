@@ -1,0 +1,4 @@
+---
+etcd_servers: "{{ fleet_etcd_servers }}"
+metadata: "{{ fleet_metadata }}"
+version: "{{ fleet_version }}"

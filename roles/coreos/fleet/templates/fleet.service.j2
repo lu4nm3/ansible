@@ -1,0 +1,15 @@
+[Unit]
+After=etcd2.service
+After=fleet.socket
+Description=fleet
+Wants=fleet.socket
+
+[Service]
+Environment="FLEET_ETCD_SERVERS={{ etcd_servers }}"
+Environment="FLEET_METADATA={{ metadata }}"
+ExecStart=/usr/bin/fleetd
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

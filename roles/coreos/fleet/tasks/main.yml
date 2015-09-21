@@ -1,0 +1,41 @@
+---
+# Create fleet directory
+- name: Creating fleet directory
+  file:
+    path: /opt/bin
+    state: directory
+
+# Set up fleet
+- name: Setting up fleet
+  get_url:
+    url: https://github.com/coreos/fleet/releases/download/v{{ version }}/fleet-v{{ version }}-linux-amd64.tar.gz
+    dest: /tmp
+  environment:
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+- unarchive:
+    copy: no
+    creates: /opt/bin/fleetd
+    dest: /tmp
+    group: root
+    owner: root
+    src: /tmp/fleet-v{{ version }}-linux-amd64.tar.gz
+- command: mv /tmp/fleet-v{{ version }}-linux-amd64/{{ item }} /opt/bin
+  args:
+    creates: /opt/bin/{{ item }}
+  with_items:
+    - fleetd
+    - fleetctl
+
+# Create fleet.service file
+- name: Creating fleet.service file
+  template:
+    dest: /etc/systemd/system/fleet.service
+    force: no
+    src: fleet.service.j2
+
+# Start fleet
+- name: Starting fleet
+  service:
+    enabled: yes
+    name: fleet.service
+    state: started
