@@ -7,7 +7,7 @@ Wants=fleet.socket
 [Service]
 Environment="FLEET_ETCD_SERVERS={{ etcd_servers }}"
 Environment="FLEET_METADATA={{ metadata }}"
-ExecStart=/usr/bin/fleetd
+ExecStart=/opt/bin/fleetd
 Restart=always
 RestartSec=10s
 
