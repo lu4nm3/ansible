@@ -79,6 +79,7 @@
     - role: python
     - role: etcd
     - role: flannel
+    - role: fleet
       
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
