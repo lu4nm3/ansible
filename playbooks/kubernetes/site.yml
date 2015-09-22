@@ -80,7 +80,7 @@
     - role: etcd
     - role: flannel
     - role: fleet
-#    - role: coreos/docker
+    - role: coreos/docker
       
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
