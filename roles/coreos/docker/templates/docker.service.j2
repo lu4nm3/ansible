@@ -5,7 +5,7 @@ Requires=docker.socket flannel.service
 
 [Service]
 EnvironmentFile=/run/flannel/subnet.env
-ExecStart=/opt/bin/docker --daemon --host=fd:// --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU}
+ExecStart=/opt/bin/docker daemon --bip=${FLANNEL_SUBNET} --host=fd:// --mtu=${FLANNEL_MTU}
 Restart=always
 RestartSec=5s
 
