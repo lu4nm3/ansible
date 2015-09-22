@@ -8,7 +8,7 @@ docker_version: 1.8.2
 ############### ETCD ###############
 etcd_advertise_client_urls: http://{{ private_ip }}:4001
 etcd_data_dir: /var/lib/etcd2
-etcd_discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+etcd_discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
 etcd_election_timeout: 1200
 etcd_initial_advertise_peer_urls: http://{{ private_ip }}:7001
 etcd_listen_client_urls: http://0.0.0.0:4001
