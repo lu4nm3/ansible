@@ -13,6 +13,9 @@
       prompt: "Enter your AWS secret key"
       private: yes
 
+  pre_tasks:
+      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}" dest=/tmp/discovery.txt
+
   tasks:
     - set_fact:
         aws_access_key: "{{ aws_access_key }}"
@@ -76,9 +79,6 @@
   gather_facts: no
   sudo: yes
   remote_user: "{{ remote_user }}"
-
-  pre_tasks:
-    - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}" dest=/tmp/discovery.txt
 
   roles:
     - role: python
