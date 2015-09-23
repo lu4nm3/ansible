@@ -81,12 +81,12 @@
   remote_user: "{{ remote_user }}"
 
   roles:
-    - role: cloud_config
-    # - role: python
-    # - role: etcd
-    # - role: flannel
-    # - role: fleet
-    # - role: coreos/docker
+    # - role: cloud_config
+    - role: python
+    - role: etcd
+    - role: flannel
+    - role: fleet
+    - role: coreos/docker
 
   post_tasks:
     - local_action: file path=/tmp/discovery.txt state=absent
