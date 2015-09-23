@@ -78,14 +78,23 @@
   remote_user: "{{ remote_user }}"
 
   pre_tasks:
-    - set_fact:
-        test: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+    - local_action:
+        copy:
+          content: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+          dest: /tmp/discovery.txt
+
   roles:
     - role: python
     - role: etcd
     - role: flannel
     - role: fleet
     - role: coreos/docker
+
+  post_tasks:
+    - local_action:
+        file:
+          path: /tmp/discovery.txt
+          state: absent
       
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
