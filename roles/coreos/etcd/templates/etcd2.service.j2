@@ -10,6 +10,7 @@ Environment="ETCD_ELECTION_TIMEOUT={{ election_timeout }}"
 Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS={{ initial_advertise_peer_urls }}"
 Environment="ETCD_LISTEN_CLIENT_URLS={{ listen_client_urls }}"
 Environment="ETCD_LISTEN_PEER_URLS={{ listen_peer_urls }}"
+Environment="ETCD_NAME={{ ansible_hostname }}"
 ExecStart=/opt/bin/etcd
 LimitNOFILE=40000
 Restart=always
