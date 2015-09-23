@@ -88,10 +88,7 @@
     - role: coreos/docker
 
   post_tasks:
-    - local_action:
-        file:
-          path: /tmp/discovery.txt
-          state: absent
+    - local_action: file path=/tmp/discovery.txt state=absent
       
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
