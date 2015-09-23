@@ -79,7 +79,7 @@
 
   pre_tasks:
     - set_fact:
-        etcd_discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+        test: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
   roles:
     - role: python
     - role: etcd
