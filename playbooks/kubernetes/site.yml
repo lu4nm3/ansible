@@ -78,7 +78,7 @@
   remote_user: "{{ remote_user }}"
 
   pre_tasks:
-    - local_action: copy content={{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }} dest=/tmp/discovery.txt
+    - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}" dest=/tmp/discovery.txt
 
   roles:
     - role: python
