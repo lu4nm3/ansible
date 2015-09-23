@@ -14,7 +14,7 @@
       private: yes
 
   pre_tasks:
-      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}" dest=/tmp/discovery.txt
+      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}" dest=/tmp/discovery.txt
 
   tasks:
     - set_fact:
