@@ -14,7 +14,9 @@
       private: yes
 
   tasks:
-    - set_fact: aws_access_key="{{ aws_access_key }}" aws_secret_key="{{ aws_secret_key }}"
+    - set_fact:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
 
 # Set up AWS environment
 - name: AWS Setup
@@ -75,6 +77,9 @@
   sudo: yes
   remote_user: "{{ remote_user }}"
 
+  pre_tasks:
+    - set_fact:
+        etcd_discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
   roles:
     - role: python
     - role: etcd
