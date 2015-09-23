@@ -74,15 +74,24 @@
       volumes: "{{ kubernetes_volumes }}"
 
 # Set up CoreOS
-- name: CoreOS Setup
+- name: CoreOS Python
   hosts: coreos
   gather_facts: no
   sudo: yes
   remote_user: "{{ remote_user }}"
 
   roles:
-    # - role: cloud_config
     - role: python
+
+# Set up CoreOS
+- name: CoreOS Setup
+  hosts: coreos
+  gather_facts: yes
+  sudo: yes
+  remote_user: "{{ remote_user }}"
+
+  roles:
+    # - role: cloud_config
     - role: etcd
     - role: flannel
     - role: fleet
