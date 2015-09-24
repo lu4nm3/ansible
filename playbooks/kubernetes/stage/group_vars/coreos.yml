@@ -13,7 +13,7 @@ etcd_election_timeout: 1200
 etcd_initial_advertise_peer_urls: http://{{ private_ip }}:7001
 etcd_listen_client_urls: http://{{ private_ip }}:4001,http://localhost:4001
 etcd_listen_peer_urls: http://{{ private_ip }}:7001,http://localhost:7001
-etcd_name: %m
+etcd_name: "%m"
 etcd_version: 2.2.0
 
 ############### FLANNEL ###############
