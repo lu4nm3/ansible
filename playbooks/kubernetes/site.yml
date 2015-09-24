@@ -20,6 +20,7 @@
     - set_fact:
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
+        discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
 
 # Set up AWS environment
 - name: AWS Setup
