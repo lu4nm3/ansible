@@ -20,7 +20,6 @@
     - set_fact:
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
-        etcd_discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
 
 # Set up AWS environment
 - name: AWS Setup
@@ -73,6 +72,16 @@
       instance_type: "{{ kubernetes_instance_type }}"
       task_name: Kubernetes
       volumes: "{{ kubernetes_volumes }}"
+
+# Get AWS Credentials from user
+- name: AWS Credentials
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - set_fact:
+        etcd_discovery: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+
 
 # Set up CoreOS
 - name: CoreOS Setup
