@@ -13,8 +13,8 @@
       prompt: "Enter your AWS secret key"
       private: yes
 
-#  pre_tasks:
-#      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}" dest=/tmp/discovery.txt
+  pre_tasks:
+      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}" dest=/tmp/discovery.txt
 
   tasks:
     - set_fact:
@@ -98,8 +98,8 @@
     - role: fleet
     - role: coreos/docker
 
-#  post_tasks:
-#    - local_action: file path=/tmp/discovery.txt state=absent
+  post_tasks:
+    - local_action: file path=/tmp/discovery.txt state=absent
       
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
