@@ -76,10 +76,13 @@
 # Get AWS Credentials from user
 - name: AWS Credentials
   hosts: coreos
-  connection: local
   gather_facts: no
+  sudo: yes
+  remote_user: "{{ remote_user }}"
 
-  tasks:
+  roles:
+    - role: python
+  post_tasks:
     - debug: var=item
       when: "{{ hostvars[item][test2] }} is defined"
       register: test
@@ -110,7 +113,7 @@
 
   roles:
     # - role: cloud_config
-    - role: python
+#    - role: python
     - role: etcd
     - role: flannel
     - role: fleet
