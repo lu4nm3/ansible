@@ -81,7 +81,10 @@
     - name: Create etcd discovery url
       uri:
         url: https://discovery.etcd.io/new?size=3
-      register: discovery
+      register: temp
+    - name: Set etcd discovery fact
+      set_fact:
+        discovery: "{{ temp }}"
 
 # Set up CoreOS
 - name: CoreOS Setup
