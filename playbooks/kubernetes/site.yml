@@ -74,7 +74,7 @@
       volumes: "{{ kubernetes_volumes }}"
 
 # Get AWS Credentials from user
-- name: AWS Credentials
+- name: Set Discovery
   hosts: coreos
   gather_facts: no
   sudo: yes
@@ -83,21 +83,25 @@
   roles:
     - role: python
   post_tasks:
-    - debug: var=item
+    - name: one
+      debug: var=item
       when: hostvars[item][test2] is defined
       register: test
       with_items: groups['coreos']
 
-    - set_fact:
+    - name: two
+      set_fact:
         test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
       when: test is undefined
 
-    - set_fact:
+    - name: three
+      set_fact:
         test2: "{{ test }}"
       when: test is defined
 
 
-    - set_fact:
+    - name: four
+      set_fact:
         test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
       when: test2 is undefined
 
@@ -121,7 +125,11 @@
 
   post_tasks:
     - local_action: file path=/tmp/discovery.txt state=absent
-      
+
+
+
+
+
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
 #  hosts: ec2
