@@ -92,7 +92,7 @@
   remote_user: "{{ remote_user }}"
 
   vars:
-    test2: "{{ hostvars['localhost]['test']}}"
+    test2: "{{ hostvars['localhost']['test']}}"
 
   pre_tasks:
     - name: beedo
