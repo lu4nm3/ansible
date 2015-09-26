@@ -1,6 +1,25 @@
 ---
 # Get AWS Credentials from user
-- name: AWS Credentials
+#- name: AWS Credentials
+#  connection: local
+#  gather_facts: no
+#  hosts: localhost
+#
+#  vars_prompt:
+#    - name: aws_access_key
+#      prompt: "Enter your AWS access key"
+#      private: yes
+#    - name: aws_secret_key
+#      prompt: "Enter your AWS secret key"
+#      private: yes
+#
+#  tasks:
+#    - set_fact:
+#        aws_access_key: "{{ aws_access_key }}"
+#        aws_secret_key: "{{ aws_secret_key }}"
+
+# Set up AWS environment
+- name: AWS Setup
   connection: local
   gather_facts: no
   hosts: localhost
@@ -12,17 +31,6 @@
     - name: aws_secret_key
       prompt: "Enter your AWS secret key"
       private: yes
-
-  tasks:
-    - set_fact:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-
-# Set up AWS environment
-- name: AWS Setup
-  connection: local
-  gather_facts: no
-  hosts: localhost
 
   roles:
     - role: key_pair
