@@ -20,4 +20,4 @@ User=etcd
 [Install]
 WantedBy=multi-user.target
 
-{{ {% for host in groups['coreos'] %}{{ host | replace('.', '') }}=http://{{ host }}:7001,{% endfor %} | trim(',') }}
+{{ "{% for host in groups['coreos'] %}{{ host | replace('.', '') }}=http://{{ host }}:7001,{% endfor %} | trim(',')" }}
