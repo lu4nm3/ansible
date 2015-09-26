@@ -19,6 +19,3 @@ User=etcd
 
 [Install]
 WantedBy=multi-user.target
-
-{% set test = {% for host in groups['coreos'] %}{{ host | replace('.', '') }}=http://{{ host }}:7001,{% endfor %} %}
-{{ test }}

@@ -73,12 +73,26 @@
       task_name: Kubernetes
       volumes: "{{ kubernetes_volumes }}"
 
+
+# Get AWS Credentials from user
+- name: AWS Credentials
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - set_fact:
+        test: "{{ aws_access_key }}"
+
 # Set up CoreOS
 - name: CoreOS Setup
   hosts: coreos
   gather_facts: no
   sudo: yes
   remote_user: "{{ remote_user }}"
+
+  pre_tasks:
+    - debug: var=test
 
   roles:
     # - role: cloud_config
