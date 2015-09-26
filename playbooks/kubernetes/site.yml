@@ -13,8 +13,8 @@
       prompt: "Enter your AWS secret key"
       private: yes
 
-  pre_tasks:
-      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}" dest=/tmp/discovery.txt
+#  pre_tasks:
+#      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}" dest=/tmp/discovery.txt
 
   tasks:
     - set_fact:
@@ -75,35 +75,14 @@
 
 # Get AWS Credentials from user
 - name: Set Discovery
-  hosts: coreos
+  hosts: localhost
   gather_facts: no
+  connection: local
   sudo: yes
-  remote_user: "{{ remote_user }}"
 
-  roles:
-    - role: python
-  post_tasks:
-    - name: one
-      debug: var=item
-      when: hostvars[item][test2] is defined
-      register: test
-      with_items: groups['coreos']
-
-    - debug: var=test
-
-    - name: two
-      set_fact:
-        test3: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
-      when: test is undefined
-
-    - debug: var=test3
-
-    - name: three
-      set_fact:
-        test2: "{{ test3 }}"
-      when: test is defined
-
-    - debug: var=test2
+  tasks:
+    - set_fact:
+        test: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
 
 # Set up CoreOS
 - name: CoreOS Setup
@@ -112,19 +91,23 @@
   sudo: yes
   remote_user: "{{ remote_user }}"
 
+  vars:
+    test2: {{ hostvars['localhost]['test']}}
+
   pre_tasks:
-    - debug: var=test2
+    - name: beedo
+      debug: var={{ hostvars['localhost]['test']}}
 
   roles:
     # - role: cloud_config
-#    - role: python
+    - role: python
     - role: etcd
     - role: flannel
     - role: fleet
     - role: coreos/docker
 
-  post_tasks:
-    - local_action: file path=/tmp/discovery.txt state=absent
+#  post_tasks:
+#    - local_action: file path=/tmp/discovery.txt state=absent
 
 
 
