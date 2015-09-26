@@ -80,8 +80,9 @@
   tasks:
     - name: Create etcd discovery url
       uri:
+        return_content: yes
         url: https://discovery.etcd.io/new?size=3
-      register: temp
+      register: temp.content
     - name: Set etcd discovery fact
       set_fact:
         discovery: "{{ temp }}"
