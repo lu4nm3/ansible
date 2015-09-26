@@ -82,6 +82,7 @@
   tasks:
     - set_fact:
         test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+      when: test2 is undefined
 
 # Set up CoreOS
 - name: CoreOS Setup
