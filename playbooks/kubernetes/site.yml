@@ -82,7 +82,17 @@
 
   tasks:
     - set_fact:
-        test: "{{ aws_access_key }}"
+        test: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
+
+# Get AWS Credentials from user
+- name: AWS Credentials
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - set_fact:
+        test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
 
 # Set up CoreOS
 - name: CoreOS Setup
@@ -93,6 +103,7 @@
 
   pre_tasks:
     - debug: var=test
+    - debug: var=test2
 
   roles:
     # - role: cloud_config
