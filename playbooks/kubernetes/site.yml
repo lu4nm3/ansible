@@ -84,7 +84,7 @@
     - role: python
   post_tasks:
     - debug: var=item
-      when: "{{ hostvars[item][test2] }} is defined"
+      when: hostvars[item][test2] is defined
       register: test
       with_items: groups['coreos']
 
