@@ -90,8 +90,8 @@
       when: test is undefined
 
     - set_fact:
-            test2: "{{ test }}"
-          when: test is defined
+        test2: "{{ test }}"
+      when: test is defined
 
 
     - set_fact:
