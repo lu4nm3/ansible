@@ -1,9 +1,9 @@
 ---
 # Get AWS Credentials from user
 - name: AWS Credentials
-  hosts: localhost
   connection: local
   gather_facts: no
+  hosts: localhost
 
   vars_prompt:
     - name: aws_access_key
@@ -20,9 +20,9 @@
 
 # Set up AWS environment
 - name: AWS Setup
-  hosts: localhost
   connection: local
   gather_facts: no
+  hosts: localhost
 
   roles:
     - role: key_pair
@@ -72,10 +72,9 @@
 
 # Get AWS Credentials from user
 - name: Set Discovery
-  hosts: localhost
-  gather_facts: no
   connection: local
-  sudo: yes
+  gather_facts: no
+  hosts: localhost
 
   tasks:
     - name: Create etcd discovery url
@@ -96,10 +95,6 @@
 
   vars:
     test2: "{{ hostvars['localhost']['discovery']}}"
-
-  pre_tasks:
-    - name: beedo
-      debug: var="{{ hostvars['localhost']['discovery'] }}"
 
   roles:
     # - role: cloud_config
