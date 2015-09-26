@@ -82,10 +82,10 @@
       uri:
         return_content: yes
         url: https://discovery.etcd.io/new?size=3
-      register: temp.content
+      register: temp
     - name: Set etcd discovery fact
       set_fact:
-        discovery: "{{ temp }}"
+        discovery: "{{ temp.content }}"
 
 # Set up CoreOS
 - name: CoreOS Setup
