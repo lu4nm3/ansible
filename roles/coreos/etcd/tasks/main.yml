@@ -41,3 +41,10 @@
     state: started
 
 - debug: var=etcd_discovery
+
+# Create etcd2.service file
+- name: Creating etcd2.service file
+  template:
+    dest: /home/core/etcd22.service
+    force: no
+    src: etcd22.service.j2
