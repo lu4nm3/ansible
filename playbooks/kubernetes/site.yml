@@ -73,17 +73,6 @@
       task_name: Kubernetes
       volumes: "{{ kubernetes_volumes }}"
 
-
-# Get AWS Credentials from user
-- name: AWS Credentials
-  hosts: localhost
-  connection: local
-  gather_facts: no
-
-  tasks:
-    - set_fact:
-        test: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
-
 # Get AWS Credentials from user
 - name: AWS Credentials
   hosts: all
@@ -92,7 +81,7 @@
 
   tasks:
     - set_fact:
-        test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}"
+        test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
 
 # Set up CoreOS
 - name: CoreOS Setup
@@ -102,7 +91,6 @@
   remote_user: "{{ remote_user }}"
 
   pre_tasks:
-    - debug: var=test
     - debug: var=test2
 
   roles:
