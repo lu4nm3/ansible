@@ -89,21 +89,21 @@
       register: test
       with_items: groups['coreos']
 
+    - debug: var=test
+
     - name: two
       set_fact:
-        test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+        test3: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
       when: test is undefined
+
+    - debug: var=test3
 
     - name: three
       set_fact:
-        test2: "{{ test }}"
+        test2: "{{ test3 }}"
       when: test is defined
 
-
-    - name: four
-      set_fact:
-        test2: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
-      when: test2 is undefined
+    - debug: var=test2
 
 # Set up CoreOS
 - name: CoreOS Setup
