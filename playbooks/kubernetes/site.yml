@@ -95,7 +95,7 @@
 
   pre_tasks:
     - name: beedo
-      debug: var="{{ hostvars['localhost']['test'] }}"
+      debug: var="{{ hostvars['localhost']['discovery'] }}"
 
   roles:
     # - role: cloud_config
