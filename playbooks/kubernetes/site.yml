@@ -1,7 +1,7 @@
 ---
 # Get AWS Credentials from user
 - name: AWS Credentials
-  hosts: all
+  hosts: localhost
   connection: local
   gather_facts: no
 
@@ -12,9 +12,6 @@
     - name: aws_secret_key
       prompt: "Enter your AWS secret key"
       private: yes
-
-#  pre_tasks:
-#      - local_action: copy content="{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=1') }}" dest=/tmp/discovery.txt
 
   tasks:
     - set_fact:
@@ -81,8 +78,10 @@
   sudo: yes
 
   tasks:
-    - set_fact:
-        test: "{{ lookup('pipe', 'curl -s https://discovery.etcd.io/new?size=3') }}"
+    - name: Create etcd discovery url
+      uri:
+        url: https://discovery.etcd.io/new?size=3
+      register: discovery
 
 # Set up CoreOS
 - name: CoreOS Setup
@@ -92,7 +91,7 @@
   remote_user: "{{ remote_user }}"
 
   vars:
-    test2: "{{ hostvars['localhost']['test']}}"
+    test2: "{{ hostvars['localhost']['discovery']}}"
 
   pre_tasks:
     - name: beedo
@@ -105,12 +104,6 @@
     - role: flannel
     - role: fleet
     - role: coreos/docker
-
-#  post_tasks:
-#    - local_action: file path=/tmp/discovery.txt state=absent
-
-
-
 
 
 ## Set up Ansible controller account
