@@ -19,3 +19,6 @@ User=etcd
 
 [Install]
 WantedBy=multi-user.target
+
+
+Environment="ETCD_TEST={% for host in groups['coreos'] %}{{ host | replace('.', '') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}""
