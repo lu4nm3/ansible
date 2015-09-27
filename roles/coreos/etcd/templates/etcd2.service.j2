@@ -5,9 +5,10 @@ Description=etcd2
 [Service]
 Environment="ETCD_ADVERTISE_CLIENT_URLS={{ advertise_client_urls }}"
 Environment="ETCD_DATA_DIR={{ data_dir }}"
-Environment="ETCD_DISCOVERY={{ discovery }}"
 Environment="ETCD_ELECTION_TIMEOUT={{ election_timeout }}"
 Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS={{ initial_advertise_peer_urls }}"
+Environment="ETCD_INITIAL_CLUSTER={% for host in groups['coreos_private'] %}{{ host | hash('md5') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
+Environment="ETCD_INITIAL_CLUSTER_STATE=new"
 Environment="ETCD_LISTEN_CLIENT_URLS={{ listen_client_urls }}"
 Environment="ETCD_LISTEN_PEER_URLS={{ listen_peer_urls }}"
 Environment="ETCD_NAME={{ name }}"
@@ -19,6 +20,3 @@ User=etcd
 
 [Install]
 WantedBy=multi-user.target
-
-
-Environment="ETCD_TEST={% for host in groups['coreos_private'] %}{{ host | hash('md5') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
