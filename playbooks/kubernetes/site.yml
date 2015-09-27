@@ -59,21 +59,21 @@
       task_name: Kubernetes
       volumes: "{{ kubernetes_volumes }}"
 
-# Get AWS Credentials from user
-- name: Set Discovery
-  connection: local
-  gather_facts: no
-  hosts: localhost
-
-  tasks:
-    - name: Create etcd discovery url
-      uri:
-        return_content: yes
-        url: https://discovery.etcd.io/new?size=3
-      register: temp
-    - name: Set etcd discovery fact
-      set_fact:
-        discovery: "{{ temp.content }}"
+## Get AWS Credentials from user
+#- name: Set Discovery
+#  connection: local
+#  gather_facts: no
+#  hosts: localhost
+#
+#  tasks:
+#    - name: Create etcd discovery url
+#      uri:
+#        return_content: yes
+#        url: https://discovery.etcd.io/new?size=3
+#      register: temp
+#    - name: Set etcd discovery fact
+#      set_fact:
+#        discovery: "{{ temp.content }}"
 
 # Set up CoreOS
 - name: CoreOS Setup
@@ -82,8 +82,8 @@
   sudo: yes
   remote_user: "{{ remote_user }}"
 
-  vars:
-    test2: "{{ hostvars['localhost']['discovery']}}"
+#  vars:
+#    test2: "{{ hostvars['localhost']['discovery']}}"
 
   roles:
     # - role: cloud_config
