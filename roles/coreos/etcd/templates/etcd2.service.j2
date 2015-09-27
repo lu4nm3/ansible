@@ -22,7 +22,7 @@ WantedBy=multi-user.target
 
 
 Environment="ETCD_TEST={% for host in groups['coreos_private'] %}ip-{{ host | replace('.', '-') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
-{{ name }}
-{{ name | hash(sha1) }}
-{{ name | hash(md5) }}
-{{ name | checksum }}
+"{{ name }}"
+"{{ name | hash(sha1) }}"
+"{{ name | hash(md5) }}"
+"{{ name | checksum }}"
