@@ -40,4 +40,4 @@
     name: etcd2.service
     state: started
 
-- debug: var=etcd_discovery
+#- debug: var=etcd_discovery
