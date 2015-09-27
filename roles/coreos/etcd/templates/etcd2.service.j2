@@ -21,8 +21,4 @@ User=etcd
 WantedBy=multi-user.target
 
 
-Environment="ETCD_TEST={% for host in groups['coreos_private'] %}ip-{{ host | replace('.', '-') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
-Environment="{{ private_ip | string }}"
-Environment="{{ private_ip | string | hash('sha1') }}"
-Environment="{{ private_ip | hash('md5') }}"
-Environment="{{ private_ip | string | checksum }}"
+Environment="ETCD_TEST={% for host in groups['coreos_private'] %}{{ host | hash('md5') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"

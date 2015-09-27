@@ -13,13 +13,13 @@ etcd_election_timeout: 1200
 etcd_initial_advertise_peer_urls: http://{{ private_ip }}:7001
 etcd_listen_client_urls: http://{{ private_ip }}:4001,http://localhost:4001
 etcd_listen_peer_urls: http://{{ private_ip }}:7001,http://localhost:7001
-etcd_name: "%m"
+etcd_name: {{ private_ip | hash('md5') }}
 etcd_version: 2.2.0
 
 ############### FLANNEL ###############
 flannel_backend_type: vxlan
 flannel_etcd_endpoints: http://127.0.0.1:4001
-flannel_iface: "{{ private_ip }}"
+flannel_iface: {{ private_ip }}
 flannel_network_cidr: 10.2.0.0/16
 flannel_version: 0.5.3
 
