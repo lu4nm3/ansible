@@ -10,6 +10,8 @@ etcd_advertise_client_urls: http://{{ private_ip }}:4001
 etcd_data_dir: /var/lib/etcd2
 etcd_election_timeout: 1200
 etcd_initial_advertise_peer_urls: http://{{ private_ip }}:7001
+etcd_initial_cluster: "{% for host in groups['coreos_private'] %}{{ host | hash('md5') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
+etcd_initial_cluster_state: new
 etcd_listen_client_urls: http://{{ private_ip }}:4001,http://localhost:4001
 etcd_listen_peer_urls: http://{{ private_ip }}:7001,http://localhost:7001
 etcd_name: "{{ private_ip | hash('md5') }}"
