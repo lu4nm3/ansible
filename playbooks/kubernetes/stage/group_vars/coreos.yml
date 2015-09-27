@@ -1,4 +1,5 @@
 ---
+############### PYTHON ###############
 ansible_python_interpreter: /home/core/bin/python
 python_version: 2.6.1
 
