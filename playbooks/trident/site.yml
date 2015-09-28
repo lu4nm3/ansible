@@ -48,32 +48,32 @@
       task_name: ZooKeeper
 
     - role: ec2
-      ansible_public_ip_groups: "{{ master_ansible_public_ip_groups }}"
-      ansible_private_ip_groups: "{{ master_ansible_private_ip_groups }}"
-      count_tag: "{{ master_count_tag }}"
-      ebs_optimized: "{{ master_ebs_optimized }}"
-      exact_count: "{{ master_exact_count }}"
-      security_groups: "{{ master_security_groups }}"
-      instance_tags: "{{ master_instance_tags }}"
-      instance_type: "{{ master_instance_type }}"
-      task_name: Trident Master
-      volumes: "{{ master_volumes }}"
+      ansible_public_ip_groups: "{{ masters_ansible_public_ip_groups }}"
+      ansible_private_ip_groups: "{{ masters_ansible_private_ip_groups }}"
+      count_tag: "{{ masters_count_tag }}"
+      ebs_optimized: "{{ masters_ebs_optimized }}"
+      exact_count: "{{ masters_exact_count }}"
+      security_groups: "{{ masters_security_groups }}"
+      instance_tags: "{{ masters_instance_tags }}"
+      instance_type: "{{ masters_instance_type }}"
+      task_name: Trident masters
+      volumes: "{{ masters_volumes }}"
       
     - role: ec2
-      ansible_public_ip_groups: "{{ worker_ansible_public_ip_groups }}"
-      ansible_private_ip_groups: "{{ worker_ansible_private_ip_groups }}"
-      count_tag: "{{ worker_count_tag }}"
-      ebs_optimized: "{{ worker_ebs_optimized }}"
-      exact_count: "{{ worker_exact_count }}"
-      security_groups: "{{ worker_security_groups }}"
-      instance_tags: "{{ worker_instance_tags }}"
-      instance_type: "{{ worker_instance_type }}"
-      task_name: Trident Worker
-      volumes: "{{ worker_volumes }}"
+      ansible_public_ip_groups: "{{ workers_ansible_public_ip_groups }}"
+      ansible_private_ip_groups: "{{ workers_ansible_private_ip_groups }}"
+      count_tag: "{{ workers_count_tag }}"
+      ebs_optimized: "{{ workers_ebs_optimized }}"
+      exact_count: "{{ workers_exact_count }}"
+      security_groups: "{{ workers_security_groups }}"
+      instance_tags: "{{ workers_instance_tags }}"
+      instance_type: "{{ workers_instance_type }}"
+      task_name: Trident workers
+      volumes: "{{ workers_volumes }}"
 
 # Set up CoreOS
 - name: CoreOS Master Setup
-  hosts: master
+  hosts: masters
   gather_facts: no
   sudo: yes
   remote_user: "{{ remote_user }}"
@@ -86,7 +86,7 @@
 
 # Set up CoreOS
 - name: CoreOS Worker Setup
-  hosts: worker
+  hosts: workers
   gather_facts: no
   sudo: yes
   remote_user: "{{ remote_user }}"

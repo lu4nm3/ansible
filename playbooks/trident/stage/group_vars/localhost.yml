@@ -69,27 +69,27 @@ monitoring: no
 #placement_group: Trident #TODO uncomment
 
 ############### EC2 MASTER ###############
-master_ansible_public_ip_groups: master, ec2, coreos
-master_ansible_private_ip_groups: etcd
-master_count_tag: { "type": master }
-master_ebs_optimized: false #TODO change to true
-master_exact_count: 3
-master_security_groups: ["SSH", "Ping", "Kubernetes"]
-master_instance_tags: { "type": master }
-master_instance_type: t2.micro
-master_volumes:
+masters_ansible_public_ip_groups: masters, ec2, coreos
+masters_ansible_private_ip_groups: etcd
+masters_count_tag: { "type": masters }
+masters_ebs_optimized: false #TODO change to true
+masters_exact_count: 3
+masters_security_groups: ["SSH", "Ping", "Kubernetes"]
+masters_instance_tags: { "type": masters }
+masters_instance_type: t2.micro
+masters_volumes:
   - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
 
 ############### EC2 WORKER ###############
-worker_ansible_public_ip_groups: worker, ec2, coreos
-worker_ansible_private_ip_groups: worker_private
-worker_count_tag: { "type": worker }
-worker_ebs_optimized: false #TODO change to true
-worker_exact_count: 1
-worker_security_groups: ["SSH", "Ping", "Kubernetes"]
-worker_instance_tags: { "type": worker }
-worker_instance_type: t2.micro
-worker_volumes:
+workers_ansible_public_ip_groups: workers, ec2, coreos
+workers_ansible_private_ip_groups: workers_private
+workers_count_tag: { "type": workers }
+workers_ebs_optimized: false #TODO change to true
+workers_exact_count: 1
+workers_security_groups: ["SSH", "Ping", "Kubernetes"]
+workers_instance_tags: { "type": workers }
+workers_instance_type: t2.micro
+workers_volumes:
   - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
 
 
