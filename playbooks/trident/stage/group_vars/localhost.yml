@@ -69,7 +69,7 @@ monitoring: no
 #placement_group: Trident #TODO uncomment
 
 ############### EC2 MASTER ###############
-master_ansible_public_ip_groups: master
+master_ansible_public_ip_groups: master, ec2
 master_ansible_private_ip_groups: coreos
 master_count_tag: { "type": master }
 master_ebs_optimized: false #TODO change to true
@@ -81,7 +81,7 @@ master_volumes:
   - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
 
 ############### EC2 WORKER ###############
-worker_ansible_public_ip_groups: worker
+worker_ansible_public_ip_groups: worker, ec2
 worker_ansible_private_ip_groups: coreos
 worker_count_tag: { "type": worker }
 worker_ebs_optimized: false #TODO change to true
