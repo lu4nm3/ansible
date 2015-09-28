@@ -70,7 +70,7 @@ monitoring: no
 
 ############### EC2 MASTER ###############
 master_ansible_public_ip_groups: master, ec2, coreos
-master_ansible_private_ip_groups: coreos
+master_ansible_private_ip_groups: etcd
 master_count_tag: { "type": master }
 master_ebs_optimized: false #TODO change to true
 master_exact_count: 1
@@ -82,7 +82,7 @@ master_volumes:
 
 ############### EC2 WORKER ###############
 worker_ansible_public_ip_groups: worker, ec2
-worker_ansible_private_ip_groups: coreos
+worker_ansible_private_ip_groups: worker_private
 worker_count_tag: { "type": worker }
 worker_ebs_optimized: false #TODO change to true
 worker_exact_count: 1
