@@ -20,7 +20,7 @@ etcd_version: 2.2.0
 
 ############### FLANNEL ###############
 flannel_backend_type: vxlan
-flannel_etcd_endpoints: "{% for host in groups['etcd'] %}http://{{ host }}:4001{% if not loop.last %},{% endif %}{% endfor %}"
+flannel_etcd_endpoints: http://localhost:4001
 flannel_iface: "{{ private_ip }}"
 flannel_network_cidr: 10.2.0.0/16
 flannel_version: 0.5.3
