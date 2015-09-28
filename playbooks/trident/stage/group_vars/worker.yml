@@ -1,3 +1,3 @@
 ---
 ############### ETCD ###############
-etcd_proxy: on
+etcd_proxy: "on"
