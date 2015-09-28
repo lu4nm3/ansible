@@ -68,17 +68,31 @@ image: ami-99bfada9
 monitoring: no
 #placement_group: Trident #TODO uncomment
 
-############### EC2 KUBERNETES ###############
-kubernetes_ansible_public_ip_groups: ec2, kubernetes, coreos
-kubernetes_ansible_private_ip_groups: kubernetes_private, coreos_private
-kubernetes_count_tag: { "type": kubernetes }
-kubernetes_ebs_optimized: false #TODO change to true
-kubernetes_exact_count: 3
-kubernetes_security_groups: ["SSH", "Ping", "Kubernetes"]
-kubernetes_instance_tags: { "type": kubernetes }
-kubernetes_instance_type: t2.micro
-kubernetes_volumes:
+############### EC2 MASTER ###############
+master_ansible_public_ip_groups: master
+master_ansible_private_ip_groups: coreos
+master_count_tag: { "type": master }
+master_ebs_optimized: false #TODO change to true
+master_exact_count: 1
+master_security_groups: ["SSH", "Ping", "Kubernetes"]
+master_instance_tags: { "type": master }
+master_instance_type: t2.micro
+master_volumes:
   - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+
+############### EC2 WORKER ###############
+worker_ansible_public_ip_groups: worker
+worker_ansible_private_ip_groups: coreos
+worker_count_tag: { "type": worker }
+worker_ebs_optimized: false #TODO change to true
+worker_exact_count: 1
+worker_security_groups: ["SSH", "Ping", "Kubernetes"]
+worker_instance_tags: { "type": worker }
+worker_instance_type: t2.micro
+worker_volumes:
+  - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+
+
 
 ############### EC2 ZOOKEEPER ###############
 #zookeeper_ansible_public_ip_groups: ec2, zookeeper

@@ -48,20 +48,32 @@
       task_name: ZooKeeper
 
     - role: ec2
-      ansible_public_ip_groups: "{{ kubernetes_ansible_public_ip_groups }}"
-      ansible_private_ip_groups: "{{ kubernetes_ansible_private_ip_groups }}"
-      count_tag: "{{ kubernetes_count_tag }}"
-      ebs_optimized: "{{ kubernetes_ebs_optimized }}"
-      exact_count: "{{ kubernetes_exact_count }}"
-      security_groups: "{{ kubernetes_security_groups }}"
-      instance_tags: "{{ kubernetes_instance_tags }}"
-      instance_type: "{{ kubernetes_instance_type }}"
-      task_name: Kubernetes
-      volumes: "{{ kubernetes_volumes }}"
+      ansible_public_ip_groups: "{{ master_ansible_public_ip_groups }}"
+      ansible_private_ip_groups: "{{ master_ansible_private_ip_groups }}"
+      count_tag: "{{ master_count_tag }}"
+      ebs_optimized: "{{ master_ebs_optimized }}"
+      exact_count: "{{ master_exact_count }}"
+      security_groups: "{{ master_security_groups }}"
+      instance_tags: "{{ master_instance_tags }}"
+      instance_type: "{{ master_instance_type }}"
+      task_name: Trident Master
+      volumes: "{{ master_volumes }}"
+      
+    - role: ec2
+      ansible_public_ip_groups: "{{ worker_ansible_public_ip_groups }}"
+      ansible_private_ip_groups: "{{ worker_ansible_private_ip_groups }}"
+      count_tag: "{{ worker_count_tag }}"
+      ebs_optimized: "{{ worker_ebs_optimized }}"
+      exact_count: "{{ worker_exact_count }}"
+      security_groups: "{{ worker_security_groups }}"
+      instance_tags: "{{ worker_instance_tags }}"
+      instance_type: "{{ worker_instance_type }}"
+      task_name: Trident Worker
+      volumes: "{{ worker_volumes }}"
 
 # Set up CoreOS
 - name: CoreOS Setup
-  hosts: coreos
+  hosts: master
   gather_facts: no
   sudo: yes
   remote_user: "{{ remote_user }}"
@@ -73,6 +85,8 @@
     - role: flannel
     - role: fleet
     - role: coreos/docker
+
+
 
 
 ## Set up Ansible controller account
