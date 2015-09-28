@@ -82,7 +82,7 @@
     # - role: cloud_config
     - role: python
     - role: etcd
-      etcd_proxy: off
+      etcd_proxy: "off"
     - role: fleet
 
 # Set up CoreOS
@@ -96,7 +96,7 @@
     # - role: cloud_config
     - role: python
     - role: etcd
-      etcd_proxy: on
+      etcd_proxy: "on"
     - role: flannel
     - role: coreos/docker
 
