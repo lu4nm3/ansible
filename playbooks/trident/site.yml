@@ -94,6 +94,8 @@
   roles:
     # - role: cloud_config
     - role: python
+    - role: etcd
+      proxy: on
     - role: flannel
     - role: coreos/docker
 
