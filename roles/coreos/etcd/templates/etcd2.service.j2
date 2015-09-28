@@ -12,7 +12,7 @@ Environment="ETCD_INITIAL_CLUSTER_STATE={{ initial_cluster_state }}"
 Environment="ETCD_LISTEN_CLIENT_URLS={{ listen_client_urls }}"
 Environment="ETCD_LISTEN_PEER_URLS={{ listen_peer_urls }}"
 Environment="ETCD_NAME={{ name }}"
-{% if proxy is defined %}Environment="ETCD_PROXY={{ proxy }}"{% endif %}
+Environment="ETCD_PROXY={{ proxy }}"
 ExecStart=/opt/bin/etcd
 LimitNOFILE=40000
 Restart=always
