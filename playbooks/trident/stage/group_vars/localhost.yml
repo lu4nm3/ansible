@@ -70,7 +70,7 @@ monitoring: no
 
 ############### EC2 MASTER ###############
 master_ansible_public_ip_groups: master, ec2, coreos
-master_ansible_private_ip_groups: etcd, master
+master_ansible_private_ip_groups: etcd
 master_count_tag: { "type": master }
 master_ebs_optimized: false #TODO change to true
 master_exact_count: 1

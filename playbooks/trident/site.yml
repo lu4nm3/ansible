@@ -72,7 +72,7 @@
       volumes: "{{ worker_volumes }}"
 
 # Set up CoreOS
-- name: CoreOS Setup
+- name: CoreOS Master Setup
   hosts: master
   gather_facts: no
   sudo: yes
@@ -82,10 +82,20 @@
     # - role: cloud_config
     - role: python
     - role: etcd
-    - role: flannel
     - role: fleet
-    - role: coreos/docker
 
+# Set up CoreOS
+- name: CoreOS Worker Setup
+  hosts: worker
+  gather_facts: no
+  sudo: yes
+  remote_user: "{{ remote_user }}"
+
+  roles:
+    # - role: cloud_config
+    - role: python
+    - role: flannel
+    - role: coreos/docker
 
 
 
