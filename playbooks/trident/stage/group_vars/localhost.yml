@@ -11,7 +11,7 @@ key_pair_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 cidr_block: 10.0.0.0/16
 dns_hostnames: yes
 dns_support: yes
-vpc_resource_tags: { "Name": "Trident" }
+vpc_resource_tags: { "Name": "Trident2" }
 instance_tenancy: "default"
 internet_gateway: true
 subnets:
@@ -20,6 +20,8 @@ subnets:
   - { "cidr": 10.0.3.0/24, "az": us-west-2c }
 route_tables:
   - { "subnets": [10.0.1.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
+  - { "subnets": [10.0.2.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
+  - { "subnets": [10.0.3.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
 
 ############### SECURITY GROUPS ###############
 # Egress
