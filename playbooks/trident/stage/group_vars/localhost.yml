@@ -85,7 +85,7 @@ workers_ansible_public_ip_groups: workers, ec2, coreos
 workers_ansible_private_ip_groups: workers_private
 workers_count_tag: { "type": workers }
 workers_ebs_optimized: false #TODO change to true
-workers_exact_count: 2
+workers_exact_count: 1
 workers_security_groups: ["SSH", "Ping", "Kubernetes"]
 workers_instance_tags: { "type": workers }
 workers_instance_type: t2.micro
