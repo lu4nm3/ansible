@@ -16,6 +16,8 @@ instance_tenancy: "default"
 internet_gateway: true
 subnets:
   - { "cidr": 10.0.1.0/24, "az": us-west-2a }
+  - { "cidr": 10.0.2.0/24, "az": us-west-2b }
+  - { "cidr": 10.0.3.0/24, "az": us-west-2c }
 route_tables:
   - { "subnets": [10.0.1.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
 
