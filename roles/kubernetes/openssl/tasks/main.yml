@@ -6,7 +6,7 @@
 
 # Create Cluster Root CA
 - name: Creating Cluster Root CA
-  shell: "{{ item }}"
+  local_action: shell {{ item }}
   args:
     chdir: /tmp
   with_items:
