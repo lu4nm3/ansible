@@ -79,7 +79,7 @@
   sudo: yes
 
   pre_tasks:
-    - debug: var="{{ hostvars[groups['kubernetes'][0]] }}"
+    - debug: var="{{ hostvars[groups['kubernetes'][0]]['kubernetes_service_ip'] }}"
 
   roles:
     - role: kubernetes/openssl
