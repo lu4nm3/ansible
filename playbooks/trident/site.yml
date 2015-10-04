@@ -78,6 +78,9 @@
   hosts: localhost
   sudo: yes
 
+  vars_files:
+    - kubernetes.yml
+
   roles:
     - role: kubernetes/openssl
 
@@ -101,7 +104,6 @@
   sudo: yes
 
   roles:
-    # - role: cloud_config
     - role: python
     - role: etcd
     - role: flannel
