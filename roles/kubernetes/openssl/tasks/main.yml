@@ -6,7 +6,7 @@
 
 # Create Cluster Root CA
 - name: Creating Cluster Root CA
-  local_action: shell {{ item }}
+  shell: "{{ item }}"
   args:
     chdir: /tmp
   with_items:
@@ -20,7 +20,6 @@
     module: template
     dest: /tmp/openssl.cnf
     src: openssl.cnf.j2
-  delegate_to: 127.0.0.1
   run_once: true
 
 # Generate API Server Keypair
