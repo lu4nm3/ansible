@@ -1,11 +1,11 @@
 ---
 # Wipe local /tmp directory
 - name: Wiping local /tmp directory
-  local_action: shell rm -rf /tmp/*
+  shell: rm -rf /tmp/*
 
 # Create Cluster Root CA
 - name: Creating Cluster Root CA
-  local_action: shell {{ item }}
+  shell: {{ item }}
   args:
     chdir: /tmp
   with_items:
@@ -14,14 +14,13 @@
 
 # Create OpenSSL Config
 - name: Creating OpenSSL Config
-  local_action:
-    module: template
+  template:
     dest: /tmp/openssl.cnf
     src: openssl.cnf.j2
 
 # Generate API Server Keypair
 - name: Generating API Server Keypair
-  local_action: shell {{ item }}
+  shell: {{ item }}
   args:
     chdir: /tmp
   with_items:
@@ -31,7 +30,7 @@
 
 # Generate Kubernetes Worker Keypair
 - name: Generating Kubernetes Worker Keypair
-  local_action: shell {{ item }}
+  shell: {{ item }}
   args:
     chdir: /tmp
   with_items:
@@ -41,7 +40,7 @@
 
 # Generate Cluster Administrator Keypair
 - name: Generating Cluster Administrator Keypair
-  local_action: shell {{ item }}
+  shell: {{ item }}
   args:
     chdir: /tmp
   with_items:

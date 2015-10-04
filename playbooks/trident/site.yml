@@ -71,6 +71,15 @@
       task_name: Trident workers
       volumes: "{{ workers_volumes }}"
 
+# Set up OpenSSL TLS
+- name: OpenSSL TLS Setup
+  connection: local
+  gather_facts: no
+  hosts: localhost
+
+  roles:
+    - kubernetes/openssl
+
 # Set up CoreOS
 - name: CoreOS Master Setup
   hosts: masters
@@ -79,25 +88,23 @@
   remote_user: "{{ remote_user }}"
 
   roles:
-    # - role: cloud_config
-#    - role: python
-#    - role: etcd
-#    - role: fleet
-    - role: openssl
+    - role: python
+    - role: etcd
+    - role: fleet
 
-## Set up CoreOS
-#- name: CoreOS Worker Setup
-#  hosts: workers
-#  gather_facts: no
-#  sudo: yes
-#  remote_user: "{{ remote_user }}"
-#
-#  roles:
-#    # - role: cloud_config
-#    - role: python
-#    - role: etcd
-#    - role: flannel
-#    - role: coreos/docker
+# Set up CoreOS
+- name: CoreOS Worker Setup
+  hosts: workers
+  gather_facts: no
+  sudo: yes
+  remote_user: "{{ remote_user }}"
+
+  roles:
+    # - role: cloud_config
+    - role: python
+    - role: etcd
+    - role: flannel
+    - role: coreos/docker
 
 
 
