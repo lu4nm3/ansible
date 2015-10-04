@@ -73,25 +73,14 @@
 
 # Set up OpenSSL TLS
 - name: OpenSSL TLS Setup
-#  connection: local
   gather_facts: no
   hosts: kubernetes
   remote_user: "{{ remote_user }}"
   sudo: yes
 
-#  pre_tasks:
-#    - debug: var="{{ hostvars[groups['kubernetes'][0]]['kubernetes_service_ip'] }}"
-#  vars_files:
-#    - group_vars/kubernetes.yml
-
-#  pre_tasks:
-#    - include_vars: group_vars/kubernetes.yml
-
   roles:
-#    - role: python
+    - role: python
     - role: kubernetes/openssl
-#      kubernetes_service_ip: "{{ hostvars['kubernetes']['kubernetes_service_ip']}}"
-#      kubernetes_service_ip_range: "{{ hostvars['kubernetes']['kubernetes_service_ip_range']}}"
 
 # Set up CoreOS
 - name: CoreOS Master Setup
@@ -101,7 +90,7 @@
   sudo: yes
 
   roles:
-    - role: python
+#    - role: python
     - role: etcd
     - role: fleet
 
@@ -113,7 +102,7 @@
   sudo: yes
 
   roles:
-    - role: python
+#    - role: python
     - role: etcd
     - role: flannel
     - role: coreos/docker
