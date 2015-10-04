@@ -8,7 +8,7 @@
   local_action: shell openssl genrsa -out ca-key.pem 2048
   args:
     chdir: /tmp
-- local_action: openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
+- local_action: shell openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
   args:
     chdir: /tmp
 
