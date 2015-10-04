@@ -13,6 +13,6 @@
 #      chdir: /tmp
 #
   local_action: command openssl genrsa -out ca-key.pem 2048
-    args:
-      chdir: /tmp
+  args:
+    chdir: /tmp
 
