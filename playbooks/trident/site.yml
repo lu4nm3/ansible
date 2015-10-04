@@ -80,8 +80,11 @@
 
 #  pre_tasks:
 #    - debug: var="{{ hostvars[groups['kubernetes'][0]]['kubernetes_service_ip'] }}"
-  vars_files:
-    - group_vars/kubernetes.yml
+#  vars_files:
+#    - group_vars/kubernetes.yml
+
+  pre_tasks:
+    - include_vars: group_vars/kubernetes.yml
 
   roles:
     - role: kubernetes/openssl
