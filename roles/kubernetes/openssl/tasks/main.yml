@@ -17,7 +17,7 @@
   local_action:
     module: template
     dest: /tmp/openssl.cnf
-    src: /tmp/openssl.cnf.j2
+    src: openssl.cnf.j2
 
 # Generate API Server Keypair
 - name: Generating API Server Keypair
