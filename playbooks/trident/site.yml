@@ -73,9 +73,9 @@
 
 # Set up OpenSSL TLS
 - name: OpenSSL TLS Setup
-#  connection: local
   gather_facts: no
   hosts: kubernetes
+  remote_user: "{{ remote_user }}"
   sudo: yes
 
 #  pre_tasks:
