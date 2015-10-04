@@ -1,7 +1,7 @@
 ---
 # Wipe local /tmp directory
 - name: Wiping local /tmp directory
-  shell: rm -rf /tmp/*
+  local_action: shell rm -rf /tmp/*
 
 # Create Cluster Root CA
 - name: Creating Cluster Root CA
