@@ -79,7 +79,7 @@
   sudo: yes
 
   roles:
-    - kubernetes/openssl
+    - role: kubernetes/openssl
 
 # Set up CoreOS
 - name: CoreOS Master Setup
