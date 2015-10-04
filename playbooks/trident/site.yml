@@ -76,16 +76,17 @@
   connection: local
   gather_facts: no
   hosts: localhost
+  sudo: yes
 
   roles:
     - kubernetes/openssl
 
 # Set up CoreOS
 - name: CoreOS Master Setup
-  hosts: masters
   gather_facts: no
-  sudo: yes
+  hosts: masters
   remote_user: "{{ remote_user }}"
+  sudo: yes
 
   roles:
     - role: python
@@ -94,10 +95,10 @@
 
 # Set up CoreOS
 - name: CoreOS Worker Setup
-  hosts: workers
   gather_facts: no
-  sudo: yes
+  hosts: workers
   remote_user: "{{ remote_user }}"
+  sudo: yes
 
   roles:
     # - role: cloud_config
