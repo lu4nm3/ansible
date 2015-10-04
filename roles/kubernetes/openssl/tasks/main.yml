@@ -1,4 +1,7 @@
 ---
+# Wipe local /tmp directory
+- name: Wiping local /tmp directory
+  command: rm -rf /tmp/*
 
 # Create new certificate authority
 - name: Creating new certificate authority
@@ -16,7 +19,3 @@
   local_action: command openssl genrsa -out ca-key.pem 2048
   args:
     chdir: /tmp
-
-- file:
-    path: /tmp/
-    state: absent
