@@ -78,6 +78,9 @@
   hosts: localhost
   sudo: yes
 
+  pre_tasks:
+    - debug: var={{ hostvars['kubernetes'] }}"
+
   roles:
     - role: kubernetes/openssl
       kubernetes_service_ip: "{{ hostvars['kubernetes']['kubernetes_service_ip']}}"
