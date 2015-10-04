@@ -5,7 +5,7 @@
 
 # Create Cluster Root CA
 - name: Creating Cluster Root CA
-  shell: {{ item }}
+  shell: "{{ item }}"
   args:
     chdir: /tmp
   with_items:
@@ -20,7 +20,7 @@
 
 # Generate API Server Keypair
 - name: Generating API Server Keypair
-  shell: {{ item }}
+  shell: "{{ item }}"
   args:
     chdir: /tmp
   with_items:
@@ -30,7 +30,7 @@
 
 # Generate Kubernetes Worker Keypair
 - name: Generating Kubernetes Worker Keypair
-  shell: {{ item }}
+  shell: "{{ item }}"
   args:
     chdir: /tmp
   with_items:
@@ -40,7 +40,7 @@
 
 # Generate Cluster Administrator Keypair
 - name: Generating Cluster Administrator Keypair
-  shell: {{ item }}
+  shell: "{{ item }}"
   args:
     chdir: /tmp
   with_items:
