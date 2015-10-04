@@ -75,7 +75,7 @@
 - name: OpenSSL TLS Setup
   connection: local
   gather_facts: no
-  hosts: localhost
+  hosts: kubernetes
   sudo: yes
 
 #  pre_tasks:
@@ -83,8 +83,8 @@
 #  vars_files:
 #    - group_vars/kubernetes.yml
 
-  pre_tasks:
-    - include_vars: group_vars/kubernetes.yml
+#  pre_tasks:
+#    - include_vars: group_vars/kubernetes.yml
 
   roles:
     - role: kubernetes/openssl
