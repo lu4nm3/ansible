@@ -11,12 +11,6 @@
   with_items:
     - openssl genrsa -out ca-key.pem 2048
     - openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
-#  local_action: shell openssl genrsa -out ca-key.pem 2048
-#  args:
-#    chdir: /tmp
-#- local_action: shell openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
-#  args:
-#    chdir: /tmp
 
 # Create OpenSSL Config
 - name: Creating OpenSSL Config
@@ -27,36 +21,30 @@
 
 # Generate API Server Keypair
 - name: Generating API Server Keypair
-  local_action: shell openssl genrsa -out apiserver-key.pem 2048
+  local_action: shell {{ item }}
   args:
     chdir: /tmp
-- local_action: shell openssl req -new -key apiserver-key.pem -out apiserver.csr -subj "/CN=kube-apiserver" -config openssl.cnf
-  args:
-    chdir: /tmp
-- local_action: shell openssl x509 -req -in apiserver.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out apiserver.pem -days 365 -extensions v3_req -extfile openssl.cnf
-  args:
-    chdir: /tmp
+  with_items:
+    - openssl genrsa -out apiserver-key.pem 2048
+    - openssl req -new -key apiserver-key.pem -out apiserver.csr -subj "/CN=kube-apiserver" -config openssl.cnf
+    - openssl x509 -req -in apiserver.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out apiserver.pem -days 365 -extensions v3_req -extfile openssl.cnf
 
 # Generate Kubernetes Worker Keypair
 - name: Generating Kubernetes Worker Keypair
-  local_action: shell openssl genrsa -out worker-key.pem 2048
+  local_action: shell {{ item }}
   args:
     chdir: /tmp
-- local_action: shell openssl req -new -key worker-key.pem -out worker.csr -subj "/CN=kube-worker"
-  args:
-    chdir: /tmp
-- local_action: shell openssl x509 -req -in worker.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out worker.pem -days 365
-  args:
-    chdir: /tmp
+  with_items:
+    - openssl genrsa -out worker-key.pem 2048
+    - openssl req -new -key worker-key.pem -out worker.csr -subj "/CN=kube-worker"
+    - openssl x509 -req -in worker.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out worker.pem -days 365
 
 # Generate Cluster Administrator Keypair
 - name: Generating Cluster Administrator Keypair
-  local_action: shell openssl genrsa -out admin-key.pem 2048
+  local_action: shell {{ item }}
   args:
     chdir: /tmp
-- local_action: shell openssl req -new -key admin-key.pem -out admin.csr -subj "/CN=kube-admin"
-  args:
-    chdir: /tmp
-- local_action: shell openssl x509 -req -in admin.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out admin.pem -days 365
-  args:
-    chdir: /tmp
+  with_items:
+    - openssl genrsa -out admin-key.pem 2048
+    - openssl req -new -key admin-key.pem -out admin.csr -subj "/CN=kube-admin"
+    - openssl x509 -req -in admin.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out admin.pem -days 365
