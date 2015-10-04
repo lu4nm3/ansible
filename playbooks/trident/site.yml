@@ -78,8 +78,11 @@
   hosts: localhost
   sudo: yes
 
-  vars_files:
-    - kubernetes.yml
+#  vars_files:
+#    - kubernetes.yml
+
+  pre_tasks:
+    - include_vars: kubernetes.yml
 
   roles:
     - role: kubernetes/openssl
