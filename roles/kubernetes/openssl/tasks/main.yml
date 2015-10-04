@@ -5,12 +5,18 @@
 
 # Create Cluster Root CA
 - name: Creating Cluster Root CA
-  local_action: shell openssl genrsa -out ca-key.pem 2048
-  args:
-    chdir: /tmp
-- local_action: shell openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
-  args:
-    chdir: /tmp
+  local_action: shell {{ item }}
+    args:
+      chdir: /tmp
+  with_items:
+    - openssl genrsa -out ca-key.pem 2048
+    - openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
+#  local_action: shell openssl genrsa -out ca-key.pem 2048
+#  args:
+#    chdir: /tmp
+#- local_action: shell openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
+#  args:
+#    chdir: /tmp
 
 # Create OpenSSL Config
 - name: Creating OpenSSL Config
