@@ -79,7 +79,7 @@
   sudo: yes
 
   pre_tasks:
-    - debug: var={{ hostvars['kubernetes'] }}"
+    - debug: var={{ hostvars['kubernetes'] }}
 
   roles:
     - role: kubernetes/openssl
