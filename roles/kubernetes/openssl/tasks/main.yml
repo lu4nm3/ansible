@@ -18,5 +18,5 @@
     chdir: /tmp
 
 - file:
-    path: /tmp/*
+    path: /tmp/
     state: absent
