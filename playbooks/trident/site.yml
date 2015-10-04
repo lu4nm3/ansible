@@ -71,6 +71,21 @@
       task_name: Trident workers
       volumes: "{{ workers_volumes }}"
 
+# Set up OpenSSL TLS
+- name: OpenSSL TLS Setup
+  connection: local
+  gather_facts: no
+  hosts: localhost
+  sudo: yes
+
+  pre_tasks:
+    - debug: var={{ hostvars[groups['kubernetes'][0]] }}
+
+  roles:
+    - role: kubernetes/openssl
+      kubernetes_service_ip: "{{ hostvars['kubernetes']['kubernetes_service_ip']}}"
+      kubernetes_service_ip_range: "{{ hostvars['kubernetes']['kubernetes_service_ip_range']}}"
+
 # Set up CoreOS
 - name: CoreOS Master Setup
   gather_facts: no
@@ -95,21 +110,6 @@
     - role: etcd
     - role: flannel
     - role: coreos/docker
-
-# Set up OpenSSL TLS
-- name: OpenSSL TLS Setup
-  connection: local
-  gather_facts: no
-  hosts: localhost
-  sudo: yes
-
-  pre_tasks:
-    - debug: var={{ hostvars[groups['kubernetes'][0]] }}
-
-  roles:
-    - role: kubernetes/openssl
-      kubernetes_service_ip: "{{ hostvars['kubernetes']['kubernetes_service_ip']}}"
-      kubernetes_service_ip_range: "{{ hostvars['kubernetes']['kubernetes_service_ip_range']}}"
 
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
