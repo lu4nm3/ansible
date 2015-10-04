@@ -78,14 +78,10 @@
   hosts: localhost
   sudo: yes
 
-#  vars_files:
-#    - kubernetes.yml
-
-  pre_tasks:
-    - include_vars: kubernetes.yml
-
   roles:
     - role: kubernetes/openssl
+      kubernetes_service_ip: "{{ hostvars['kubernetes']['kubernetes_service_ip']}}"
+      kubernetes_service_ip_range: "{{ hostvars['kubernetes']['kubernetes_service_ip_range']}}"
 
 # Set up CoreOS
 - name: CoreOS Master Setup
