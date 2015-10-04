@@ -80,24 +80,24 @@
 
   roles:
     # - role: cloud_config
-    - role: python
-    - role: etcd
-    - role: fleet
+#    - role: python
+#    - role: etcd
+#    - role: fleet
     - role: openssl
 
-# Set up CoreOS
-- name: CoreOS Worker Setup
-  hosts: workers
-  gather_facts: no
-  sudo: yes
-  remote_user: "{{ remote_user }}"
-
-  roles:
-    # - role: cloud_config
-    - role: python
-    - role: etcd
-    - role: flannel
-    - role: coreos/docker
+## Set up CoreOS
+#- name: CoreOS Worker Setup
+#  hosts: workers
+#  gather_facts: no
+#  sudo: yes
+#  remote_user: "{{ remote_user }}"
+#
+#  roles:
+#    # - role: cloud_config
+#    - role: python
+#    - role: etcd
+#    - role: flannel
+#    - role: coreos/docker
 
 
 
