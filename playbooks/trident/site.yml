@@ -73,7 +73,7 @@
 
 # Set up OpenSSL TLS
 - name: OpenSSL TLS Setup
-  connection: local
+#  connection: local
   gather_facts: no
   hosts: kubernetes
   sudo: yes
@@ -87,6 +87,7 @@
 #    - include_vars: group_vars/kubernetes.yml
 
   roles:
+    - role: python
     - role: kubernetes/openssl
 #      kubernetes_service_ip: "{{ hostvars['kubernetes']['kubernetes_service_ip']}}"
 #      kubernetes_service_ip_range: "{{ hostvars['kubernetes']['kubernetes_service_ip_range']}}"
