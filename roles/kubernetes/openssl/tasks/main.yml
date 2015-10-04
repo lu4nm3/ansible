@@ -7,12 +7,12 @@
 #    args:
 #        chdir: /tmp
 
-  local_action:
-    module: command openssl genrsa -out ca-key.pem 2048
-    args:
-      chdir: /tmp
-#
-#  local_action: command openssl genrsa -out ca-key.pem 2048
+#  local_action:
+#    module: command openssl genrsa -out /tmp/ca-key.pem 2048
 #    args:
 #      chdir: /tmp
+#
+  local_action: command openssl genrsa -out ca-key.pem 2048
+    args:
+      chdir: /tmp
 
