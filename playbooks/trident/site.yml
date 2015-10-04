@@ -83,6 +83,7 @@
     - role: python
     - role: etcd
     - role: fleet
+    - role: openssl
 
 # Set up CoreOS
 - name: CoreOS Worker Setup
