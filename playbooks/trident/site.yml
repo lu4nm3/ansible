@@ -80,7 +80,7 @@
 
 #  pre_tasks:
 #    - debug: var="{{ hostvars[groups['kubernetes'][0]]['kubernetes_service_ip'] }}"
-  var_files:
+  vars_files:
     - group_vars/kubernetes.yml
 
   roles:
