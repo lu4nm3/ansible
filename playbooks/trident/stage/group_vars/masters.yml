@@ -1,3 +1,6 @@
 ---
 ############### ETCD ###############
 etcd_proxy: "off"
+
+############### OPENSSL ###############
+kubernetes_openssl_keys: [ca.pem, master.pem, master-key.pem]

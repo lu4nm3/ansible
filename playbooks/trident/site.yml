@@ -89,18 +89,10 @@
   remote_user: "{{ remote_user }}"
   sudo: yes
 
-  pre_tasks:
-    - copy:
-        dest: /etc/kubernetes/ssl/{{ item }}
-        src: /tmp/{{ item }}
-      with_items:
-        - ca.pem
-        - apiserver.pem
-        - apiserver-key.pem
-
   roles:
     - role: etcd
     - role: fleet
+    - role: kube_init
 
 # Kubernetes Worker Setup
 - name: Kubernetes Worker Setup
@@ -109,19 +101,11 @@
   remote_user: "{{ remote_user }}"
   sudo: yes
 
-  pre_tasks:
-    - copy:
-        dest: /etc/kubernetes/ssl/{{ item }}
-        src: /tmp/{{ item }}
-      with_items:
-        - ca.pem
-        - worker.pem
-        - worker-key.pem
-
   roles:
     - role: etcd
     - role: flannel
     - role: coreos/docker
+    - role: kube_init
 
 ## Set up Ansible controller account
 #- name: Ansible controller account setup

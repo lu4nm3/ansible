@@ -30,7 +30,6 @@
 - name: Creating fleet.service file
   template:
     dest: /etc/systemd/system/fleet.service
-    force: no
     src: fleet.service.j2
 
 # Start fleet

@@ -18,7 +18,6 @@
 - name: Creating docker.service file
   template:
     dest: /etc/systemd/system/docker.service
-    force: no
     src: docker.service.j2
 
 # Start docker

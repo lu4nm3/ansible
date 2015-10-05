@@ -1,3 +1,6 @@
 ---
 ############### ETCD ###############
 etcd_proxy: "on"
+
+############### OPENSSL ###############
+kubernetes_openssl_keys: [ca.pem, worker.pem, worker-key.pem]

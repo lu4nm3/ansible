@@ -28,9 +28,9 @@
   args:
     chdir: /tmp
   with_items:
-    - openssl genrsa -out apiserver-key.pem 2048
-    - openssl req -new -key apiserver-key.pem -out apiserver.csr -subj "/CN=kube-apiserver" -config openssl.cnf
-    - openssl x509 -req -in apiserver.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out apiserver.pem -days 365 -extensions v3_req -extfile openssl.cnf
+    - openssl genrsa -out master-key.pem 2048
+    - openssl req -new -key master-key.pem -out master.csr -subj "/CN=kube-master" -config openssl.cnf
+    - openssl x509 -req -in master.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out master.pem -days 365 -extensions v3_req -extfile openssl.cnf
   run_once: true
 
 # Generate Kubernetes Worker Keypair
