@@ -71,8 +71,8 @@
       task_name: Trident workers
       volumes: "{{ workers_volumes }}"
 
-# Set up OpenSSL TLS
-- name: OpenSSL TLS Setup
+# Initial Kubernetes Setup
+- name: Initial Kubernetes Setup
   gather_facts: no
   hosts: kubernetes
   remote_user: "{{ remote_user }}"
@@ -82,27 +82,43 @@
     - role: python
     - role: kubernetes/openssl
 
-# Set up CoreOS
-- name: CoreOS Master Setup
+# Kubernetes Master Setup
+- name: Kubernetes Master Setup
   gather_facts: no
   hosts: masters
   remote_user: "{{ remote_user }}"
   sudo: yes
 
+  pre_tasks:
+    - copy:
+        dest: /etc/kubernetes/ssl/{{ item }}
+        src: /tmp/{{ item }}
+      with_items:
+        - ca.pem
+        - apiserver.pem
+        - apiserver-key.pem
+
   roles:
-#    - role: python
     - role: etcd
     - role: fleet
 
-# Set up CoreOS
-- name: CoreOS Worker Setup
+# Kubernetes Worker Setup
+- name: Kubernetes Worker Setup
   gather_facts: no
   hosts: workers
   remote_user: "{{ remote_user }}"
   sudo: yes
 
+  pre_tasks:
+    - copy:
+        dest: /etc/kubernetes/ssl/{{ item }}
+        src: /tmp/{{ item }}
+      with_items:
+        - ca.pem
+        - worker.pem
+        - worker-key.pem
+
   roles:
-#    - role: python
     - role: etcd
     - role: flannel
     - role: coreos/docker
