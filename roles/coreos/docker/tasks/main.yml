@@ -5,8 +5,8 @@
     path: /opt/bin
     state: directory
 
-# Set up docker
-- name: Setting up docker
+# Download docker binary
+- name: Downloading docker binary
   get_url:
     url: https://get.docker.com/builds/Linux/x86_64/docker-{{ version }}
     dest: /opt/bin/docker

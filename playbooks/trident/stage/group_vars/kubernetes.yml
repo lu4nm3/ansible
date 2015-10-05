@@ -2,3 +2,6 @@
 ############### OPENSSL ###############
 kubernetes_service_ip: 10.3.0.1
 kubernetes_service_ip_range: 10.3.0.0/24
+
+############### KUBERNETES ###############
+kubernetes_version: 1.0.0

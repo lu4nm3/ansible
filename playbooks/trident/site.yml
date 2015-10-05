@@ -93,6 +93,7 @@
     - role: etcd
     - role: fleet
     - role: kube_init
+    - role: kube_api_server
 
 # Kubernetes Worker Setup
 - name: Kubernetes Worker Setup

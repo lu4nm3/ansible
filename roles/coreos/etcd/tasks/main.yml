@@ -5,8 +5,8 @@
     path: /opt/bin
     state: directory
 
-# Set up etcd
-- name: Setting up etcd
+# Download etcd binary
+- name: Downloading etcd binary
   get_url:
     url: https://github.com/coreos/etcd/releases/download/v{{ version }}/etcd-v{{ version }}-linux-amd64.tar.gz
     dest: /tmp

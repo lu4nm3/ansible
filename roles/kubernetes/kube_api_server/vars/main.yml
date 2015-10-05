@@ -1,0 +1,2 @@
+---
+version: "{{ kubernetes_version }}"

@@ -5,8 +5,8 @@
     path: /opt/bin
     state: directory
 
-# Set up flannel
-- name: Setting up flannel
+# Download flannel binary
+- name: Downloading flannel binary
   get_url:
     url: https://github.com/coreos/flannel/releases/download/v{{ version }}/flannel-{{ version }}-linux-amd64.tar.gz
     dest: /tmp

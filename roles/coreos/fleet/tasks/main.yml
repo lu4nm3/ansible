@@ -5,8 +5,8 @@
     path: /opt/bin
     state: directory
 
-# Set up fleet
-- name: Setting up fleet
+# Download fleet binary
+- name: Downloading fleet binary
   get_url:
     url: https://github.com/coreos/fleet/releases/download/v{{ version }}/fleet-v{{ version }}-linux-amd64.tar.gz
     dest: /tmp
