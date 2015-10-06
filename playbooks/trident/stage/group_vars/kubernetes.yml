@@ -1,7 +1,12 @@
 ---
-############### OPENSSL ###############
-kubernetes_service_ip: 10.3.0.1
-kubernetes_service_ip_range: 10.3.0.0/24
-
 ############### KUBERNETES ###############
 kubernetes_version: 1.0.0
+
+############### KUBE_API_SERVER ###############
+kubernetes_advertise_address: "{{ private_ip }}"
+kubernetes_allow_privileged: true
+kubernetes_bind_address: 0.0.0.0
+kubernetes_etcd_servers: http://localhost:4001
+kubernetes_secure_port: 443
+kubernetes_service_cluster_ip: 10.3.0.1
+kubernetes_service_cluster_ip_range: 10.3.0.0/24

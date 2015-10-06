@@ -11,7 +11,7 @@ subjectAltName = @alt_names
 [alt_names]
 DNS.1 = kubernetes
 DNS.2 = kubernetes.default
-IP.1 = {{ service_ip }}
+IP.1 = {{ service_cluster_ip }}
 {% for host in groups['masters_private_ips'] %}
 IP.{{ 1 + loop.index }} = {{ host }}
 {% endfor %}

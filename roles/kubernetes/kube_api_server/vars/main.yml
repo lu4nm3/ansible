@@ -1,2 +1,8 @@
 ---
+advertise_address: "{{ kubernetes_advertise_address }}"
+allow_privileged: "{{ kubernetes_allow_privileged }}"
+bind_address: "{{ kubernetes_bind_address }}"
+etcd_servers: "{{ kubernetes_etcd_servers }}"
+secure_port: "{{ kubernetes_secure_port }}"
+service_cluster_ip_range: "{{ kubernetes_service_cluster_ip_range }}"
 version: "{{ kubernetes_version }}"

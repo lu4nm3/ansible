@@ -1,3 +1,2 @@
 ---
-service_ip: "{{ kubernetes_service_ip }}"
-service_ip_range: "{{ kubernetes_service_ip_range }}"
+service_cluster_ip: "{{ kubernetes_service_cluster_ip }}"
