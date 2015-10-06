@@ -1,8 +1,13 @@
 ---
+admission_control: "{{ kubernetes_admission_control }}"
 advertise_address: "{{ kubernetes_advertise_address }}"
 allow_privileged: "{{ kubernetes_allow_privileged }}"
 bind_address: "{{ kubernetes_bind_address }}"
+client_ca_file: "{{ kubernetes_client_ca_file }}"
 etcd_servers: "{{ kubernetes_etcd_servers }}"
 secure_port: "{{ kubernetes_secure_port }}"
+service_account_key_file: "{{ kubernetes_service_account_key_file }}"
 service_cluster_ip_range: "{{ kubernetes_service_cluster_ip_range }}"
+tls_cert_file: "{{ kubernetes_tls_cert_file }}"
+tls_private_key_file: "{{ kubernetes_tls_private_key_file }}"
 version: "{{ kubernetes_version }}"
