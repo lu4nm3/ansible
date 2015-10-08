@@ -27,5 +27,4 @@ flannel_version: 0.5.3
 
 ############### FLEET ###############
 fleet_etcd_servers: http://localhost:4001
-fleet_metadata: role=master
 fleet_version: 0.11.5
