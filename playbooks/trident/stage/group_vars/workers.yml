@@ -2,5 +2,8 @@
 ############### ETCD ###############
 etcd_proxy: "on"
 
+############### FLEET ###############
+fleet_metadata: role=worker
+
 ############### OPENSSL ###############
 kubernetes_openssl_keys: [ca.pem, worker.pem, worker-key.pem]
