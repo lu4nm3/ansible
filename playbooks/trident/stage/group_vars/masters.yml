@@ -2,5 +2,8 @@
 ############### ETCD ###############
 etcd_proxy: "off"
 
+############### FLEET ###############
+fleet_metadata: role=master
+
 ############### OPENSSL ###############
 kubernetes_openssl_keys: [ca.pem, master.pem, master-key.pem]
