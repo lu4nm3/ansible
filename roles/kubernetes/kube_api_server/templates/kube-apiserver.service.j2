@@ -1,7 +1,7 @@
 [Unit]
 Description=Kubernetes API Server
-Requires=docker.service etcd2.service
-After=docker.service etcd2.service
+Requires=etcd2.service
+After=etcd2.service
 
 [Service]
 ExecStart=/opt/bin/kube-apiserver \
