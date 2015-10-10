@@ -24,4 +24,3 @@
 - command: fleetctl start kube-apiserver.service
   args:
     chdir: /etc/systemd/system
-    creates: /opt/bin/{{ item }}
