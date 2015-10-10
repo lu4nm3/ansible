@@ -19,3 +19,9 @@
   template:
     dest: /etc/systemd/system/kube-apiserver.service
     src: kube-apiserver.service.j2
+
+# Launch kube-apiserver
+- command: fleetctl
+  args: fleetctl start kube-apiserver.service
+    chdir: /etc/systemd/system
+    creates: /opt/bin/{{ item }}
