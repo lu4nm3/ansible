@@ -49,6 +49,8 @@ kubernetes_security_group_rules_ingress:
   - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 0.0.0.0/0 } # etcd client traffic
   - { "proto": tcp, "from_port": 7001, "to_port": 7001, "cidr_ip": 0.0.0.0/0 } # etcd peer traffic
   - { "proto": tcp, "from_port": 80, "to_port": 80, "cidr_ip": 0.0.0.0/0 } # http
+  - { "proto": tcp, "from_port": 443, "to_port": 443, "cidr_ip": 0.0.0.0/0 } # http
+  - { "proto": tcp, "from_port": 8080, "to_port": 8080, "cidr_ip": 0.0.0.0/0 } # http
 kubernetes_security_group_tags: { "Name": "Kubernetes" }
 
 # ZooKeeper
