@@ -91,22 +91,22 @@
 
   roles:
     - role: etcd
-    - role: fleet
-    - role: kube_init
-    - role: kube_api_server
-
-# Kubernetes Worker Setup
-- name: Kubernetes Worker Setup
-  gather_facts: no
-  hosts: workers
-  remote_user: "{{ remote_user }}"
-  sudo: yes
-
-  roles:
-    - role: etcd
-    - role: flannel
-    - role: coreos/docker
-    - role: kube_init
+#    - role: fleet
+#    - role: kube_init
+#    - role: kube_api_server
+#
+## Kubernetes Worker Setup
+#- name: Kubernetes Worker Setup
+#  gather_facts: no
+#  hosts: workers
+#  remote_user: "{{ remote_user }}"
+#  sudo: yes
+#
+#  roles:
+#    - role: etcd
+#    - role: flannel
+#    - role: coreos/docker
+#    - role: kube_init
 
 ## Set up Ansible controller account
 #- name: Ansible controller account setup
