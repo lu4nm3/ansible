@@ -21,7 +21,7 @@
     src: kube-apiserver.service.j2
 
 # Launch kube-apiserver
-- command: fleetctl
-  args: fleetctl start kube-apiserver.service
+- command: fleetctl start kube-apiserver.service
+  args:
     chdir: /etc/systemd/system
     creates: /opt/bin/{{ item }}
