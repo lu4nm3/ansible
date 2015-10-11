@@ -59,17 +59,17 @@
       task_name: Trident masters
       volumes: "{{ masters_volumes }}"
       
-    - role: ec2
-      ansible_public_ip_groups: "{{ workers_ansible_public_ip_groups }}"
-      ansible_private_ip_groups: "{{ workers_ansible_private_ip_groups }}"
-      count_tag: "{{ workers_count_tag }}"
-      ebs_optimized: "{{ workers_ebs_optimized }}"
-      exact_count: "{{ workers_exact_count }}"
-      security_groups: "{{ workers_security_groups }}"
-      instance_tags: "{{ workers_instance_tags }}"
-      instance_type: "{{ workers_instance_type }}"
-      task_name: Trident workers
-      volumes: "{{ workers_volumes }}"
+#    - role: ec2
+#      ansible_public_ip_groups: "{{ workers_ansible_public_ip_groups }}"
+#      ansible_private_ip_groups: "{{ workers_ansible_private_ip_groups }}"
+#      count_tag: "{{ workers_count_tag }}"
+#      ebs_optimized: "{{ workers_ebs_optimized }}"
+#      exact_count: "{{ workers_exact_count }}"
+#      security_groups: "{{ workers_security_groups }}"
+#      instance_tags: "{{ workers_instance_tags }}"
+#      instance_type: "{{ workers_instance_type }}"
+#      task_name: Trident workers
+#      volumes: "{{ workers_volumes }}"
 
 # Initial Kubernetes Setup
 - name: Initial Kubernetes Setup

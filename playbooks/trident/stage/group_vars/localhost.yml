@@ -80,7 +80,7 @@ masters_ansible_public_ip_groups: masters, ec2, coreos, kubernetes
 masters_ansible_private_ip_groups: etcd, masters_private_ips
 masters_count_tag: { "type": masters }
 masters_ebs_optimized: false #TODO change to true
-masters_exact_count: 1
+masters_exact_count: 3
 masters_security_groups: ["SSH", "Ping", "Kubernetes"]
 masters_instance_tags: { "type": masters }
 masters_instance_type: t2.micro

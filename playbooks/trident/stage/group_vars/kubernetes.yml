@@ -4,7 +4,7 @@ kubernetes_version: 1.0.0
 
 ############### KUBE_API_SERVER ###############
 kubernetes_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
-kubernetes_advertise_address: "%H"
+kubernetes_advertise_address: "{{ private_ip }}"
 kubernetes_allow_privileged: true
 kubernetes_bind_address: 0.0.0.0
 kubernetes_client_ca_file: /etc/kubernetes/ssl/ca.pem

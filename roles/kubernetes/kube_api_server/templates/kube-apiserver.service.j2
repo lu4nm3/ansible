@@ -6,7 +6,6 @@ After=etcd2.service
 [Service]
 ExecStart=/opt/bin/kube-apiserver \
 --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota \
---advertise-address={{ advertise_address }} \
 --allow-privileged={{ allow_privileged }} \
 --bind-address={{ bind_address }} \
 --client-ca-file={{ client_ca_file }} \
