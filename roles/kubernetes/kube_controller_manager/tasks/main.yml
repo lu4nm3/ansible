@@ -22,6 +22,6 @@
 
 # Start Kubernetes Controller Manager
 - name: Starting Kubernetes Controller Manager
-- command: fleetctl start kube-controller-manager.service
+  command: fleetctl start kube-controller-manager.service
   args:
     chdir: /etc/systemd/system
