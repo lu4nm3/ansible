@@ -10,6 +10,7 @@ ExecStart=/opt/bin/kube-apiserver \
 --allow-privileged={{ allow_privileged }} \
 --bind-address={{ bind_address }} \
 --client-ca-file={{ client_ca_file }} \
+--cloud-provider={{ cloud_provider }} \
 --etcd-servers={{ etcd_servers }} \
 --secure_port={{ secure_port }} \
 --service-account-key-file={{ service_account_key_file }} \

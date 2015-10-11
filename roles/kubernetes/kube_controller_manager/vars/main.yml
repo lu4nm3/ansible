@@ -1,4 +1,5 @@
 ---
+cloud_provider: "{{ kubernetes_cloud_provider }}"
 master: "{{ kubernetes_master }}"
 root_ca_file: "{{ kubernetes_root_ca_file }}"
 service_account_private_key_file: "{{ kubernetes_service_account_private_key_file }}"

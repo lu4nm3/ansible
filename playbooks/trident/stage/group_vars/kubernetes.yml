@@ -1,5 +1,6 @@
 ---
 ############### KUBERNETES ###############
+kubernetes_cloud_provider: aws
 kubernetes_version: 1.0.0
 
 ############### KUBE API SERVER ###############
