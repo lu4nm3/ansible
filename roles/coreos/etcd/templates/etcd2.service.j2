@@ -3,6 +3,7 @@ Conflicts=etcd.service
 Description=etcd2
 
 [Service]
+Environment="ETCD_ADVERTISE_CLIENT_URLS=%H"
 Environment="ETCD_ADVERTISE_CLIENT_URLS={{ advertise_client_urls }}"
 Environment="ETCD_DATA_DIR={{ data_dir }}"
 Environment="ETCD_ELECTION_TIMEOUT={{ election_timeout }}"
