@@ -17,7 +17,8 @@ ExecStart=/opt/bin/kube-apiserver \
 --tls-cert-file={{ tls_cert_file }} \
 --tls-private-key-file={{ kubernetes_tls_private_key_file }}
 Restart=always
-RestartSec=10s
+RestartSec=10
 
-[Install]
-WantedBy=multi-user.target
+[X-Fleet]
+Global=true
+MachineMetadata=role=master

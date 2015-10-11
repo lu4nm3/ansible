@@ -20,7 +20,9 @@
     dest: /etc/systemd/system/kube-apiserver.service
     src: kube-apiserver.service.j2
 
-# Launch kube-apiserver
-- command: fleetctl start kube-apiserver
-  args:
-    chdir: /etc/systemd/system
+# Start kube-apiserver
+- name: Starting kube-apiserver
+  service:
+    enabled: yes
+    name: kube-apiserver.service
+    state: started
