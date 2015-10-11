@@ -17,10 +17,10 @@
 # Create kube-apiserver.service file
 - name: Creating kube-apiserver.service file
   template:
-    dest: /etc/systemd/system/kube-apiserver.service
-    src: kube-apiserver.service.j2
+    dest: /etc/systemd/system/kube-apiserver@.service
+    src: kube-apiserver@.service.j2
 
 # Launch kube-apiserver
-- command: fleetctl start kube-apiserver.service
+- command: fleetctl start kube-apiserver@{{ private_ip }}
   args:
     chdir: /etc/systemd/system

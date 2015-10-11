@@ -4,7 +4,6 @@ Requires=etcd2.service
 After=etcd2.service
 
 [Service]
-Environment="ETCD_ADVERTISE_CLIENT_URLS=%H"
 ExecStart=/opt/bin/kube-apiserver \
 --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota \
 --advertise-address={{ advertise_address }} \
@@ -21,5 +20,5 @@ Restart=always
 RestartSec=10
 
 [X-Fleet]
-Global=true
+Conflicts=kube-apiserver*
 MachineMetadata=role=master
