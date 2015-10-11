@@ -1,24 +1,15 @@
 [Unit]
-Description=Kubernetes API Server
-Requires=etcd2.service
-After=etcd2.service
+After=kube-apiserver.service
+Description=Kubernetes Controller Manager
+Requires=kube-apiserver.service
 
 [Service]
-ExecStart=/opt/bin/kube-apiserver \
---admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota \
---advertise-address={{ advertise_address }} \
---allow-privileged={{ allow_privileged }} \
---bind-address={{ bind_address }} \
---client-ca-file={{ client_ca_file }} \
---etcd-servers={{ etcd_servers }} \
---secure_port={{ secure_port }} \
---service-account-key-file={{ service_account_key_file }} \
---service-cluster-ip-range={{ service_cluster_ip_range }} \
---tls-cert-file={{ tls_cert_file }} \
---tls-private-key-file={{ kubernetes_tls_private_key_file }}
+ExecStart=/opt/bin/kube-controller-manager \
+--master={{ master }} \
+--root-ca-file={{ root_ca_file }} \
+--service-account-private-key-file={{ service_account_private_key_file }}
 Restart=always
-RestartSec=10
+RestartSec=10s
 
 [X-Fleet]
-Global=true
 MachineMetadata=role=master

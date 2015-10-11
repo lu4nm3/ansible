@@ -1,7 +1,7 @@
 [Unit]
+After=etcd2.service
 Description=Kubernetes API Server
 Requires=etcd2.service
-After=etcd2.service
 
 [Service]
 ExecStart=/opt/bin/kube-apiserver \

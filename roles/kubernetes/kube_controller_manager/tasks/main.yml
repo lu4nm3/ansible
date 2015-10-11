@@ -1,0 +1,27 @@
+---
+# Create Kubernetes Controller Manager directory
+- name: Creating Kubernetes Controller Manager directory
+  file:
+    path: /opt/bin
+    state: directory
+
+# Download Kubernetes Controller Manager binary
+- name: Downloading Kubernetes Controller Manager binary
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v{{ version }}/bin/linux/amd64/kube-controller-manager
+    dest: /opt/bin/kube-controller-manager
+    mode: a+x
+  environment:
+    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+
+# Create kube-controller-manager.service file
+- name: Creating kube-controller-manager.service file
+  template:
+    dest: /etc/systemd/system/kube-controller-manager.service
+    src: kube-controller-manager.service.j2
+
+# Start Kubernetes Controller Manager
+- name: Starting Kubernetes Controller Manager
+- command: fleetctl start kube-controller-manager.service
+  args:
+    chdir: /etc/systemd/system

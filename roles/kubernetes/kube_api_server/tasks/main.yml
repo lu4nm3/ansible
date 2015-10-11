@@ -20,8 +20,8 @@
     dest: /etc/systemd/system/kube-apiserver.service
     src: kube-apiserver.service.j2
 
-# Start kube-apiserver
-- name: Starting kube-apiserver
+# Start Kubernetes API Server
+- name: Starting Kubernetes API Server
   service:
     enabled: yes
     name: kube-apiserver.service
