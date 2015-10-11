@@ -94,6 +94,7 @@
     - role: fleet
     - role: kube_init
     - role: kube_api_server
+    - role: kube_controller_manager
 
 ## Kubernetes Worker Setup
 #- name: Kubernetes Worker Setup
