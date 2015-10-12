@@ -19,10 +19,9 @@
     policy_name: "{{ policy_name }}"
     state: "{{ state }}"
 
-- debug: var={{ policy_json | string | from_json }}
-- debug: var={{ policy_json | from_json | string }}
-- debug: var={{ policy_json | from_json | to_nice_json }}
-- debug: var={{ policy_json | from_json | to_nice_json | string }}
+- debug: var={{ policy_json }}
+- debug: var={{ policy_json | string }}
+- debug: var={{ policy_json | string | to_nice_json }}
 
 - debug: var={{ policy_json | to_nice_json }}
 - debug: var={{ policy_json | to_nice_json | string }}
