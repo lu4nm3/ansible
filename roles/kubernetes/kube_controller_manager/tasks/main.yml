@@ -25,3 +25,4 @@
   command: fleetctl start kube-controller-manager.service
   args:
     chdir: /etc/systemd/system
+  run_once: true
