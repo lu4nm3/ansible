@@ -21,4 +21,4 @@
 
 # Pause for IAM resource creation
 - name: Pausing for IAM resource creation
-  pause: seconds=5
+  pause: seconds=1
