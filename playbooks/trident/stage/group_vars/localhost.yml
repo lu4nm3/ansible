@@ -69,6 +69,12 @@ kafka_security_group_rules_ingress:
   - { "proto": tcp, "from_port": 9092, "to_port": 9092, "cidr_ip": 0.0.0.0/0 }
 kafka_security_group_tags: { "Name": "Kafka" }
 
+############### IAM ###############
+masters_iam_type: role
+masters_name: kube
+masters_iam_name: kube
+masters_policy_document: kubernetes-master-aws-iam-policy.json
+
 ############### EC2 COMMON ###############
 assign_public_ip: yes
 image: ami-99bfada9
@@ -80,7 +86,7 @@ masters_ansible_public_ip_groups: masters, ec2, coreos, kubernetes
 masters_ansible_private_ip_groups: etcd, masters_private_ips
 masters_count_tag: { "type": masters }
 masters_ebs_optimized: false #TODO change to true
-masters_exact_count: 3
+masters_exact_count: 1
 masters_security_groups: ["SSH", "Ping", "Kubernetes"]
 masters_instance_tags: { "type": masters }
 masters_instance_type: t2.micro

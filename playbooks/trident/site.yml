@@ -47,17 +47,23 @@
       security_group_tags: "{{ zookeeper_security_group_tags }}"
       task_name: ZooKeeper
 
-    - role: ec2
-      ansible_public_ip_groups: "{{ masters_ansible_public_ip_groups }}"
-      ansible_private_ip_groups: "{{ masters_ansible_private_ip_groups }}"
-      count_tag: "{{ masters_count_tag }}"
-      ebs_optimized: "{{ masters_ebs_optimized }}"
-      exact_count: "{{ masters_exact_count }}"
-      security_groups: "{{ masters_security_groups }}"
-      instance_tags: "{{ masters_instance_tags }}"
-      instance_type: "{{ masters_instance_type }}"
-      task_name: Trident masters
-      volumes: "{{ masters_volumes }}"
+    - role: iam
+      iam_name: "{{ masters_iam_name }}"
+      iam_type: "{{ masters_iam_type }}"
+      name: "{{ masters_name }}"
+      policy_document: "{{ masters_policy_document }}"
+
+#    - role: ec2
+#      ansible_public_ip_groups: "{{ masters_ansible_public_ip_groups }}"
+#      ansible_private_ip_groups: "{{ masters_ansible_private_ip_groups }}"
+#      count_tag: "{{ masters_count_tag }}"
+#      ebs_optimized: "{{ masters_ebs_optimized }}"
+#      exact_count: "{{ masters_exact_count }}"
+#      security_groups: "{{ masters_security_groups }}"
+#      instance_tags: "{{ masters_instance_tags }}"
+#      instance_type: "{{ masters_instance_type }}"
+#      task_name: Trident masters
+#      volumes: "{{ masters_volumes }}"
       
 #    - role: ec2
 #      ansible_public_ip_groups: "{{ workers_ansible_public_ip_groups }}"
@@ -71,30 +77,30 @@
 #      task_name: Trident workers
 #      volumes: "{{ workers_volumes }}"
 
-# Initial Kubernetes Setup
-- name: Initial Kubernetes Setup
-  gather_facts: no
-  hosts: kubernetes
-  remote_user: "{{ remote_user }}"
-  sudo: yes
-
-  roles:
-    - role: python
-    - role: kubernetes/openssl
-
-# Kubernetes Master Setup
-- name: Kubernetes Master Setup
-  gather_facts: no
-  hosts: masters
-  remote_user: "{{ remote_user }}"
-  sudo: yes
-
-  roles:
-    - role: etcd
-    - role: fleet
-    - role: kube_init
-    - role: kube_api_server
-    - role: kube_controller_manager
+## Initial Kubernetes Setup
+#- name: Initial Kubernetes Setup
+#  gather_facts: no
+#  hosts: kubernetes
+#  remote_user: "{{ remote_user }}"
+#  sudo: yes
+#
+#  roles:
+#    - role: python
+#    - role: kubernetes/openssl
+#
+## Kubernetes Master Setup
+#- name: Kubernetes Master Setup
+#  gather_facts: no
+#  hosts: masters
+#  remote_user: "{{ remote_user }}"
+#  sudo: yes
+#
+#  roles:
+#    - role: etcd
+#    - role: fleet
+#    - role: kube_init
+#    - role: kube_api_server
+#    - role: kube_controller_manager
 
 ## Kubernetes Worker Setup
 #- name: Kubernetes Worker Setup

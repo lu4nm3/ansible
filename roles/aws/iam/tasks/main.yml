@@ -1,0 +1,20 @@
+---
+# Create IAM resource
+- name: Creating IAM {{ iam_type }} resource
+  iam:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    iam_type: "{{ iam_type }}"
+    name: "{{ name }}"
+  register: iam_resource
+
+- debug: var=iam_resource
+
+# Add policy to IAM resrouce
+- name: Adding policy to IAM resource
+  iam_policy:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    iam_type: "{{ iam_type }}"
+    iam_name: "{{ iam_resource.created_group.group_name }}"
+    policy_document: "{{ policy_document }}"
