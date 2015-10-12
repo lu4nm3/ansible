@@ -22,6 +22,9 @@
 
 # Start Kubernetes Controller Manager
 - name: Starting Kubernetes Controller Manager
-  command: fleetctl start kube-controller-manager.service
+  command: fleetctl destroy kube-controller-manager.service
+  run_once: true
+- command: fleetctl start kube-controller-manager.service
   args:
     chdir: /etc/systemd/system
+  run_once: true
