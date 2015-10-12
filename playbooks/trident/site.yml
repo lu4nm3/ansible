@@ -52,6 +52,7 @@
       iam_type: "{{ masters_iam_type }}"
       name: "{{ masters_name }}"
       policy_document: "{{ masters_policy_document }}"
+      state: "{{ state }}"
 
 #    - role: ec2
 #      ansible_public_ip_groups: "{{ masters_ansible_public_ip_groups }}"
