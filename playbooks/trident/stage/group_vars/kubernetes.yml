@@ -1,7 +1,7 @@
 ---
 ############### KUBERNETES ###############
 kubernetes_cloud_provider: aws
-kubernetes_version: 1.0.0
+kubernetes_version: 1.0.6
 
 ############### KUBE API SERVER ###############
 kubernetes_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
