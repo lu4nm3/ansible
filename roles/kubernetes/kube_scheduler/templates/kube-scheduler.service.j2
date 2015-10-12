@@ -1,0 +1,13 @@
+[Unit]
+After=kube-apiserver.service
+Description=Kubernetes Scheduler
+Requires=kube-apiserver.service
+
+[Service]
+ExecStart=/opt/bin/kube-scheduler \
+--master={{ master }}
+Restart=always
+RestartSec=10s
+
+[X-Fleet]
+MachineMetadata=role=master
