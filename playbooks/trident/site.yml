@@ -111,6 +111,7 @@
     - role: kube_init
     - role: kube_api_server
     - role: kube_controller_manager
+    - role: kube_scheduler
 
 ## Kubernetes Worker Setup
 #- name: Kubernetes Worker Setup
