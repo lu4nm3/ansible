@@ -51,7 +51,7 @@
       iam_name: "{{ masters_iam_name }}"
       iam_type: "{{ masters_iam_type }}"
       name: "{{ masters_name }}"
-      policy_json: "{{ masters_policy_json | from_json | to_nice_json }}"
+      policy_json: "{{ masters_policy_json }}"
       policy_name: "{{ masters_policy_name }}"
       state: "{{ masters_state }}"
 
