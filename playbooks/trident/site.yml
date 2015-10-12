@@ -67,7 +67,7 @@
       count_tag: "{{ masters_count_tag }}"
       ebs_optimized: "{{ masters_ebs_optimized }}"
       exact_count: "{{ masters_exact_count }}"
-      instance_profile_name: "{{ masters_instance_profile_name }}"
+#      instance_profile_name: "{{ masters_instance_profile_name }}"
       instance_tags: "{{ masters_instance_tags }}"
       instance_type: "{{ masters_instance_type }}"
       security_groups: "{{ masters_security_groups }}"
