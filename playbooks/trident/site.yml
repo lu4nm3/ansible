@@ -50,22 +50,29 @@
     - role: iam
       iam_name: "{{ masters_iam_name }}"
       iam_type: "{{ masters_iam_type }}"
-      name: "{{ masters_name }}"
       policy_json: "{{ masters_policy_json }}"
       policy_name: "{{ masters_policy_name }}"
       state: "{{ masters_state }}"
 
-#    - role: ec2
-#      ansible_public_ip_groups: "{{ masters_ansible_public_ip_groups }}"
-#      ansible_private_ip_groups: "{{ masters_ansible_private_ip_groups }}"
-#      count_tag: "{{ masters_count_tag }}"
-#      ebs_optimized: "{{ masters_ebs_optimized }}"
-#      exact_count: "{{ masters_exact_count }}"
-#      security_groups: "{{ masters_security_groups }}"
-#      instance_tags: "{{ masters_instance_tags }}"
-#      instance_type: "{{ masters_instance_type }}"
-#      task_name: Trident masters
-#      volumes: "{{ masters_volumes }}"
+    - role: iam
+      iam_name: "{{ workers_iam_name }}"
+      iam_type: "{{ workers_iam_type }}"
+      policy_json: "{{ workers_policy_json }}"
+      policy_name: "{{ workers_policy_name }}"
+      state: "{{ workers_state }}"
+
+    - role: ec2
+      ansible_public_ip_groups: "{{ masters_ansible_public_ip_groups }}"
+      ansible_private_ip_groups: "{{ masters_ansible_private_ip_groups }}"
+      count_tag: "{{ masters_count_tag }}"
+      ebs_optimized: "{{ masters_ebs_optimized }}"
+      exact_count: "{{ masters_exact_count }}"
+      instance_profile_name: "{{ masters_instance_profile_name }}"
+      instance_tags: "{{ masters_instance_tags }}"
+      instance_type: "{{ masters_instance_type }}"
+      security_groups: "{{ masters_security_groups }}"
+      task_name: Trident masters
+      volumes: "{{ masters_volumes }}"
       
 #    - role: ec2
 #      ansible_public_ip_groups: "{{ workers_ansible_public_ip_groups }}"
@@ -73,9 +80,10 @@
 #      count_tag: "{{ workers_count_tag }}"
 #      ebs_optimized: "{{ workers_ebs_optimized }}"
 #      exact_count: "{{ workers_exact_count }}"
-#      security_groups: "{{ workers_security_groups }}"
+#      instance_profile_name: "{{ workers_instance_profile_name }}"
 #      instance_tags: "{{ workers_instance_tags }}"
 #      instance_type: "{{ workers_instance_type }}"
+#      security_groups: "{{ workers_security_groups }}"
 #      task_name: Trident workers
 #      volumes: "{{ workers_volumes }}"
 

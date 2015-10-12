@@ -24,6 +24,7 @@ route_tables:
   - { "subnets": [10.0.3.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
 
 ############### SECURITY GROUPS ###############
+
 # Egress
 security_group_rules_egress:
   - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
@@ -70,12 +71,20 @@ kafka_security_group_rules_ingress:
 kafka_security_group_tags: { "Name": "Kafka" }
 
 ############### IAM ###############
+
+# Master
+masters_iam_name: kubernetes-master-role
 masters_iam_type: role
-masters_name: kube
-masters_iam_name: kube
 masters_policy_json: "{{ lookup('file', 'kubernetes-master-aws-iam-policy.json') }}"
-masters_policy_name: kubes
+masters_policy_name: kubernetes-master-policy
 masters_state: present
+
+# Worker
+workers_iam_name: kubernetes-worker-role
+workers_iam_type: role
+workers_policy_json: "{{ lookup('file', 'kubernetes-worker-aws-iam-policy.json') }}"
+workers_policy_name: kubernetes-worker-policy
+workers_state: present
 
 ############### EC2 COMMON ###############
 assign_public_ip: yes
@@ -84,26 +93,30 @@ monitoring: no
 #placement_group: Trident #TODO uncomment
 
 ############### EC2 MASTER ###############
+
+# Master
 masters_ansible_public_ip_groups: masters, ec2, coreos, kubernetes
 masters_ansible_private_ip_groups: etcd, masters_private_ips
 masters_count_tag: { "type": masters }
 masters_ebs_optimized: false #TODO change to true
 masters_exact_count: 1
-masters_security_groups: ["SSH", "Ping", "Kubernetes"]
+masters_instance_profile_name: kubernetes-master-role
 masters_instance_tags: { "type": masters }
 masters_instance_type: t2.micro
+masters_security_groups: ["SSH", "Ping", "Kubernetes"]
 masters_volumes:
   - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
 
-############### EC2 WORKER ###############
+# Worker
 workers_ansible_public_ip_groups: workers, ec2, coreos, kubernetes
 workers_ansible_private_ip_groups: workers_private_ips
 workers_count_tag: { "type": workers }
 workers_ebs_optimized: false #TODO change to true
 workers_exact_count: 1
-workers_security_groups: ["SSH", "Ping", "Kubernetes"]
+workers_instance_profile_name: kubernetes-worker-role
 workers_instance_tags: { "type": workers }
 workers_instance_type: t2.micro
+workers_security_groups: ["SSH", "Ping", "Kubernetes"]
 workers_volumes:
   - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
 

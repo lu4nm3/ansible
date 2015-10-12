@@ -10,6 +10,7 @@
     exact_count: "{{ exact_count }}"
     group: "{{ security_groups }}"
     image: "{{ image }}"
+    instance_profile_name: "{{ instance_profile_name | default(omit) }}"
     instance_tags: "{{ instance_tags }}"
     instance_type: "{{ instance_type }}"
     key_name: "{{ key_pair_name }}"

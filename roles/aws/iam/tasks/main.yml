@@ -5,7 +5,7 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     iam_type: "{{ iam_type }}"
-    name: "{{ name }}"
+    name: "{{ iam_name }}"
     state: "{{ state }}"
 
 # Add policy to IAM resrouce
