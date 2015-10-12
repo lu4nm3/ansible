@@ -18,3 +18,7 @@
     policy_json: "{{ policy_json }}"
     policy_name: "{{ policy_name }}"
     state: "{{ state }}"
+
+# Pause for IAM resource creation
+- name: Pausing for IAM resource creation
+  pause: seconds=5
