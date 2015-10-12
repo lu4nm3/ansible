@@ -15,17 +15,6 @@
     aws_secret_key: "{{ aws_secret_key }}"
     iam_type: "{{ iam_type }}"
     iam_name: "{{ iam_name }}"
-    policy_json: "{{ policy_json | to_nice_json }}"
+    policy_json: "{{ policy_json }}"
     policy_name: "{{ policy_name }}"
     state: "{{ state }}"
-
-- debug: var={{ policy_json }}
-- debug: var={{ policy_json | string }}
-- debug: var={{ policy_json | string | to_nice_json }}
-
-- debug: var={{ policy_json | to_nice_json }}
-- debug: var={{ policy_json | to_nice_json | string }}
-- debug: var={{ policy_json | to_nice_json | from_json }}
-- debug: var={{ policy_json | to_nice_json | from_json | string }}
-
-
