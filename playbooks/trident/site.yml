@@ -87,30 +87,30 @@
 #      task_name: Trident workers
 #      volumes: "{{ workers_volumes }}"
 
-## Initial Kubernetes Setup
-#- name: Initial Kubernetes Setup
-#  gather_facts: no
-#  hosts: kubernetes
-#  remote_user: "{{ remote_user }}"
-#  sudo: yes
-#
-#  roles:
-#    - role: python
-#    - role: kubernetes/openssl
-#
-## Kubernetes Master Setup
-#- name: Kubernetes Master Setup
-#  gather_facts: no
-#  hosts: masters
-#  remote_user: "{{ remote_user }}"
-#  sudo: yes
-#
-#  roles:
-#    - role: etcd
-#    - role: fleet
-#    - role: kube_init
-#    - role: kube_api_server
-#    - role: kube_controller_manager
+# Initial Kubernetes Setup
+- name: Initial Kubernetes Setup
+  gather_facts: no
+  hosts: kubernetes
+  remote_user: "{{ remote_user }}"
+  sudo: yes
+
+  roles:
+    - role: python
+    - role: kubernetes/openssl
+
+# Kubernetes Master Setup
+- name: Kubernetes Master Setup
+  gather_facts: no
+  hosts: masters
+  remote_user: "{{ remote_user }}"
+  sudo: yes
+
+  roles:
+    - role: etcd
+    - role: fleet
+    - role: kube_init
+    - role: kube_api_server
+    - role: kube_controller_manager
 
 ## Kubernetes Worker Setup
 #- name: Kubernetes Worker Setup
