@@ -74,6 +74,7 @@ masters_iam_type: role
 masters_name: kube
 masters_iam_name: kube
 masters_policy_document: kubernetes-master-aws-iam-policy.json
+masters_policy_name: kubes
 masters_state: present
 
 ############### EC2 COMMON ###############

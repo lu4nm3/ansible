@@ -52,6 +52,7 @@
       iam_type: group
       name: kube
       policy_document: "{{ masters_policy_document }}"
+      policy_name: kubernetes
       state: present
 
     - role: iam
@@ -59,6 +60,7 @@
       iam_type: "{{ masters_iam_type }}"
       name: "{{ masters_name }}"
       policy_document: "{{ masters_policy_document }}"
+      policy_name: "{{ masters_policy_name }}"
       state: "{{ masters_state }}"
 
 #    - role: ec2

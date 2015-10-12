@@ -16,4 +16,5 @@
     iam_type: "{{ iam_type }}"
     iam_name: "{{ iam_name }}"
     policy_document: "{{ policy_document }}"
+    policy_name: "{{ policy_name }}"
     state: "{{ state }}"
