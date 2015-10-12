@@ -48,14 +48,6 @@
       task_name: ZooKeeper
 
     - role: iam
-      iam_name: kube
-      iam_type: group
-      name: kube
-      policy_json: "{{ masters_policy_json }}"
-      policy_name: kubernetes
-      state: present
-
-    - role: iam
       iam_name: "{{ masters_iam_name }}"
       iam_type: "{{ masters_iam_type }}"
       name: "{{ masters_name }}"
