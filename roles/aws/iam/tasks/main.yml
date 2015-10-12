@@ -7,9 +7,6 @@
     iam_type: "{{ iam_type }}"
     name: "{{ name }}"
     state: "{{ state }}"
-  register: iam_resource
-
-- debug: var=iam_resource
 
 # Add policy to IAM resrouce
 - name: Adding policy to IAM resource
@@ -17,6 +14,6 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     iam_type: "{{ iam_type }}"
-    iam_name: "{{ iam_resource.created_group.group_name }}"
+    iam_name: "{{ iam_name }}"
     policy_document: "{{ policy_document }}"
     state: "{{ state }}"
