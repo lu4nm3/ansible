@@ -1,7 +1,8 @@
 ---
 ############### KUBERNETES ###############
 kubernetes_cloud_provider: aws
-kubernetes_version: 1.0.0
+kubernetes_master: http://127.0.0.1:8080
+kubernetes_version: 1.0.6
 
 ############### KUBE API SERVER ###############
 kubernetes_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
@@ -9,7 +10,7 @@ kubernetes_advertise_address: "{{ private_ip }}"
 kubernetes_allow_privileged: true
 kubernetes_bind_address: 0.0.0.0
 kubernetes_client_ca_file: /etc/kubernetes/ssl/ca.pem
-kubernetes_etcd_servers: http://localhost:4001
+kubernetes_etcd_servers: http://127.0.0.1:4001
 kubernetes_secure_port: 443
 kubernetes_service_account_key_file: /etc/kubernetes/ssl/master-key.pem
 kubernetes_service_cluster_ip: 10.3.0.1
@@ -18,6 +19,5 @@ kubernetes_tls_cert_file: /etc/kubernetes/ssl/master.pem
 kubernetes_tls_private_key_file: /etc/kubernetes/ssl/master-key.pem
 
 ############### KUBE CONTROLLER MANAGER ###############
-kubernetes_master: http://localhost:8080
 kubernetes_root_ca_file: /etc/kubernetes/ssl/ca.pem
 kubernetes_service_account_private_key_file: /etc/kubernetes/ssl/master-key.pem
