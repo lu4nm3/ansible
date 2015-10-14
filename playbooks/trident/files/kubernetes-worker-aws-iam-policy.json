@@ -3,6 +3,13 @@
   "Statement": [
     {
       "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::kubernetes-*"
+      ]
+    },
+    {
+      "Effect": "Allow",
       "Action": "ec2:Describe*",
       "Resource": "*"
     },
