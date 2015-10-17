@@ -108,7 +108,7 @@
 
   roles:
     - role: etcd
-    - role: coreos/docker
+#    - role: coreos/docker
     - role: fleet
 #    - role: kube_init
     - role: kube_api_server
