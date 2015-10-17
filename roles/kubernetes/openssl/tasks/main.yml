@@ -54,3 +54,16 @@
     - openssl req -new -key admin-key.pem -out admin.csr -subj "/CN=kube-admin"
     - openssl x509 -req -in admin.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out admin.pem -days 365
   run_once: true
+
+# Create OpenSSL key directory
+- name: Creating OpenSSL key directory
+  file:
+    path: /etc/kubernetes/ssl
+    state: directory
+
+# Copy Open SSL keys
+- name: Copying OpenSSL keys
+  copy:
+    dest: /etc/kubernetes/ssl/{{ item }}
+    src: /tmp/{{ item }}
+  with_items: openssl_keys

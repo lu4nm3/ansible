@@ -1,2 +1,3 @@
 ---
+openssl_keys: "{{ kubernetes_openssl_keys }}"
 service_cluster_ip: "{{ kubernetes_service_cluster_ip }}"

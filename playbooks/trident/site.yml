@@ -97,7 +97,7 @@
   roles:
     - role: python
     - role: kubernetes/openssl
-    - role: kube_init
+#    - role: kube_init
 
 # Kubernetes Master Setup
 - name: Kubernetes Master Setup
