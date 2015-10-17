@@ -97,7 +97,6 @@
   roles:
     - role: python
     - role: kubernetes/openssl
-#    - role: kube_init
 
 # Kubernetes Master Setup
 - name: Kubernetes Master Setup
@@ -110,7 +109,6 @@
     - role: etcd
 #    - role: coreos/docker
     - role: fleet
-#    - role: kube_init
     - role: kube_api_server
     - role: kube_controller_manager
     - role: kube_scheduler

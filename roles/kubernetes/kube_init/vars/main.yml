@@ -1,2 +1,0 @@
----
-openssl_keys: "{{ kubernetes_openssl_keys }}"
