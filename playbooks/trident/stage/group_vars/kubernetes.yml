@@ -12,12 +12,12 @@ kubernetes_bind_address: 0.0.0.0
 kubernetes_client_ca_file: /etc/kubernetes/ssl/ca.pem
 kubernetes_etcd_servers: http://127.0.0.1:4001
 kubernetes_secure_port: 443
-kubernetes_service_account_key_file: /etc/kubernetes/ssl/master-key.pem
+kubernetes_service_account_key_file: /etc/kubernetes/ssl/apiserver-key.pem
 kubernetes_service_cluster_ip: 10.3.0.1
 kubernetes_service_cluster_ip_range: 10.3.0.0/24
-kubernetes_tls_cert_file: /etc/kubernetes/ssl/master.pem
-kubernetes_tls_private_key_file: /etc/kubernetes/ssl/master-key.pem
+kubernetes_tls_cert_file: /etc/kubernetes/ssl/apiserver.pem
+kubernetes_tls_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
 
 ############### KUBE CONTROLLER MANAGER ###############
 kubernetes_root_ca_file: /etc/kubernetes/ssl/ca.pem
-kubernetes_service_account_private_key_file: /etc/kubernetes/ssl/master-key.pem
+kubernetes_service_account_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
