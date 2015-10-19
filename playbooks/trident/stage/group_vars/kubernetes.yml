@@ -1,23 +1,41 @@
 ---
 ############### KUBERNETES ###############
-kubernetes_cloud_provider: aws
-kubernetes_master: http://127.0.0.1:8080
+kubernetes_service_cluster_ip: 10.3.0.1
 kubernetes_version: 1.0.6
 
-############### KUBE API SERVER ###############
-kubernetes_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
-kubernetes_advertise_address: "{{ private_ip }}"
-kubernetes_allow_privileged: true
-kubernetes_bind_address: 0.0.0.0
-kubernetes_client_ca_file: /etc/kubernetes/ssl/ca.pem
-kubernetes_etcd_servers: http://127.0.0.1:4001
-kubernetes_secure_port: 443
-kubernetes_service_account_key_file: /etc/kubernetes/ssl/apiserver-key.pem
-kubernetes_service_cluster_ip: 10.3.0.1
-kubernetes_service_cluster_ip_range: 10.3.0.0/24
-kubernetes_tls_cert_file: /etc/kubernetes/ssl/apiserver.pem
-kubernetes_tls_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+############### KUBELET ###############
+kubelet_allow_privileged: true
+kubelet_api_servers: http://127.0.0.1:8080
+kubelet_cadvisor_port: 0
+kubelet_cluster_dns: 10.3.0.10
+kubelet_cluster_domain: cluster.local
+kubelet_config: /etc/kubernetes/manifests
+kubelet_hostname_override: "{{ private_ip }}"
+kubelet_register_node: false
+kubelet_version: 1.0.6
 
-############### KUBE CONTROLLER MANAGER ###############
-kubernetes_root_ca_file: /etc/kubernetes/ssl/ca.pem
-kubernetes_service_account_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+############### APISERVER ###############
+apiserver_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
+apiserver_advertise_address: "{{ private_ip }}"
+apiserver_allow_privileged: true
+apiserver_bind_address: 0.0.0.0
+apiserver_client_ca_file: /etc/kubernetes/ssl/ca.pem
+apiserver_cloud_provider: aws
+apiserver_etcd_servers: http://127.0.0.1:4001
+apiserver_secure_port: 443
+apiserver_service_account_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+apiserver_service_cluster_ip_range: 10.3.0.0/24
+apiserver_tls_cert_file: /etc/kubernetes/ssl/apiserver.pem
+apiserver_tls_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+apiserver_version: 1.0.6
+
+############### CONTROLLER MANAGER ###############
+controller_manager_cloud_provider: aws
+controller_manager_master: http://127.0.0.1:8080
+controller_manager_root_ca_file: /etc/kubernetes/ssl/ca.pem
+controller_manager_service_account_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+controller_manager_version: 1.0.6
+
+############### SCHEDULER ###############
+scheduler_master: http://127.0.0.1:8080
+scheduler_version: 1.0.6

@@ -1,0 +1,9 @@
+---
+api_servers: "{{ kubelet_api_servers }}"
+allow_privileged: "{{ kubelet_allow_privileged }}"
+cadvisor_port: "{{ kubelet_cadvisor_port }}"
+cluster_dns: "{{ kubelet_cluster_dns }}"
+cluster_domain: "{{ kubelet_cluster_domain }}"
+config: "{{ kubelet_config }}"
+hostname_override: "{{ kubelet_hostname_override }}"
+register_node: "{{ kubelet_register_node }}"

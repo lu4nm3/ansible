@@ -5,18 +5,18 @@ Requires=etcd2.service
 
 [Service]
 ExecStart=/opt/bin/kube-apiserver \
---admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota \
---advertise-address={{ advertise_address }} \
---allow-privileged={{ allow_privileged }} \
---bind-address={{ bind_address }} \
---client-ca-file={{ client_ca_file }} \
---cloud-provider={{ cloud_provider }} \
---etcd-servers={{ etcd_servers }} \
---secure-port={{ secure_port }} \
---service-account-key-file={{ service_account_key_file }} \
---service-cluster-ip-range={{ service_cluster_ip_range }} \
---tls-cert-file={{ tls_cert_file }} \
---tls-private-key-file={{ kubernetes_tls_private_key_file }}
+    --admission-control={{ admission_control }} \
+    --advertise-address={{ advertise_address }} \
+    --allow-privileged={{ allow_privileged }} \
+    --bind-address={{ bind_address }} \
+    --client-ca-file={{ client_ca_file }} \
+    --cloud-provider={{ cloud_provider }} \
+    --etcd-servers={{ etcd_servers }} \
+    --secure-port={{ secure_port }} \
+    --service-account-key-file={{ service_account_key_file }} \
+    --service-cluster-ip-range={{ service_cluster_ip_range }} \
+    --tls-cert-file={{ tls_cert_file }} \
+    --tls-private-key-file={{ tls_private_key_file }}
 Restart=always
 RestartSec=10s
 

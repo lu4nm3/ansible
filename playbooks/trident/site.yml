@@ -107,8 +107,10 @@
 
   roles:
     - role: etcd
+    - role: flannel
+    - role: coreos/docker
 #    - role: coreos/docker
-    - role: fleet
+#    - role: fleet
     - role: kube_api_server
     - role: kube_controller_manager
     - role: kube_scheduler

@@ -1,0 +1,18 @@
+[Unit]
+Description=Kubernetes Kubelet
+
+[Service]
+ExecStart=/usr/bin/kubelet \
+    --allow-privileged={{ allow_privileged }} \
+    --api-servers={{ api_servers }} \
+    --cadvisor-port={{ cadvisor_port }} \
+    --cluster-dns={{ cluster_dns }} \
+    --cluster-domain={{ cluster_domain }} \
+    --config={{ config }} \
+    --hostname-override={{ hostname_override }} \
+    --register-node={{ register_node }}
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
