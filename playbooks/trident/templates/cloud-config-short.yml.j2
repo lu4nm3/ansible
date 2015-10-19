@@ -5,14 +5,16 @@ coreos:
     advertise-client-urls: {{ advertise_client_urls }}
     data-dir: {{ data_dir }}
     discovery: {{ discovery }}
+    election-timeout: {{ election_timeout }}
     initial-advertise-peer-urls: {{ initial_advertise_peer_urls }}
+    initial-cluster: {{ initial_cluster }}
+    initial-cluster-state: {{ initial_cluster_state }}
     listen-client-urls: {{ listen_client_urls }}
     listen-peer-urls: {{ listen_peer_urls }}
+    name: {{ name }}
+    proxy: {{ proxy }}
   flannel:
     etcd_endpoints: http://localhost:4001
-  fleet:
-    etcd_servers: http://localhost:4001
-    metadata: role=kubernetes
   units:
     - name: docker.service
       command: start
@@ -27,5 +29,3 @@ coreos:
             Requires=etcd2.service
             [Service]
             ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "10.244.0.0/16", "Backend": {"Type": "vxlan"}}'
-    - name: fleet.service
-      command: start
