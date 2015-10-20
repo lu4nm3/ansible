@@ -2,7 +2,7 @@
 Description=Kubernetes Kubelet
 
 [Service]
-ExecStart=/usr/bin/kubelet \
+ExecStart=/opt/bin/kubelet \
     --allow-privileged={{ allow_privileged }} \
     --api-servers={{ api_servers }} \
     --cadvisor-port={{ cadvisor_port }} \
