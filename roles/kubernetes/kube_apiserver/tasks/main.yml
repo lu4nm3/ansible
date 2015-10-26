@@ -1,0 +1,28 @@
+---
+# Create Kubernetes API Server directory
+- name: Creating Kubernetes manifest directory
+  file:
+    path: /etc/kubernetes/manifests
+    state: directory
+
+## Download Kubernetes API Server binary
+#- name: Downloading Kubernetes API Server binary
+#  get_url:
+#    url: https://storage.googleapis.com/kubernetes-release/release/v{{ version }}/bin/linux/amd64/kube-apiserver
+#    dest: /opt/bin/kube-apiserver
+#    mode: a+x
+#  environment:
+#    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+
+# Create Kubernetes API Server manifest file
+- name: Creating kube-apiserver.service file
+  template:
+    dest: /etc/kubernetes/manifests/kube-apiserver.yml
+    src: kube-apiserver.yml.j2
+
+## Start Kubernetes API Server
+#- name: Starting Kubernetes API Server
+#  service:
+#    enabled: yes
+#    name: kube-apiserver.service
+#    state: started
