@@ -2,6 +2,7 @@
 api_servers: "{{ kubelet_api_servers }}"
 allow_privileged: "{{ kubelet_allow_privileged }}"
 cadvisor_port: "{{ kubelet_cadvisor_port }}"
+cloud_provider: "{{ kubelet_cloud_provider }}"
 cluster_dns: "{{ kubelet_cluster_dns }}"
 cluster_domain: "{{ kubelet_cluster_domain }}"
 config: "{{ kubelet_config }}"

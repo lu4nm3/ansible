@@ -2,29 +2,29 @@
 # Create Kubernetes Scheduler directory
 - name: Creating Kubernetes Scheduler directory
   file:
-    path: /opt/bin
+    path: /etc/kubernetes/manifests
     state: directory
 
-# Download Kubernetes Scheduler binary
-- name: Downloading Kubernetes Scheduler binary
-  get_url:
-    url: https://storage.googleapis.com/kubernetes-release/release/v{{ version }}/bin/linux/amd64/kube-scheduler
-    dest: /opt/bin/kube-scheduler
-    mode: a+x
-  environment:
-    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+## Download Kubernetes Scheduler binary
+#- name: Downloading Kubernetes Scheduler binary
+#  get_url:
+#    url: https://storage.googleapis.com/kubernetes-release/release/v{{ version }}/bin/linux/amd64/kube-scheduler
+#    dest: /opt/bin/kube-scheduler
+#    mode: a+x
+#  environment:
+#    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 
-# Create kube-scheduler.service file
-- name: Creating kube-scheduler.service file
+# Create Kubernetes Scheduler manifest file
+- name: Creating Kubernetes Scheduler manifest file
   template:
-    dest: /etc/systemd/system/kube-scheduler.service
-    src: kube-scheduler.service.j2
+    dest: /etc/kubernetes/manifests/kube-scheduler.yml
+    src: kube-scheduler.yml.j2
 
-# Start Kubernetes Scheduler
-- name: Starting Kubernetes Scheduler
-  command: fleetctl destroy kube-scheduler.service
-  run_once: true
-- command: fleetctl start kube-scheduler.service
-  args:
-    chdir: /etc/systemd/system
-  run_once: true
+## Start Kubernetes Scheduler
+#- name: Starting Kubernetes Scheduler
+#  command: fleetctl destroy kube-scheduler.service
+#  run_once: true
+#- command: fleetctl start kube-scheduler.service
+#  args:
+#    chdir: /etc/systemd/system
+#  run_once: true

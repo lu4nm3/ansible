@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-scheduler
+spec:
+  containers:
+  - name: kube-scheduler
+    image: gcr.io/google_containers/hyperkube:v{{ version }}
+    command:
+    - /hyperkube
+    - scheduler
+    - --master={{ master }}
+    livenessProbe:
+      httpGet:
+        host: {{ liveness_probe_http_get_host }}
+        path: {{ liveness_probe_http_get_path }}
+        port: {{ liveness_probe_http_get_port }}
+      initialDelaySeconds: {{ liveness_probe_initial_delay_secs }}
+      timeoutSeconds: {{ liveness_probe_timeout_secs }}
+  hostNetwork: true

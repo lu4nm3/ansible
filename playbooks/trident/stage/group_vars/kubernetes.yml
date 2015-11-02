@@ -3,17 +3,6 @@
 kubernetes_service_cluster_ip: 10.3.0.1
 kubernetes_version: 1.0.6
 
-############### KUBELET ###############
-kubelet_allow_privileged: true
-kubelet_api_servers: http://127.0.0.1:8080
-kubelet_cadvisor_port: 0
-kubelet_cluster_dns: 10.3.0.10
-kubelet_cluster_domain: cluster.local
-kubelet_config: /etc/kubernetes/manifests
-kubelet_hostname_override: "{{ private_ip }}"
-kubelet_register_node: false
-kubelet_version: 1.0.6
-
 ############### APISERVER ###############
 apiserver_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
 apiserver_advertise_address: "{{ private_ip }}"
@@ -36,6 +25,41 @@ controller_manager_root_ca_file: /etc/kubernetes/ssl/ca.pem
 controller_manager_service_account_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
 controller_manager_version: 1.0.6
 
+controller_manager_liveness_probe_initial_delay_secs: 15
+controller_manager_liveness_probe_timeout_secs: 1
+controller_manager_liveness_probe_http_get_host: 127.0.0.1
+controller_manager_liveness_probe_http_get_path: /healthz
+controller_manager_liveness_probe_http_get_port: 10252
+
 ############### SCHEDULER ###############
 scheduler_master: http://127.0.0.1:8080
 scheduler_version: 1.0.6
+
+scheduler_liveness_probe_initial_delay_secs: 15
+scheduler_liveness_probe_timeout_secs: 1
+scheduler_liveness_probe_http_get_host: 127.0.0.1
+scheduler_liveness_probe_http_get_path: /healthz
+scheduler_liveness_probe_http_get_port: 10251
+
+############### PROXY ###############
+proxy_master: http://127.0.0.1:8080
+proxy_privileged: true
+proxy_version: 1.0.6
+
+############### PODMASTER ###############
+dest_file_scheduler:
+dest_file_controller_manager:
+podmaster_etcd_servers: http://127.0.0.1:4001
+podmaster_version: 1.1
+
+############### KUBELET ###############
+kubelet_allow_privileged: true
+kubelet_api_servers: http://127.0.0.1:8080
+kubelet_cadvisor_port: 0
+kubelet_cloud_provider: aws
+kubelet_cluster_dns: 10.3.0.10
+kubelet_cluster_domain: cluster.local
+kubelet_config: /etc/kubernetes/manifests
+kubelet_hostname_override: "{{ private_ip }}"
+kubelet_register_node: false
+kubelet_version: 1.0.6

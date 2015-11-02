@@ -15,7 +15,7 @@
 #    SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 
 # Create Kubernetes API Server manifest file
-- name: Creating kube-apiserver.service file
+- name: Creating Kubernetes API Server manifest file
   template:
     dest: /etc/kubernetes/manifests/kube-apiserver.yml
     src: kube-apiserver.yml.j2

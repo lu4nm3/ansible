@@ -114,6 +114,7 @@
     - role: kube_api_server
     - role: kube_controller_manager
     - role: kube_scheduler
+    - role: kube_proxy
     - role: kubelet
 
 ## Kubernetes Worker Setup

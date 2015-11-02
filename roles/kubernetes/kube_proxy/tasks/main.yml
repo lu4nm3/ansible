@@ -1,0 +1,12 @@
+---
+# Create Kubernetes Proxy directory
+- name: Creating Kubernetes Proxy directory
+  file:
+    path: /etc/kubernetes/manifests
+    state: directory
+
+# Create Kubernetes Proxy manifest file
+- name: Creating Kubernetes Proxy manifest file
+  template:
+    dest: /etc/kubernetes/manifests/kube-proxy.yml
+    src: kube-proxy-master.yml.j2

@@ -1,0 +1,4 @@
+---
+master: "{{ proxy_master }}"
+privileged: "{{ proxy_privileged }}"
+version: "{{ proxy_version }}"

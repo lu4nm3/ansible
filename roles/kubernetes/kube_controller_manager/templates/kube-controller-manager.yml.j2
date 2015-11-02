@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: kube-controller-manager
-    image: gcr.io/google_containers/hyperkube:{{ version }}
+    image: gcr.io/google_containers/hyperkube:v{{ version }}
     command:
     - /hyperkube
     - controller-manager
@@ -15,11 +15,11 @@ spec:
     - --service-account-private-key-file={{ service_account_private_key_file }}
     livenessProbe:
       httpGet:
-        host: 127.0.0.1
-        path: /healthz
-        port: 10252
-      initialDelaySeconds: 15
-      timeoutSeconds: 1
+        host: {{ liveness_probe_http_get_host }}
+        path: {{ liveness_probe_http_get_path }}
+        port: {{ liveness_probe_http_get_port }}
+      initialDelaySeconds: {{ liveness_probe_initial_delay_secs }}
+      timeoutSeconds: {{ liveness_probe_timeout_secs }}
     volumeMounts:
     - mountPath: /etc/kubernetes/ssl
       name: ssl-certs-kubernetes
