@@ -1,0 +1,12 @@
+---
+# Create Kubernetes Podmaster directory
+- name: Creating Kubernetes Podmaster directory
+  file:
+    path: /etc/kubernetes/manifests
+    state: directory
+
+# Create Kubernetes Podmaster manifest file
+- name: Creating Kubernetes Podmaster manifest file
+  template:
+    dest: /etc/kubernetes/manifests/kube-podmaster.yml
+    src: kube-podmaster.yml.j2

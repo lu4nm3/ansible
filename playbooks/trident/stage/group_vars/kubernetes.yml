@@ -47,10 +47,15 @@ proxy_privileged: true
 proxy_version: 1.0.6
 
 ############### PODMASTER ###############
-dest_file_scheduler:
-dest_file_controller_manager:
+podmaster_controller_manager_dest_file: /dst/manifests/kube-controller-manager.yaml
+podmaster_controller_manager_key: controller
+podmaster_controller_manager_source_file: /src/manifests/kube-controller-manager.yaml
 podmaster_etcd_servers: http://127.0.0.1:4001
+podmaster_scheduler_dest_file: /dst/manifests/kube-scheduler.yaml
+podmaster_scheduler_key: scheduler
+podmaster_scheduler_source_file: /src/manifests/kube-scheduler.yaml
 podmaster_version: 1.1
+podmaster_whoami: "{{ private_ip }}"
 
 ############### KUBELET ###############
 kubelet_allow_privileged: true

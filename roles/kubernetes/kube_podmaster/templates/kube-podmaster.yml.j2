@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-podmaster
+spec:
+  containers:
+  - name: controller-manager-elector
+    image: gcr.io/google_containers/podmaster:{{ version }}
+    command:
+    - /podmaster
+    - --dest-file={{ controller_manager_dest_file }}
+    - --etcd-servers={{ etcd_servers }}
+    - --key={{ controller_manager_key }}
+    - --source-file={{ controller_manager_source_file }}
+    - --whoami={{ whoami }}
+    terminationMessagePath: /dev/termination-log
+    volumeMounts:
+    - mountPath: /src/manifests
+      name: manifest-src
+      readOnly: true
+    - mountPath: /dst/manifests
+      name: manifest-dst
+  - name: scheduler-elector
+    image: gcr.io/google_containers/podmaster:{{ version }}
+    command:
+    - /podmaster
+    - --dest-file={{ scheduler_dest_file }}
+    - --etcd-servers={{ etcd_servers }}
+    - --key={{ scheduler_key }}
+    - --source-file={{ scheduler_source_file }}
+    - --whoami={{ whoami }}
+    volumeMounts:
+    - mountPath: /src/manifests
+      name: manifest-src
+      readOnly: true
+    - mountPath: /dst/manifests
+      name: manifest-dst
+  hostNetwork: true
+  volumes:
+  - hostPath:
+      path: /srv/kubernetes/manifests
+    name: manifest-src
+  - hostPath:
+      path: /etc/kubernetes/manifests
+    name: manifest-dst
