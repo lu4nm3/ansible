@@ -109,7 +109,7 @@
     - role: etcd
     - role: flannel
     - role: coreos/docker
-    - role: kube_api_server
+    - role: kube_apiserver
     - role: kube_controller_manager
     - role: kube_scheduler
     - role: kube_podmaster
