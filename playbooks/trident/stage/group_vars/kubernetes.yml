@@ -1,7 +1,7 @@
 ---
 ############### KUBERNETES ###############
 kubernetes_service_cluster_ip: 10.3.0.1
-kubernetes_version: 1.0.6
+kubernetes_version: 1.1.1-beta.1
 
 ############### APISERVER ###############
 apiserver_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
@@ -16,14 +16,14 @@ apiserver_service_account_key_file: /etc/kubernetes/ssl/apiserver-key.pem
 apiserver_service_cluster_ip_range: 10.3.0.0/24
 apiserver_tls_cert_file: /etc/kubernetes/ssl/apiserver.pem
 apiserver_tls_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
-apiserver_version: 1.0.6
+apiserver_version: "{{ kubernetes_version }}"
 
 ############### CONTROLLER MANAGER ###############
 controller_manager_cloud_provider: aws
 controller_manager_master: http://127.0.0.1:8080
 controller_manager_root_ca_file: /etc/kubernetes/ssl/ca.pem
 controller_manager_service_account_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
-controller_manager_version: 1.0.6
+controller_manager_version: "{{ kubernetes_version }}"
 
 controller_manager_liveness_probe_initial_delay_secs: 15
 controller_manager_liveness_probe_timeout_secs: 1
@@ -33,7 +33,7 @@ controller_manager_liveness_probe_http_get_port: 10252
 
 ############### SCHEDULER ###############
 scheduler_master: http://127.0.0.1:8080
-scheduler_version: 1.0.6
+scheduler_version: "{{ kubernetes_version }}"
 
 scheduler_liveness_probe_initial_delay_secs: 15
 scheduler_liveness_probe_timeout_secs: 1
@@ -44,7 +44,7 @@ scheduler_liveness_probe_http_get_port: 10251
 ############### PROXY ###############
 proxy_master: http://127.0.0.1:8080
 proxy_privileged: true
-proxy_version: 1.0.6
+proxy_version: "{{ kubernetes_version }}"
 
 ############### PODMASTER ###############
 podmaster_controller_manager_dest_file: /dst/manifests/kube-controller-manager.yaml
@@ -67,4 +67,4 @@ kubelet_cluster_domain: cluster.local
 kubelet_config: /etc/kubernetes/manifests
 kubelet_hostname_override: "{{ private_ip }}"
 kubelet_register_node: false
-kubelet_version: 1.0.6
+kubelet_version: "{{ kubernetes_version }}"
