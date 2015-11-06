@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: kube-apiserver
-  namespace: kube-system
+
 spec:
   containers:
   - name: kube-apiserver
@@ -15,6 +15,7 @@ spec:
     - --allow-privileged={{ allow_privileged }}
     - --bind-address={{ bind_address }}
     - --client-ca-file={{ client_ca_file }}
+    - --cloud-provider={{ cloud_provider }}
     - --etcd-servers={{ etcd_servers }}
     - --secure-port={{ secure_port }}
     - --service-account-key-file={{ service_account_key_file }}
