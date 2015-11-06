@@ -10,7 +10,6 @@ spec:
     command:
     - /hyperkube
     - controller-manager
-    - --cloud-provider={{ cloud_provider }}
     - --master={{ master }}
     - --root-ca-file={{ root_ca_file }}
     - --service-account-private-key-file={{ service_account_private_key_file }}
