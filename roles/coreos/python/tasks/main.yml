@@ -1,7 +1,7 @@
 ---
 # Wiping /home/core directory
 - name: Wiping /home/core directory
-  raw: rm -rf /home/core/*
+  raw: rm -rf /home/core/* /tmp/*
 
 # Set up Python
 - name: Downloading Python
