@@ -2,7 +2,7 @@
 # Create Kubernetes Scheduler directory
 - name: Creating Kubernetes Scheduler directory
   file:
-    path: /etc/kubernetes/manifests
+    path: /srv/kubernetes/manifests
     state: directory
 
 ## Download Kubernetes Scheduler binary
@@ -17,7 +17,7 @@
 # Create Kubernetes Scheduler manifest file
 - name: Creating Kubernetes Scheduler manifest file
   template:
-    dest: /etc/kubernetes/manifests/kube-scheduler.yml
+    dest: /srv/kubernetes/manifests/kube-scheduler.yml
     src: kube-scheduler.yml.j2
 
 ## Start Kubernetes Scheduler
