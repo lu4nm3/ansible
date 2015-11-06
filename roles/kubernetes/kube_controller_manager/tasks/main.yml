@@ -2,7 +2,7 @@
 # Create Kubernetes Controller Manager directory
 - name: Creating Kubernetes Controller Manager directory
   file:
-    path: /etc/kubernetes/manifests
+    path: /srv/kubernetes/manifests
     state: directory
 
 ## Download Kubernetes Controller Manager binary
@@ -17,7 +17,7 @@
 # Create Kubernetes Controller Manager manifest file
 - name: Creating Kubernetes Controller Manager manifest file
   template:
-    dest: /etc/kubernetes/manifests/kube-controller-manager.yml
+    dest: /srv/kubernetes/manifests/kube-controller-manager.yml
     src: kube-controller-manager.yml.j2
 
 ## Start Kubernetes Controller Manager
