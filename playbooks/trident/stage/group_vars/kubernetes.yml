@@ -1,7 +1,7 @@
 ---
 ############### KUBERNETES ###############
 kubernetes_service_cluster_ip: 10.3.0.1
-kubernetes_version: 1.0.6
+kubernetes_version: 1.1
 
 ############### APISERVER ###############
 apiserver_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
