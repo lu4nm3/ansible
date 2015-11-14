@@ -92,7 +92,7 @@
   gather_facts: no
   hosts: kubernetes
   remote_user: "{{ remote_user }}"
-  sudo: yes
+  become: yes
 
   roles:
     - role: python
@@ -103,7 +103,7 @@
   gather_facts: no
   hosts: masters
   remote_user: "{{ remote_user }}"
-  sudo: yes
+  become: yes
 
   roles:
     - role: etcd
