@@ -14,11 +14,11 @@ spec:
     securityContext:
       privileged: {{ privileged }}
     volumeMounts:
-    - mountPath: /etc/ssl/certs
-      name: ssl-certs-host
+    - name: ssl-certs-host
+      mountPath: /etc/ssl/certs
       readOnly: true
   hostNetwork: true
   volumes:
-  - hostPath:
+  - name: ssl-certs-host
+    hostPath:
       path: /usr/share/ca-certificates
-    name: ssl-certs-host

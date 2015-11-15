@@ -16,11 +16,11 @@ spec:
     - --whoami={{ whoami }}
     terminationMessagePath: /dev/termination-log
     volumeMounts:
-    - mountPath: /src/manifests
-      name: manifest-src
+    - name: manifest-src
+      mountPath: /src/manifests
       readOnly: true
-    - mountPath: /dst/manifests
-      name: manifest-dst
+    - name: manifest-dst
+      mountPath: /dst/manifests
   - name: scheduler-elector
     image: gcr.io/google_containers/podmaster:{{ version }}
     command:
@@ -31,16 +31,16 @@ spec:
     - --source-file={{ scheduler_source_file }}
     - --whoami={{ whoami }}
     volumeMounts:
-    - mountPath: /src/manifests
-      name: manifest-src
+    - name: manifest-src
+      mountPath: /src/manifests
       readOnly: true
-    - mountPath: /dst/manifests
-      name: manifest-dst
+    - name: manifest-dst
+      mountPath: /dst/manifests
   hostNetwork: true
   volumes:
-  - hostPath:
+  - name: manifest-src
+    hostPath:
       path: /srv/kubernetes/manifests
-    name: manifest-src
-  - hostPath:
+  - name: manifest-dst
+    hostPath:
       path: /etc/kubernetes/manifests
-    name: manifest-dst

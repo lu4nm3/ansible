@@ -17,30 +17,31 @@ spec:
     - --client-ca-file={{ client_ca_file }}
     - --cloud-provider={{ cloud_provider }}
     - --etcd-servers={{ etcd_servers }}
+    - --insecure-port={{ insecure_port }}
     - --secure-port={{ secure_port }}
     - --service-account-key-file={{ service_account_key_file }}
     - --service-cluster-ip-range={{ service_cluster_ip_range }}
     - --tls-cert-file={{ tls_cert_file }}
     - --tls-private-key-file={{ tls_private_key_file }}
     ports:
-    - containerPort: 443
-      hostPort: 443
-      name: https
-    - containerPort: 8080
-      hostPort: 8080
-      name: local
+    - name: https
+      containerPort: {{ secure_port }}
+      hostPort: {{ secure_port }}
+    - name: http
+      containerPort: {{ insecure_port }}
+      hostPort: {{ insecure_port }}
     volumeMounts:
-    - mountPath: /etc/kubernetes/ssl
-      name: ssl-certs-kubernetes
+    - name: ssl-certs-kubernetes
+      mountPath: /etc/kubernetes/ssl
       readOnly: true
-    - mountPath: /etc/ssl/certs
-      name: ssl-certs-host
+    - name: ssl-certs-host
+      mountPath: /etc/ssl/certs
       readOnly: true
   hostNetwork: true
   volumes:
-  - hostPath:
+  - name: ssl-certs-kubernetes
+    hostPath:
       path: /etc/kubernetes/ssl
-    name: ssl-certs-kubernetes
-  - hostPath:
+  - name: ssl-certs-host
+    hostPath:
       path: /usr/share/ca-certificates
-    name: ssl-certs-host

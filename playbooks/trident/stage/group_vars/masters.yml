@@ -6,4 +6,4 @@ etcd_proxy: "off"
 fleet_metadata: role=master
 
 ############### OPENSSL ###############
-kubernetes_openssl_keys: [ca.pem, apiserver.pem, apiserver-key.pem]
+kubernetes_ssl_keys: [ca.pem, apiserver.pem, apiserver-key.pem]

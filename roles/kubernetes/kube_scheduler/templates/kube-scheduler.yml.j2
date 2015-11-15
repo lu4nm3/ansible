@@ -13,9 +13,9 @@ spec:
     - --master={{ master }}
     livenessProbe:
       httpGet:
-        host: {{ liveness_probe_http_get_host }}
-        path: {{ liveness_probe_http_get_path }}
-        port: {{ liveness_probe_http_get_port }}
-      initialDelaySeconds: {{ liveness_probe_initial_delay_secs }}
-      timeoutSeconds: {{ liveness_probe_timeout_secs }}
+        host: 127.0.0.1
+        path: /healthz
+        port: 10251
+      initialDelaySeconds: 15
+      timeoutSeconds: 1
   hostNetwork: true

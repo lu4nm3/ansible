@@ -1,9 +1,3 @@
 ---
 master: "{{ scheduler_master }}"
 version: "{{ scheduler_version }}"
-
-liveness_probe_initial_delay_secs: "{{ scheduler_liveness_probe_initial_delay_secs }}"
-liveness_probe_timeout_secs: "{{ scheduler_liveness_probe_timeout_secs }}"
-liveness_probe_http_get_host: "{{ scheduler_liveness_probe_http_get_host }}"
-liveness_probe_http_get_path: "{{ scheduler_liveness_probe_http_get_path }}"
-liveness_probe_http_get_port: "{{ scheduler_liveness_probe_http_get_port }}"

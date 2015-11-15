@@ -66,4 +66,4 @@
   copy:
     dest: /etc/kubernetes/ssl/{{ item }}
     src: /tmp/{{ item }}
-  with_items: openssl_keys
+  with_items: ssl_keys
