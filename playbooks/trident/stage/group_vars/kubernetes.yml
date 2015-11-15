@@ -12,6 +12,7 @@ apiserver_bind_address: 0.0.0.0
 apiserver_client_ca_file: /etc/kubernetes/ssl/ca.pem
 apiserver_cloud_provider: "{{ kubernetes_cloud_provider }}"
 apiserver_etcd_servers: http://127.0.0.1:4001
+apiserver_insecure_bind_address: 0.0.0.0
 apiserver_insecure_port: 8080
 apiserver_secure_port: 443
 apiserver_service_account_key_file: /etc/kubernetes/ssl/apiserver-key.pem

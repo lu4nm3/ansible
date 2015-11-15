@@ -11,7 +11,7 @@ key_pair_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 cidr_block: 10.0.0.0/16
 dns_hostnames: yes
 dns_support: yes
-vpc_resource_tags: { "Name": "Trident2" }
+vpc_resource_tags: { "Name": "Trident" }
 instance_tenancy: "default"
 internet_gateway: true
 subnets:
@@ -57,6 +57,8 @@ kubernetes_security_group_rules_ingress:
   - { "proto": tcp, "from_port": 30000, "to_port": 32767, "cidr_ip": 0.0.0.0/0 } # kubernetes services
   - { "proto": udp, "from_port": 8472, "to_port": 8472, "cidr_ip": 10.0.0.0/16 } # flannel
 kubernetes_security_group_tags: { "Name": "Kubernetes" }
+
+# Kubernetes Master ELB
 
 # ZooKeeper
 zookeeper_security_group_name: ZooKeeper
