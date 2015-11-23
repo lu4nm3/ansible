@@ -1,6 +1,6 @@
 ---
-backend_type: "{{ flannel_backend_type }}"
-etcd_endpoints: "{{ flannel_etcd_endpoints }}"
-iface: "{{ flannel_iface }}"
-network_cidr: "{{ flannel_network_cidr }}"
-version: "{{ flannel_version }}"
+backend_type: "{{ coreos.flannel.backend_type }}"
+etcd_endpoints: "{{ coreos.flannel.etcd_endpoints }}"
+iface: "{{ coreos.flannel.iface }}"
+network_cidr: "{{ coreos.flannel.network_cidr }}"
+version: "{{ coreos.flannel.version }}"

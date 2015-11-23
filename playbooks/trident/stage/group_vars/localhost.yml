@@ -1,158 +1,113 @@
 ---
-############### COMMON ###############
-region: us-west-2
-wait: yes
+aws:
+  ec2:
+    assign_public_ip: yes
+    image: ami-99bfada9
+    monitoring: no
+    #placement_group: Trident #TODO uncomment
+    instances:
+      - ansible_public_ip_groups: masters, ec2, coreos, kubernetes
+        ansible_private_ip_groups: etcd, masters_private_ips
+        assign_public_ip: yes
+        count_tag: { "type": masters }
+        ebs_optimized: false #TODO change to true
+        exact_count: 2
+        image: ami-46d2c227
+        instance_profile_name: kubernetes-master-role
+        instance_tags: { "type": masters }
+        instance_type: t2.micro
+        key_name: Trident
+        monitoring: no
+        #placement_group: Trident #TODO uncomment
+        security_groups: ["SSH", "Ping", "Kubernetes"]
+        task_name: Kubernetes master
+        volumes:
+          - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+        wait: yes
+      - ansible_public_ip_groups: workers, ec2, coreos, kubernetes
+        ansible_private_ip_groups: workers_private_ips
+        assign_public_ip: yes
+        count_tag: { "type": workers }
+        ebs_optimized: false #TODO change to true
+        exact_count: 2
+        image: ami-46d2c227
+        instance_profile_name: kubernetes-worker-role
+        instance_tags: { "type": workers }
+        instance_type: t2.micro
+        key_name: Trident
+        monitoring: no
+        #placement_group: Trident #TODO uncomment
+        security_groups: ["SSH", "Ping", "Kubernetes"]
+        task_name: Kubernetes master
+        volumes:
+          - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+        wait: yes
 
-############### KEY PAIR ###############
-key_pair_name: Trident
-key_pair_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  iam:
+    - name: kubernetes-master-role
+      policy_json: "{{ lookup('file', 'kubernetes-master-aws-iam-policy.json') }}"
+      policy_name: kubernetes-master-policy
+      state: present
+      type: role
+    - name: kubernetes-worker-role
+      policy_json: "{{ lookup('file', 'kubernetes-worker-aws-iam-policy.json') }}"
+      policy_name: kubernetes-worker-policy
+      state: present
+      type: role
 
-############### VPC ###############
-cidr_block: 10.0.0.0/16
-dns_hostnames: yes
-dns_support: yes
-vpc_resource_tags: { "Name": "Trident" }
-instance_tenancy: "default"
-internet_gateway: true
-subnets:
-  - { "cidr": 10.0.1.0/24, "az": us-west-2a }
-  - { "cidr": 10.0.2.0/24, "az": us-west-2b }
-  - { "cidr": 10.0.3.0/24, "az": us-west-2c }
-route_tables:
-  - { "subnets": [10.0.1.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
-  - { "subnets": [10.0.2.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
-  - { "subnets": [10.0.3.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
+  key_pair:
+    name: Trident
+    material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    wait: yes
 
-############### SECURITY GROUPS ###############
+  security_groups:
+    - description: SSH Security Group
+      name: SSH
+      rules_egress:
+        - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+      rules_ingress:
+        - { "proto": tcp, "from_port": 22, "to_port": 22, "cidr_ip": 0.0.0.0/0 }
+      tags: { "Name": "SSH" }
+      task_name: SSH
+    - description: Ping Security Group
+      name: Ping
+      rules_egress:
+        - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+      rules_ingress:
+        - { "proto": icmp, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+      tags: { "Name": "Ping" }
+      task_name: Ping
+    - description: Kubernetes Security Group
+      name: Kubernetes
+      rules_egress:
+        - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+      rules_ingress:
+        - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 10.0.0.0/16 } # etcd client traffic
+        - { "proto": tcp, "from_port": 7001, "to_port": 7001, "cidr_ip": 10.0.0.0/16 } # etcd peer traffic
+        - { "proto": tcp, "from_port": 80, "to_port": 80, "cidr_ip": 10.0.0.0/16 } # http
+        - { "proto": tcp, "from_port": 443, "to_port": 443, "cidr_ip": 10.0.0.0/16 } # https
+        - { "proto": tcp, "from_port": 8080, "to_port": 8080, "cidr_ip": 10.0.0.0/16 } # http
+        - { "proto": tcp, "from_port": 10248, "to_port": 10252, "cidr_ip": 10.0.0.0/16 } # health checks
+        - { "proto": tcp, "from_port": 29000, "to_port": 29099, "cidr_ip": 10.0.0.0/16 } # kubernetes services
+        - { "proto": tcp, "from_port": 30000, "to_port": 32767, "cidr_ip": 0.0.0.0/0 } # kubernetes services
+        - { "proto": udp, "from_port": 8472, "to_port": 8472, "cidr_ip": 10.0.0.0/16 } # flannel
+      tags: { "Name": "Kubernetes" }
+      task_name: Kubernetes
 
-# Egress
-security_group_rules_egress:
-  - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+  vpc:
+    cidr_block: 10.0.0.0/16
+    dns_hostnames: yes
+    dns_support: yes
+    instance_tenancy: "default"
+    internet_gateway: true
+    resource_tags: { "Name": "Trident" }
+    route_tables:
+      - { "subnets": [10.0.1.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
+      - { "subnets": [10.0.2.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
+      - { "subnets": [10.0.3.0/24], "routes": [{ "dest": 0.0.0.0/0, "gw": igw }] }
+    subnets:
+      - { "cidr": 10.0.1.0/24, "az": us-west-2a }
+      - { "cidr": 10.0.2.0/24, "az": us-west-2b }
+      - { "cidr": 10.0.3.0/24, "az": us-west-2c }
 
-# SSH
-ssh_security_group_description: SSH Security Group
-ssh_security_group_name: SSH
-ssh_security_group_rules_ingress:
-  - { "proto": tcp, "from_port": 22, "to_port": 22, "cidr_ip": 0.0.0.0/0 }
-ssh_security_group_tags: { "Name": "SSH" }
-
-# Ping
-ping_security_group_description: Ping Security Group
-ping_security_group_name: Ping
-ping_security_group_rules_ingress:
-  - { "proto": icmp, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
-ping_security_group_tags: { "Name": "Ping" }
-
-# Kubernetes
-kubernetes_security_group_description: Kubernetes Security Group
-kubernetes_security_group_name: Kubernetes
-kubernetes_security_group_rules_ingress:
-  - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 10.0.0.0/16 } # etcd client traffic
-  - { "proto": tcp, "from_port": 7001, "to_port": 7001, "cidr_ip": 10.0.0.0/16 } # etcd peer traffic
-  - { "proto": tcp, "from_port": 80, "to_port": 80, "cidr_ip": 10.0.0.0/16 } # http
-  - { "proto": tcp, "from_port": 443, "to_port": 443, "cidr_ip": 10.0.0.0/16 } # https
-  - { "proto": tcp, "from_port": 8080, "to_port": 8080, "cidr_ip": 10.0.0.0/16 } # http
-  - { "proto": tcp, "from_port": 10248, "to_port": 10252, "cidr_ip": 10.0.0.0/16 } # health checks
-  - { "proto": tcp, "from_port": 29000, "to_port": 29099, "cidr_ip": 10.0.0.0/16 } # kubernetes services
-  - { "proto": tcp, "from_port": 30000, "to_port": 32767, "cidr_ip": 0.0.0.0/0 } # kubernetes services
-  - { "proto": udp, "from_port": 8472, "to_port": 8472, "cidr_ip": 10.0.0.0/16 } # flannel
-kubernetes_security_group_tags: { "Name": "Kubernetes" }
-
-# Kubernetes Master ELB
-
-# ZooKeeper
-zookeeper_security_group_name: ZooKeeper
-zookeeper_security_group_description: ZooKeeper Security Group
-zookeeper_security_group_rules_ingress:
-  - { "proto": tcp, "from_port": 2181, "to_port": 2181, "cidr_ip": 0.0.0.0/0 }
-  - { "proto": tcp, "from_port": 2888, "to_port": 2888, "cidr_ip": 0.0.0.0/0 }
-  - { "proto": tcp, "from_port": 3888, "to_port": 3888, "cidr_ip": 0.0.0.0/0 }
-zookeeper_security_group_tags: { "Name": "ZooKeeper" }
-
-# Kafka
-kafka_security_group_name: Kafka
-kafka_security_group_description: Kafka security group
-kafka_security_group_rules_ingress:
-  - { "proto": tcp, "from_port": 9092, "to_port": 9092, "cidr_ip": 0.0.0.0/0 }
-kafka_security_group_tags: { "Name": "Kafka" }
-
-############### IAM ###############
-
-# Master
-masters_iam_name: kubernetes-master-role
-masters_iam_type: role
-masters_policy_json: "{{ lookup('file', 'kubernetes-master-aws-iam-policy.json') }}"
-masters_policy_name: kubernetes-master-policy
-masters_state: present
-
-# Worker
-workers_iam_name: kubernetes-worker-role
-workers_iam_type: role
-workers_policy_json: "{{ lookup('file', 'kubernetes-worker-aws-iam-policy.json') }}"
-workers_policy_name: kubernetes-worker-policy
-workers_state: present
-
-############### EC2 COMMON ###############
-assign_public_ip: yes
-image: ami-99bfada9
-monitoring: no
-#placement_group: Trident #TODO uncomment
-
-############### EC2 MASTER ###############
-
-# Master
-masters_ansible_public_ip_groups: masters, ec2, coreos, kubernetes
-masters_ansible_private_ip_groups: etcd, masters_private_ips
-masters_count_tag: { "type": masters }
-masters_ebs_optimized: false #TODO change to true
-masters_exact_count: 3
-masters_instance_profile_name: kubernetes-master-role
-masters_instance_tags: { "type": masters }
-masters_instance_type: t2.micro
-masters_security_groups: ["SSH", "Ping", "Kubernetes"]
-masters_volumes:
-  - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-
-# Worker
-workers_ansible_public_ip_groups: workers, ec2, coreos, kubernetes
-workers_ansible_private_ip_groups: workers_private_ips
-workers_count_tag: { "type": workers }
-workers_ebs_optimized: false #TODO change to true
-workers_exact_count: 1
-workers_instance_profile_name: kubernetes-worker-role
-workers_instance_tags: { "type": workers }
-workers_instance_type: t2.micro
-workers_security_groups: ["SSH", "Ping", "Kubernetes"]
-workers_volumes:
-  - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-
-
-
-############### EC2 ZOOKEEPER ###############
-#zookeeper_ansible_public_ip_groups: ec2, zookeeper
-#zookeeper_ansible_private_ip_groups: zookeeper_private
-#zookeeper_count_tag: { "type": zookeeper }
-#zookeeper_ebs_optimized: true
-#zookeeper_exact_count: 3
-#zookeeper_security_groups: ["SSH", "Ping", "ZooKeeper"]
-#zookeeper_instance_tags: { "type": zookeeper }
-#zookeeper_instance_type: m4.large
-#zookeeper_volumes:
-#  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-#  - { "device_name": /dev/sdb, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
-#  - { "device_name": /dev/sdc, "volume_size": 50, "device_type": gp2, "delete_on_termination": true }
-
-############### EC2 KAFKA ###############
-#kafka_ansible_public_ip_groups: ec2, kafka, java, supervisor
-#kafka_ansible_private_ip_groups: kafka_private
-#kafka_count_tag: { "type": kafka }
-#kafka_ebs_optimized: true
-#kafka_exact_count: 1
-#kafka_security_groups: ["SSH", "Ping", "Kafka"]
-#kafka_instance_tags: { "type": kafka }
-#kafka_instance_type: r3.2xlarge
-#kafka_volumes:
-#  - { "device_name": /dev/sda1, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-#  - { "device_name": /dev/sdb, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
-#  - { "device_name": /dev/sdc, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
-#  - { "device_name": /dev/sdd, "volume_size": 500, "device_type": gp2, "delete_on_termination": true }
+  region: us-west-2

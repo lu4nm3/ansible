@@ -1,23 +1,25 @@
 ---
 # Create IAM resource
-- name: Creating IAM {{ iam_type }} resource
+- name: Creating IAM {{ item.type }} resource
   iam:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
-    iam_type: "{{ iam_type }}"
-    name: "{{ iam_name }}"
-    state: "{{ state }}"
+    iam_type: "{{ item.type }}"
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: aws.iam
 
 # Add policy to IAM resrouce
 - name: Adding policy to IAM resource
   iam_policy:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
-    iam_type: "{{ iam_type }}"
-    iam_name: "{{ iam_name }}"
-    policy_json: "{{ policy_json }}"
-    policy_name: "{{ policy_name }}"
-    state: "{{ state }}"
+    iam_type: "{{ item.type }}"
+    iam_name: "{{ item.name }}"
+    policy_json: "{{ item.policy_json }}"
+    policy_name: "{{ item.policy_name }}"
+    state: "{{ item.state }}"
+  with_items: aws.iam
 
 # Pause for IAM resource creation
 - name: Pausing for IAM resource creation

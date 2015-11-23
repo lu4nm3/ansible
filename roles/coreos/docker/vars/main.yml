@@ -1,2 +1,2 @@
 ---
-version: "{{ docker_version }}"
+version: "{{ coreos.docker.version }}"

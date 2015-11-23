@@ -1,4 +1,4 @@
 ---
-etcd_servers: "{{ fleet_etcd_servers }}"
-metadata: "{{ fleet_metadata }}"
-version: "{{ fleet_version }}"
+etcd_servers: "{{ coreos.fleet.etcd_servers }}"
+metadata: "{{ coreos.fleet.metadata }}"
+version: "{{ coreos.fleet.version }}"

@@ -15,106 +15,43 @@
 
   roles:
     - role: key_pair
-
     - role: vpc
-      resource_tags: "{{ vpc_resource_tags }}"
-
     - role: security_group
-      security_group_description: "{{ ssh_security_group_description }}"
-      security_group_name: "{{ ssh_security_group_name }}"
-      security_group_rules_ingress: "{{ ssh_security_group_rules_ingress }}"
-      security_group_tags: "{{ ssh_security_group_tags }}"
-      task_name: SSH
-
-    - role: security_group
-      security_group_description: "{{ ping_security_group_description }}"
-      security_group_name: "{{ ping_security_group_name }}"
-      security_group_rules_ingress: "{{ ping_security_group_rules_ingress }}"
-      security_group_tags: "{{ ping_security_group_tags }}"
-      task_name: Ping
-
-    - role: security_group
-      security_group_description: "{{ kubernetes_security_group_description }}"
-      security_group_name: "{{ kubernetes_security_group_name }}"
-      security_group_rules_ingress: "{{ kubernetes_security_group_rules_ingress }}"
-      security_group_tags: "{{ kubernetes_security_group_tags }}"
-      task_name: Kubernetes
-
-    - role: security_group
-      security_group_description: "{{ zookeeper_security_group_description }}"
-      security_group_name: "{{ zookeeper_security_group_name }}"
-      security_group_rules_ingress: "{{ zookeeper_security_group_rules_ingress }}"
-      security_group_tags: "{{ zookeeper_security_group_tags }}"
-      task_name: ZooKeeper
-
-    - role: iam
-      iam_name: "{{ masters_iam_name }}"
-      iam_type: "{{ masters_iam_type }}"
-      policy_json: "{{ masters_policy_json }}"
-      policy_name: "{{ masters_policy_name }}"
-      state: "{{ masters_state }}"
-
-    - role: iam
-      iam_name: "{{ workers_iam_name }}"
-      iam_type: "{{ workers_iam_type }}"
-      policy_json: "{{ workers_policy_json }}"
-      policy_name: "{{ workers_policy_name }}"
-      state: "{{ workers_state }}"
-
+    - role: iam#
     - role: ec2
-      ansible_public_ip_groups: "{{ masters_ansible_public_ip_groups }}"
-      ansible_private_ip_groups: "{{ masters_ansible_private_ip_groups }}"
-      count_tag: "{{ masters_count_tag }}"
-      ebs_optimized: "{{ masters_ebs_optimized }}"
-      exact_count: "{{ masters_exact_count }}"
-      instance_profile_name: "{{ masters_instance_profile_name }}"
-      instance_tags: "{{ masters_instance_tags }}"
-      instance_type: "{{ masters_instance_type }}"
-      security_groups: "{{ masters_security_groups }}"
-      task_name: Trident masters
-      volumes: "{{ masters_volumes }}"
-      
-#    - role: ec2
-#      ansible_public_ip_groups: "{{ workers_ansible_public_ip_groups }}"
-#      ansible_private_ip_groups: "{{ workers_ansible_private_ip_groups }}"
-#      count_tag: "{{ workers_count_tag }}"
-#      ebs_optimized: "{{ workers_ebs_optimized }}"
-#      exact_count: "{{ workers_exact_count }}"
-#      instance_profile_name: "{{ workers_instance_profile_name }}"
-#      instance_tags: "{{ workers_instance_tags }}"
-#      instance_type: "{{ workers_instance_type }}"
-#      security_groups: "{{ workers_security_groups }}"
-#      task_name: Trident workers
-#      volumes: "{{ workers_volumes }}"
 
-# Initial Kubernetes Setup
-- name: Initial Kubernetes Setup
-  gather_facts: no
-  hosts: kubernetes
-  remote_user: "{{ remote_user }}"
-  become: yes
+## Initial Kubernetes Setup
+#- name: Initial Kubernetes Setup
+#  gather_facts: no
+#  hosts: kubernetes
+#  remote_user: "{{ remote_user }}"
+#  become: yes
+#
+#  roles:
+#    - role: python
+#    - role: openssl
+#
+## Kubernetes Master Setup
+#- name: Kubernetes Master Setup
+#  gather_facts: no
+#  hosts: masters
+#  remote_user: "{{ remote_user }}"
+#  become: yes
+#
+#  roles:
+#    - role: etcd
+#    - role: flannel
+#    - role: coreos/docker
+#    - role: kube_apiserver
+#    - role: kube_controller_manager
+#    - role: kube_scheduler
+#    - role: kube_podmaster
+#    - role: kube_proxy
+#    - role: kubelet
 
-  roles:
-    - role: python
-    - role: kubernetes/openssl
 
-# Kubernetes Master Setup
-- name: Kubernetes Master Setup
-  gather_facts: no
-  hosts: masters
-  remote_user: "{{ remote_user }}"
-  become: yes
 
-  roles:
-    - role: etcd
-    - role: flannel
-    - role: coreos/docker
-    - role: kube_apiserver
-    - role: kube_controller_manager
-    - role: kube_scheduler
-    - role: kube_podmaster
-    - role: kube_proxy
-    - role: kubelet
+
 
 ## Kubernetes Worker Setup
 #- name: Kubernetes Worker Setup

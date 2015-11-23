@@ -1,30 +1,32 @@
 ---
-############### PYTHON ###############
 ansible_python_interpreter: /home/core/bin/python
-python_version: 2.6.1
 
-############### DOCKER ###############
-docker_version: 1.8.2
+coreos:
+  docker:
+    version: 1.8.2
 
-############### ETCD ###############
-etcd_advertise_client_urls: http://{{ private_ip }}:4001
-etcd_data_dir: /var/lib/etcd2
-etcd_election_timeout: 1200
-etcd_initial_advertise_peer_urls: http://{{ private_ip }}:7001
-etcd_initial_cluster: "{% for host in groups['etcd'] %}{{ host | hash('md5') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
-etcd_initial_cluster_state: new
-etcd_listen_client_urls: http://{{ private_ip }}:4001,http://localhost:4001
-etcd_listen_peer_urls: http://{{ private_ip }}:7001,http://localhost:7001
-etcd_name: "{{ private_ip | hash('md5') }}"
-etcd_version: 2.2.0
+  etcd:
+    advertise_client_urls: http://{{ private_ip }}:4001
+    data_dir: /var/lib/etcd2
+    election_timeout: 1200
+    initial_advertise_peer_urls: http://{{ private_ip }}:7001
+    initial_cluster: "{% for host in groups['etcd'] %}{{ host | hash('md5') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
+    initial_cluster_state: new
+    listen_client_urls: http://{{ private_ip }}:4001,http://localhost:4001
+    listen_peer_urls: http://{{ private_ip }}:7001,http://localhost:7001
+    name: "{{ private_ip | hash('md5') }}"
+    version: 2.2.0
 
-############### FLANNEL ###############
-flannel_backend_type: vxlan
-flannel_etcd_endpoints: http://localhost:4001
-flannel_iface: "{{ private_ip }}"
-flannel_network_cidr: 10.2.0.0/16
-flannel_version: 0.5.3
+  flannel:
+    backend_type: vxlan
+    etcd_endpoints: http://localhost:4001
+    iface: "{{ private_ip }}"
+    network_cidr: 10.2.0.0/16
+    version: 0.5.3
 
-############### FLEET ###############
-fleet_etcd_servers: http://localhost:4001
-fleet_version: 0.11.5
+  fleet:
+    etcd_servers: http://localhost:4001
+    version: 0.11.5
+
+  python:
+    version: 2.6.1

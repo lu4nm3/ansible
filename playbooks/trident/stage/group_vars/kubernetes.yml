@@ -1,61 +1,58 @@
 ---
-############### KUBERNETES ###############
-kubernetes_cloud_provider: aws
-kubernetes_service_cluster_ip: 10.3.0.1
-kubernetes_version: 1.1.1
+kubernetes:
+  apiserver:
+    admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
+    advertise_address: "{{ private_ip }}"
+    allow_privileged: true
+    bind_address: 0.0.0.0
+    client_ca_file: /etc/kubernetes/ssl/ca.pem
+    cloud_provider: aws
+    etcd_servers: http://127.0.0.1:4001
+    insecure_bind_address: 0.0.0.0
+    insecure_port: 8080
+    secure_port: 443
+    service_account_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+    service_cluster_ip_range: 10.3.0.0/24
+    tls_cert_file: /etc/kubernetes/ssl/apiserver.pem
+    tls_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+    version: 1.1.1
 
-############### APISERVER ###############
-apiserver_admission_control: NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
-apiserver_advertise_address: "{{ private_ip }}"
-apiserver_allow_privileged: true
-apiserver_bind_address: 0.0.0.0
-apiserver_client_ca_file: /etc/kubernetes/ssl/ca.pem
-apiserver_cloud_provider: "{{ kubernetes_cloud_provider }}"
-apiserver_etcd_servers: http://127.0.0.1:4001
-apiserver_insecure_bind_address: 0.0.0.0
-apiserver_insecure_port: 8080
-apiserver_secure_port: 443
-apiserver_service_account_key_file: /etc/kubernetes/ssl/apiserver-key.pem
-apiserver_service_cluster_ip_range: 10.3.0.0/24
-apiserver_tls_cert_file: /etc/kubernetes/ssl/apiserver.pem
-apiserver_tls_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
-apiserver_version: "{{ kubernetes_version }}"
+  controller_manager:
+    master: http://127.0.0.1:8080
+    root_ca_file: /etc/kubernetes/ssl/ca.pem
+    service_account_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
+    version: 1.1.1
 
-############### CONTROLLER MANAGER ###############
-controller_manager_cloud_provider: "{{ kubernetes_cloud_provider }}"
-controller_manager_master: http://127.0.0.1:8080
-controller_manager_root_ca_file: /etc/kubernetes/ssl/ca.pem
-controller_manager_service_account_private_key_file: /etc/kubernetes/ssl/apiserver-key.pem
-controller_manager_version: "{{ kubernetes_version }}"
+  kubelet:
+    allow_privileged: true
+    api_servers: http://127.0.0.1:8080
+    cadvisor_port: 0
+    cloud_provider: aws
+    cluster_dns: 10.3.0.10
+    cluster_domain: cluster.local
+    config: /etc/kubernetes/manifests
+    hostname_override: "{{ private_ip }}"
+    register_node: false
+    version: 1.1.1
 
-############### SCHEDULER ###############
-scheduler_master: http://127.0.0.1:8080
-scheduler_version: "{{ kubernetes_version }}"
+  podmaster:
+    controller_manager_dest_file: /dst/manifests/kube-controller-manager.yml
+    controller_manager_key: controller
+    controller_manager_source_file: /src/manifests/kube-controller-manager.yml
+    etcd_servers: http://127.0.0.1:4001
+    scheduler_dest_file: /dst/manifests/kube-scheduler.yml
+    scheduler_key: scheduler
+    scheduler_source_file: /src/manifests/kube-scheduler.yml
+    version: 1.1
+    whoami: "{{ private_ip }}"
 
-############### PROXY ###############
-proxy_master: http://127.0.0.1:8080
-proxy_privileged: true
-proxy_version: "{{ kubernetes_version }}"
+  proxy:
+    master: http://127.0.0.1:8080
+    privileged: true
+    version: 1.1.1
 
-############### PODMASTER ###############
-podmaster_controller_manager_dest_file: /dst/manifests/kube-controller-manager.yml
-podmaster_controller_manager_key: controller
-podmaster_controller_manager_source_file: /src/manifests/kube-controller-manager.yml
-podmaster_etcd_servers: http://127.0.0.1:4001
-podmaster_scheduler_dest_file: /dst/manifests/kube-scheduler.yml
-podmaster_scheduler_key: scheduler
-podmaster_scheduler_source_file: /src/manifests/kube-scheduler.yml
-podmaster_version: 1.1
-podmaster_whoami: "{{ private_ip }}"
+  scheduler:
+    master: http://127.0.0.1:8080
+    version: 1.1.1
 
-############### KUBELET ###############
-kubelet_allow_privileged: true
-kubelet_api_servers: http://127.0.0.1:8080
-kubelet_cadvisor_port: 0
-kubelet_cloud_provider: "{{ kubernetes_cloud_provider }}"
-kubelet_cluster_dns: 10.3.0.10
-kubelet_cluster_domain: cluster.local
-kubelet_config: /etc/kubernetes/manifests
-kubelet_hostname_override: "{{ private_ip }}"
-kubelet_register_node: false
-kubelet_version: "{{ kubernetes_version }}"
+  service_cluster_ip: 10.3.0.1

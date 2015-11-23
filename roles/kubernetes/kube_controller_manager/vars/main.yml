@@ -1,6 +1,6 @@
 ---
-cloud_provider: "{{ controller_manager_cloud_provider }}"
-master: "{{ controller_manager_master }}"
-root_ca_file: "{{ controller_manager_root_ca_file }}"
-service_account_private_key_file: "{{ controller_manager_service_account_private_key_file }}"
-version: "{{ controller_manager_version }}"
+cloud_provider: "{{ kubernetes.cloud_provider }}"
+master: "{{ kubernetes.controller_manager.master }}"
+root_ca_file: "{{ kubernetes.controller_manager.root_ca_file }}"
+service_account_private_key_file: "{{ kubernetes.controller_manager.service_account_private_key_file }}"
+version: "{{ kubernetes.controller_manager.version }}"

@@ -1,2 +1,2 @@
 ---
-version: "{{ python_version }}"
+version: "{{ coreos.python.version }}"
