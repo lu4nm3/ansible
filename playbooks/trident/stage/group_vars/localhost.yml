@@ -1,10 +1,6 @@
 ---
 aws:
   ec2:
-    assign_public_ip: yes
-    image: ami-99bfada9
-    monitoring: no
-    #placement_group: Trident #TODO uncomment
     instances:
       - ansible_public_ip_groups: masters, ec2, coreos, kubernetes
         ansible_private_ip_groups: etcd, masters_private_ips
