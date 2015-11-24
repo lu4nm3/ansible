@@ -78,15 +78,15 @@ aws:
       rules_egress:
         - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
       rules_ingress:
-        - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 10.0.0.0/16 } # etcd client traffic
-        - { "proto": tcp, "from_port": 7001, "to_port": 7001, "cidr_ip": 10.0.0.0/16 } # etcd peer traffic
         - { "proto": tcp, "from_port": 80, "to_port": 80, "cidr_ip": 10.0.0.0/16 } # http
         - { "proto": tcp, "from_port": 443, "to_port": 443, "cidr_ip": 10.0.0.0/16 } # https
+        - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 10.0.0.0/16 } # etcd client traffic
+        - { "proto": tcp, "from_port": 7001, "to_port": 7001, "cidr_ip": 10.0.0.0/16 } # etcd peer traffic
         - { "proto": tcp, "from_port": 8080, "to_port": 8080, "cidr_ip": 10.0.0.0/16 } # http
+        - { "proto": udp, "from_port": 8472, "to_port": 8472, "cidr_ip": 10.0.0.0/16 } # flannel
         - { "proto": tcp, "from_port": 10248, "to_port": 10252, "cidr_ip": 10.0.0.0/16 } # health checks
         - { "proto": tcp, "from_port": 29000, "to_port": 29099, "cidr_ip": 10.0.0.0/16 } # kubernetes services
         - { "proto": tcp, "from_port": 30000, "to_port": 32767, "cidr_ip": 0.0.0.0/0 } # kubernetes services
-        - { "proto": udp, "from_port": 8472, "to_port": 8472, "cidr_ip": 10.0.0.0/16 } # flannel
       tags: { "Name": "Kubernetes" }
       task_name: Kubernetes
 
