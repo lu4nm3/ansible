@@ -17,7 +17,7 @@
     - role: key_pair
     - role: vpc
     - role: security_group
-    - role: iam#
+    - role: iam
     - role: ec2
 
 ## Initial Kubernetes Setup
