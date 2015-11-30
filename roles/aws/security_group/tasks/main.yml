@@ -35,6 +35,7 @@
 - debug: var=test.split()
 - debug: msg={{ security_group_register.results | selectattr("item.name", "equalto", "Kubernetes") | map(attribute='group_id') | list }}
 - debug: msg={{ security_group_register.results | selectattr("item.name", "equalto", "Kubernetes") | map(attribute='group_id') | list }}
+- debug: msg={{ security_group_register.results | attrinlist("item.name", ['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
 
 #- debug: msg={{ security_group_register.results | luis("item.name", ['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
 #- debug: msg={{ security_group_register.results | "item.name" luis(['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
