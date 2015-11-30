@@ -1,0 +1,24 @@
+---
+- set_fact:
+   test: "{% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }} {% endif %}{% endfor %}"
+
+# Create EC2 Autoscaling Launch Configuration
+- name: Creating EC2 Autoscaling Launch Configuration
+  ec2_lc:
+    assign_public_ip: "{{ item.assign_public_ip }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    ebs_optimized: "{{ item.ebs_optimized }}"
+    image_id: "{{ item.image_id }}"
+    instance_monitoring: "{{ item.instance_monitoring }}"
+    instance_profile_name: "{{ item.instance_profile_name | default(omit) }}"
+    instance_type: "{{ item.instance_type }}"
+    key_name: "{{ item.key_name }}"
+    name: "{{ item.name }}"
+    region: "{{ aws.region }}"
+    security_groups: "{{ security_group_register.results | map(attribute='group_id') | list }}"
+    state: "{{ item.state }}"
+    user_data: "{{ item.user_data | default(omit) }}"
+    volumes: "{{ item.volumes | default(omit) }}"
+  with_items: aws.lc
+  register: lc_register

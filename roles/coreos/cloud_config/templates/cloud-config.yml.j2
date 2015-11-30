@@ -1,29 +1,36 @@
 #cloud-config
 
 coreos:
-  etcd2:
-    advertise-client-urls: {{ advertise_client_urls }}
-    data-dir: {{ data_dir }}
-    discovery: {{ discovery }}
-    initial-advertise-peer-urls: {{ initial_advertise_peer_urls }}
-    listen-client-urls: {{ listen_client_urls }}
-    listen-peer-urls: {{ listen_peer_urls }}
-  flannel:
-    etcd_endpoints: {{ etcd_endpoints }}
-  fleet:
-    etcd_servers: {{ etcd_servers }}
-    metadata: {{ metadata }}
   units:
-    - name: docker.service
-      command: start
     - name: etcd2.service
       command: start
-    - name: flanneld.service
-      command: start
-      drop-ins:
-        - name: 50-network-config.conf
-          content: |
-            [Service]
-            ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network": "{{ network_cidr }}", "Backend": {"Type": "{{ backend_type }}"}}'
-    - name: fleet.service
-      command: start
+      content: |
+        [Unit]
+        Conflicts=etcd.service
+        Description=etcd2
+
+        [Service]
+        Environment="ETCD_ADVERTISE_CLIENT_URLS={{ coreos.etcd.advertise_client_urls }}"
+        Environment="ETCD_DATA_DIR={{ coreos.etcd.data_dir }}"
+        Environment="ETCD_ELECTION_TIMEOUT={{ coreos.etcd.election_timeout }}"
+        Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS={{ coreos.etcd.initial_advertise_peer_urls }}"
+        Environment="ETCD_INITIAL_CLUSTER={{ coreos.etcd.initial_cluster }}"
+        Environment="ETCD_INITIAL_CLUSTER_STATE={{ coreos.etcd.initial_cluster_state }}"
+        Environment="ETCD_LISTEN_CLIENT_URLS={{ coreos.etcd.listen_client_urls }}"
+        Environment="ETCD_LISTEN_PEER_URLS={{ coreos.etcd.listen_peer_urls }}"
+        Environment="ETCD_NAME={{ coreos.etcd.name }}"
+        Environment="ETCD_PROXY={{ coreos.etcd.proxy }}"
+        ExecStartPre=/usr/bin/mkdir -p /opt/bin
+        ExecStartPre=/usr/bin/wget -N -P /opt/bin https://github.com/coreos/etcd/releases/download/v{{ coreos.etcd.version }}/etcd-v{{ coreos.etcd.version }}-linux-amd64.tar.gz
+        ExecStartPre=/usr/bin/tar zxvf /opt/bin/etcd-v{{ coreos.etcd.version }}-linux-amd64.tar.gz -C /opt/bin
+        ExecStartPre=/usr/bin/cp /opt/bin/etcd-v{{ coreos.etcd.version }}-linux-amd64/etcd /opt/bin/etcd-v{{ coreos.etcd.version }}-linux-amd64/etcdctl /opt/bin
+        ExecStartPre=/usr/bin/rm -r /opt/bin/etcd-v{{ coreos.etcd.version }}-linux-amd64.tar.gz /opt/bin/etcd-v{{ coreos.etcd.version }}-linux-amd64
+        ExecStart=/opt/bin/etcd
+        LimitNOFILE=40000
+        Restart=always
+        RestartSec=10s
+        PermissionsStartOnly=true
+        User=etcd
+
+        [Install]
+        WantedBy=multi-user.target

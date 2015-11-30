@@ -14,11 +14,13 @@
       private: yes
 
   roles:
-    - role: key_pair
     - role: vpc
     - role: security_group
+    - role: elb
+    - role: key_pair
     - role: iam
-    - role: ec2
+    - role: lc
+#    - role: ec2
 
 ## Initial Kubernetes Setup
 #- name: Initial Kubernetes Setup
@@ -39,6 +41,7 @@
 #  become: yes
 #
 #  roles:
+#    - role: coreos/cloud_config
 #    - role: etcd
 #    - role: flannel
 #    - role: coreos/docker
@@ -48,6 +51,8 @@
 #    - role: kube_podmaster
 #    - role: kube_proxy
 #    - role: kubelet
+
+
 
 
 

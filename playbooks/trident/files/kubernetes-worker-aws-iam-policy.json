@@ -2,26 +2,26 @@
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Action": "ec2:AttachVolume",
       "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": "ec2:Describe*",
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": "ec2:DetachVolume",
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
       "Action": "s3:*",
+      "Effect": "Allow",
       "Resource": [
         "arn:aws:s3:::kubernetes-*"
       ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ec2:Describe*",
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ec2:AttachVolume",
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ec2:DetachVolume",
-      "Resource": "*"
     }
   ]
 }

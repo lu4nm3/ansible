@@ -1,0 +1,18 @@
+---
+# Create ELB
+- name: Creating ELBs
+  ec2_elb_lb:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    cross_az_load_balancing: "{{ item.cross_az_load_balancing }}"
+    health_check: "{{ item.health_check }}"
+    listeners: "{{ item.listeners }}"
+    name: "{{ item.name }}"
+    purge_subnets: "{{ item.purge_subnets }}"
+    region: "{{ aws.region }}"
+    scheme: "{{ item.scheme }}"
+    security_group_names: "{{ item.security_group_names }}"
+    state: "{{ item.state }}"
+    subnets: "{{ vpc_register.subnets | map(attribute='id') | list }}"
+  with_items: aws.elb
+  register: elb_register

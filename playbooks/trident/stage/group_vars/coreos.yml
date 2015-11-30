@@ -11,6 +11,7 @@ coreos:
     election_timeout: 1200
     initial_advertise_peer_urls: http://{{ private_ip }}:7001
     initial_cluster: "{% for host in groups['etcd'] %}{{ host | hash('md5') }}=http://{{ host }}:7001{%- if not loop.last -%},{%- endif %}{% endfor %}"
+#    initial_cluster: "{{ private_ip | hash('md5') }}=internal-Etcd-543790002.us-west-2.elb.amazonaws.com:7001"
     initial_cluster_state: new
     listen_client_urls: http://{{ private_ip }}:4001,http://localhost:4001
     listen_peer_urls: http://{{ private_ip }}:7001,http://localhost:7001

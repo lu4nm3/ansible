@@ -1,43 +1,58 @@
 ---
 aws:
   ec2:
-    instances:
-      - ansible_public_ip_groups: masters, ec2, coreos, kubernetes
-        ansible_private_ip_groups: etcd, masters_private_ips
-        assign_public_ip: yes
-        count_tag: { "type": masters }
-        ebs_optimized: false #TODO change to true
-        exact_count: 2
-        image: ami-46d2c227
-        instance_profile_name: kubernetes-master-role
-        instance_tags: { "type": masters }
-        instance_type: t2.micro
-        key_name: Trident
-        monitoring: no
-        #placement_group: Trident #TODO uncomment
-        security_groups: ["SSH", "Ping", "Kubernetes"]
-        task_name: Kubernetes master
-        volumes:
-          - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-        wait: yes
-      - ansible_public_ip_groups: workers, ec2, coreos, kubernetes
-        ansible_private_ip_groups: workers_private_ips
-        assign_public_ip: yes
-        count_tag: { "type": workers }
-        ebs_optimized: false #TODO change to true
-        exact_count: 2
-        image: ami-46d2c227
-        instance_profile_name: kubernetes-worker-role
-        instance_tags: { "type": workers }
-        instance_type: t2.micro
-        key_name: Trident
-        monitoring: no
-        #placement_group: Trident #TODO uncomment
-        security_groups: ["SSH", "Ping", "Kubernetes"]
-        task_name: Kubernetes master
-        volumes:
-          - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
-        wait: yes
+    - ansible_public_ip_groups: masters, ec2, coreos, kubernetes
+      ansible_private_ip_groups: etcd, masters_private_ips
+      assign_public_ip: yes
+      count_tag: { "type": masters }
+      ebs_optimized: false #TODO change to true
+      exact_count: 3
+      image: ami-46d2c227
+      instance_profile_name: kubernetes-master-role
+      instance_tags: { "type": masters }
+      instance_type: t2.micro
+      key_name: Trident
+      monitoring: no
+      #placement_group: Trident #TODO uncomment
+      security_groups: ["Kubernetes"]
+      volumes:
+        - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+      wait: yes
+#    - ansible_public_ip_groups: workers, ec2, coreos, kubernetes
+#      ansible_private_ip_groups: workers_private_ips
+#      assign_public_ip: yes
+#      count_tag: { "type": workers }
+#      ebs_optimized: false #TODO change to true
+#      exact_count: 2
+#      image: ami-46d2c227
+#      instance_profile_name: kubernetes-worker-role
+#      instance_tags: { "type": workers }
+#      instance_type: t2.micro
+#      key_name: Trident
+#      monitoring: no
+#      #placement_group: Trident #TODO uncomment
+#      security_groups: ["SSH", "Ping", "Kubernetes"]
+#      volumes:
+#        - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+#      wait: yes
+
+  elb:
+    - cross_az_load_balancing: yes
+      health_check:
+        ping_protocol: http
+        ping_port: 4001
+        ping_path: "/health"
+        response_timeout: 5
+        interval: 30
+        unhealthy_threshold: 2
+        healthy_threshold: 10
+      listeners:
+        - { protocol: tcp, load_balancer_port: 7001, instance_port: 7001 }
+      name: Etcd
+      purge_subnets: true
+      scheme: internal
+      security_group_names: ["etcd"]
+      state: present
 
   iam:
     - name: kubernetes-master-role
@@ -56,6 +71,22 @@ aws:
     material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     wait: yes
 
+  lc:
+    - assign_public_ip: yes
+      ebs_optimized: false #TODO change to true
+      image_id: ami-46d2c227
+      instance_monitoring: no
+      instance_profile_name: kubernetes-master-role
+      instance_type: t2.micro
+      key_name: Trident
+      name: Kubernetes Master Cluster
+      security_groups: ["SSH", "Ping", "Kubernetes"]
+      state: present
+      volumes:
+        - { "device_name": /dev/xvda, "volume_size": 10, "device_type": gp2, "delete_on_termination": true }
+
+  region: us-west-2
+
   security_groups:
     - description: SSH Security Group
       name: SSH
@@ -64,7 +95,6 @@ aws:
       rules_ingress:
         - { "proto": tcp, "from_port": 22, "to_port": 22, "cidr_ip": 0.0.0.0/0 }
       tags: { "Name": "SSH" }
-      task_name: SSH
     - description: Ping Security Group
       name: Ping
       rules_egress:
@@ -72,12 +102,13 @@ aws:
       rules_ingress:
         - { "proto": icmp, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
       tags: { "Name": "Ping" }
-      task_name: Ping
     - description: Kubernetes Security Group
       name: Kubernetes
       rules_egress:
         - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
       rules_ingress:
+        - { "proto": icmp, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 } # ping
+        - { "proto": tcp, "from_port": 22, "to_port": 22, "cidr_ip": 0.0.0.0/0 } # ssh
         - { "proto": tcp, "from_port": 80, "to_port": 80, "cidr_ip": 10.0.0.0/16 } # http
         - { "proto": tcp, "from_port": 443, "to_port": 443, "cidr_ip": 10.0.0.0/16 } # https
         - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 10.0.0.0/16 } # etcd client traffic
@@ -88,7 +119,14 @@ aws:
         - { "proto": tcp, "from_port": 29000, "to_port": 29099, "cidr_ip": 10.0.0.0/16 } # kubernetes services
         - { "proto": tcp, "from_port": 30000, "to_port": 32767, "cidr_ip": 0.0.0.0/0 } # kubernetes services
       tags: { "Name": "Kubernetes" }
-      task_name: Kubernetes
+    - description: etcd
+      name: etcd
+      rules_egress:
+        - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
+      rules_ingress:
+        - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 10.0.0.0/16 } # etcd client traffic
+        - { "proto": tcp, "from_port": 7001, "to_port": 7001, "cidr_ip": 10.0.0.0/16 } # etcd peer traffic
+      tags: { "Name": "etcd" }
 
   vpc:
     cidr_block: 10.0.0.0/16
@@ -105,5 +143,3 @@ aws:
       - { "cidr": 10.0.1.0/24, "az": us-west-2a }
       - { "cidr": 10.0.2.0/24, "az": us-west-2b }
       - { "cidr": 10.0.3.0/24, "az": us-west-2c }
-
-  region: us-west-2

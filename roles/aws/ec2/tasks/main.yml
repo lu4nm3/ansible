@@ -19,10 +19,10 @@
     region: "{{ aws.region }}"
     user_data: "{{ item.user_data | default(omit) }}"
     volumes: "{{ item.volumes | default(omit) }}"
-    vpc_subnet_id: "{{ vpc.subnets.0.id }}"
+    vpc_subnet_id: "{{ vpc_register.subnets.0.id }}"
     wait: "{{ item.wait }}"
-  with_items: aws.ec2.instances
-  register: ec2
+  with_items: aws.ec2
+  register: ec2_register
 
 # Wait for EC2 instance(s) to come up
 - name: Waiting for EC2 instance(s) to come up
@@ -32,7 +32,7 @@
     port: 22
     timeout: 300
   with_subelements:
-    - ec2.results
+    - ec2_register.results
     - tagged_instances
 
 # Add new EC2 instance(s) to public Ansible groups
@@ -43,7 +43,7 @@
     public_ip: "{{ item.1.public_ip }}"
     private_ip: "{{ item.1.private_ip }}"
   with_subelements:
-    - ec2.results
+    - ec2_register.results
     - tagged_instances
 
 # Add new EC2 instance(s) to private Ansible groups
@@ -54,7 +54,7 @@
     public_ip: "{{ item.1.public_ip }}"
     private_ip: "{{ item.1.private_ip }}"
   with_subelements:
-    - ec2.results
+    - ec2_register.results
     - tagged_instances
 
 # Pause for SSH to come up

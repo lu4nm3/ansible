@@ -1,6 +1,6 @@
 ---
 # Create EC2 VPC Security Group
-- name: Creating EC2 {{ item.task_name }} Security Group
+- name: Creating EC2 Security Groups
   ec2_group:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
@@ -9,11 +9,11 @@
     region: "{{ aws.region }}"
     rules: "{{ item.rules_ingress }}"
     rules_egress: "{{ item.rules_egress }}"
-    vpc_id: "{{ vpc.vpc_id }}"
+    vpc_id: "{{ vpc_register.vpc_id }}"
   with_items: aws.security_groups
-  register: security_group
+  register: security_group_register
 
-- name: Tagging EC2 {{ item.1.task_name }} Security Group
+- name: Tagging EC2 Security Groups
   ec2_tag:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
@@ -21,5 +21,34 @@
     resource: "{{ item.0.group_id }}"
     tags: "{{ item.1.tags }}"
   with_together:
-    - security_group.results
+    - security_group_register.results
     - aws.security_groups
+
+- set_fact:
+   test: "{% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }} {% endif %}{% endfor %}"
+
+#- debug: var="{{ test.split() }}"
+#- debug: var="{{ test | trim }}.split()"
+#- debug: var={{ test | trim | string | split }}
+#- debug: var={{ test | trim | string }}.split()
+#- debug: var="{{ test | trim | string }}.split()"
+- debug: var=test.split()
+- debug: msg={{ security_group_register.results | selectattr("item.name", "equalto", "Kubernetes") | map(attribute='group_id') | list }}
+- debug: msg={{ security_group_register.results | selectattr("item.name", "equalto", "Kubernetes") | map(attribute='group_id') | list }}
+
+#- debug: msg={{ security_group_register.results | luis("item.name", ['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
+#- debug: msg={{ security_group_register.results | "item.name" luis(['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
+#- debug: msg={{ security_group_register.results | item.name luis(['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
+#- debug: msg={{ security_group_register.results | selectattr("item.name", "luis", ['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
+#- debug: msg={{ security_group_register.results | selectattr("item.name", "luis", ['SSH', 'Ping', 'Kubernetes']) | map(attribute='group_id') | list }}
+
+#- debug: msg="{% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%}{{ ' ' }}{%- endif -%}{% endfor %}".split()
+#- debug: msg="{% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%}{{ ' ' }}{%- endif -%}{% endfor %}.split()"
+#- debug: msg={% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%}{{ ' ' }}{%- endif -%}{% endfor %}.split()
+
+#- debug: var="{% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%} {%- endif -%}{% endfor %}.split()"
+#- debug: var={% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%},{%- endif -%}{% endfor %}.split(',')
+#- debug: var={{ {% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%},{%- endif -%}{% endfor %} }}.split(',')
+#- debug: var="{{ {% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%},{%- endif -%}{% endfor %} }}.split(',')"
+#- debug: var="{{ {% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }}{% endif %}{%- if not loop.last -%},{%- endif -%}{% endfor %}.split(',') }}"
+#- debug: msg={{ security_group_register.results | selectattr("item.name", "in", ["SSH", "Ping", "Kubernetes"]) | map(attribute='group_id') | list }}

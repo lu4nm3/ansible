@@ -1,6 +1,6 @@
 ---
 # Create AWS Virtual Private Cloud
-- name: Creating AWS Virtual Private Cloud
+- name: Creating VPC
   ec2_vpc:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
@@ -13,4 +13,4 @@
     resource_tags: "{{ aws.vpc.resource_tags }}"
     route_tables: "{{ aws.vpc.route_tables }}"
     subnets: "{{ aws.vpc.subnets }}"
-  register: vpc
+  register: vpc_register
