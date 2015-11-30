@@ -1,7 +1,4 @@
 ---
-- set_fact:
-   test: "{% for group in security_group_register.results %}{% if group.item.name in ['SSH', 'Ping', 'Kubernetes'] %}{{ group.group_id }} {% endif %}{% endfor %}"
-
 # Create EC2 Autoscaling Launch Configuration
 - name: Creating EC2 Autoscaling Launch Configuration
   ec2_lc:
