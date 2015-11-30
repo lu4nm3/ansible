@@ -16,7 +16,7 @@
     key_name: "{{ item.key_name }}"
     name: "{{ item.name }}"
     region: "{{ aws.region }}"
-    security_groups: "{{ security_group_register.results | map(attribute='group_id') | list }}"
+    security_groups: "{{ security_group_register.results | attrinlist("item.name", item.security_groups) | map(attribute='group_id') | list }}"
     state: "{{ item.state }}"
     user_data: "{{ item.user_data | default(omit) }}"
     volumes: "{{ item.volumes | default(omit) }}"
