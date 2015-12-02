@@ -1,30 +1,36 @@
 #! /bin/bash
+
+# This is a modified version of the script found here: https://github.com/MonsantoCo/etcd-aws-cluster/
+
 pkg="etcd-aws-cluster"
-version="0.5"
 etcd_peers_file_path="/etc/sysconfig/etcd-peers"
+
+# If the script has already run just exit.
+if [ -f "$etcd_peers_file_path" ]; then
+    echo "$pkg: etcd-peers file $etcd_peers_file_path already created, exiting"
+    exit 0
+fi
+
+# Get AWS region that the instance is in
 region=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq --raw-output .region)
 if [[ ! $region ]]; then
     echo "$pkg: failed to get region"
     exit 1
 fi
 
-# ETCD API https://coreos.com/etcd/docs/2.0.11/other_apis.html
-add_ok=201
-already_added=409
-delete_ok=204
+# ETCD API (https://coreos.com/etcd/docs/2.0.11/other_apis.html)
+add_ok=201 		# Returned when a new member is successfully added to the cluster.
+already_added=409 	# Returned if the member exists in the cluster or existed in the cluster at some point in the past.
+delete_ok=204 		# Returned when a member is successfully removed from the cluster.
 
-#if the script has already run just exit
-if [ -f "$etcd_peers_file_path" ]; then
-    echo "$pkg: etcd-peers file $etcd_peers_file_path already created, exiting"
-    exit 0
-fi
-
+# Retrieve the instance id.
 ec2_instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 if [[ ! $ec2_instance_id ]]; then
     echo "$pkg: failed to get instance id from instance metadata"
     exit 2
 fi
 
+# Retrieve the instance IP.
 ec2_instance_ip=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 if [[ ! $ec2_instance_ip ]]; then
     echo "$pkg: failed to get instance IP address"
