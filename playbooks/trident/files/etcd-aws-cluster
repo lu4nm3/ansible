@@ -19,9 +19,9 @@ if [[ ! $region ]]; then
 fi
 
 # ETCD API (https://coreos.com/etcd/docs/2.0.11/other_apis.html)
-add_ok=201 		# Returned when a new member is successfully added to the cluster.
-already_added=409 	# Returned if the member exists in the cluster or existed in the cluster at some point in the past.
-delete_ok=204 		# Returned when a member is successfully removed from the cluster.
+etcd_add_ok=201 		# Returned when a new member is successfully added to the cluster.
+etcd_already_added=409 	# Returned if the member exists in the cluster or existed in the cluster at some point in the past.
+etcd_delete_ok=204 		# Returned when a member is successfully removed from the cluster.
 
 # Retrieve the instance id of this instance.
 ec2_instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
@@ -94,7 +94,7 @@ if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_i
         for bp in $bad_peer; do
             echo "removing bad peer $bp"
             status=$(curl $ETCD_CURLOPTS -f -s -w %{http_code} "$etcd_good_member_url/v2/members/$bp" -XDELETE)
-            if [[ $status != $delete_ok ]]; then
+            if [[ $status != $etcd_delete_ok ]]; then
                 echo "$pkg: ERROR: failed to remove bad peer: $bad_peer, return code $status."
                 exit 7
             fi
@@ -113,7 +113,7 @@ if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_i
         # join an existing cluster
         echo "adding instance ID $ec2_instance_id with IP $ec2_instance_ip"
         status=$(curl $ETCD_CURLOPTS -f -s -w %{http_code} -o /dev/null -XPOST "$etcd_good_member_url/v2/members" -H "Content-Type: application/json" -d "{\"peerURLs\": [\"$etcd_peer_scheme://$ec2_instance_ip:2380\"], \"name\": \"$ec2_instance_id\"}")
-        if [[ $status != $add_ok && $status != $already_added ]]; then
+        if [[ $status != $etcd_add_ok && $status != $etcd_already_added ]]; then
             echo "$pkg: unable to add $ec2_instance_ip to the cluster: return code $status."
             exit 9
         fi
