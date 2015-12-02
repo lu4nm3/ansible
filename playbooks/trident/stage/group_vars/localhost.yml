@@ -107,8 +107,6 @@ aws:
       rules_egress:
         - { "proto": all, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 }
       rules_ingress:
-        - { "proto": icmp, "from_port": -1, "to_port": -1, "cidr_ip": 0.0.0.0/0 } # ping
-        - { "proto": tcp, "from_port": 22, "to_port": 22, "cidr_ip": 0.0.0.0/0 } # ssh
         - { "proto": tcp, "from_port": 80, "to_port": 80, "cidr_ip": 10.0.0.0/16 } # http
         - { "proto": tcp, "from_port": 443, "to_port": 443, "cidr_ip": 10.0.0.0/16 } # https
         - { "proto": tcp, "from_port": 4001, "to_port": 4001, "cidr_ip": 10.0.0.0/16 } # etcd client traffic
