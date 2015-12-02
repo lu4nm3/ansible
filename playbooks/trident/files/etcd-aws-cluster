@@ -73,7 +73,9 @@ for url in $etcd_peer_urls; do
     # If the curl command above did not fail (ie. The return value of the last executed command is 0) 
     # and there are existing cluster members.
     if [[ $? == 0 && $etcd_members ]]; then
-        etcd_good_member_url="$url" # Finds the last "good" member of the etcd cluster that will be used later on to perform additional actions on the cluster.
+    	# Stores the last "good" member of the etcd cluster from the etcd_peer_urls. 
+    	# It will be used later on to perform additional actions on the cluster.
+        etcd_good_member_url="$url"
         etcd_existing_peer_urls=$(echo "$etcd_members" | jq --raw-output .[][].peerURLs[0])
 	etcd_existing_peer_names=$(echo "$etcd_members" | jq --raw-output .[][].name)
 	break
