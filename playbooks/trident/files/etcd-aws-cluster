@@ -3,7 +3,7 @@
 # This is a modified version of the script found here: https://github.com/MonsantoCo/etcd-aws-cluster/
 
 pkg="etcd-aws-cluster"
-etcd_peers_file_path="/etc/sysconfig/etcd-peers"
+etcd_peers_file_path="/root/etcd-peers"
 
 # If the script has already run just exit.
 if [ -f "$etcd_peers_file_path" ]; then
