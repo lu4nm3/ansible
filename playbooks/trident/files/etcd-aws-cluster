@@ -11,7 +11,7 @@ if [ -f "$etcd_peers_file_path" ]; then
     exit 0
 fi
 
-# Get AWS region that the instance is in
+# Get AWS region that this instance is in.
 region=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq --raw-output .region)
 if [[ ! $region ]]; then
     echo "$pkg: failed to get region"
@@ -23,38 +23,22 @@ add_ok=201 		# Returned when a new member is successfully added to the cluster.
 already_added=409 	# Returned if the member exists in the cluster or existed in the cluster at some point in the past.
 delete_ok=204 		# Returned when a member is successfully removed from the cluster.
 
-# Retrieve the instance id.
+# Retrieve the instance id of this instance.
 ec2_instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 if [[ ! $ec2_instance_id ]]; then
     echo "$pkg: failed to get instance id from instance metadata"
     exit 2
 fi
 
-# Retrieve the instance IP.
+# Retrieve the instance IP of this instance.
 ec2_instance_ip=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 if [[ ! $ec2_instance_ip ]]; then
     echo "$pkg: failed to get instance IP address"
     exit 3
 fi
 
-# If we're in proxy mode we don't have to look this up and expect an env var
-if [[ ! $PROXY_ASG ]]; then
-    etcd_proxy=off
-    asg_name=$(aws autoscaling describe-auto-scaling-groups --region $region | jq --raw-output ".[] | map(select(.Instances[].InstanceId | contains(\"$ec2_instance_id\"))) | .[].AutoScalingGroupName")
-    if [[ ! $asg_name ]]; then
-        echo "$pkg: failed to get the auto scaling group name"
-        exit 4
-    fi
-else
-    etcd_proxy=on
-    asg_name=$PROXY_ASG
-fi
-
 etcd_client_scheme=${ETCD_CLIENT_SCHEME:-http}
-echo "client_client_scheme=$etcd_client_scheme"
-
 etcd_peer_scheme=${ETCD_PEER_SCHEME:-http}
-echo "peer_peer_scheme=$etcd_peer_scheme"
 
 etcd_peer_urls=$(aws ec2 describe-instances --region $region --instance-ids $(aws autoscaling describe-auto-scaling-groups --region $region --auto-scaling-group-name $asg_name | jq '.AutoScalingGroups[0].Instances[] | select(.LifecycleState  == "InService") | .InstanceId' | xargs) | jq -r ".Reservations[].Instances | map(\"$etcd_client_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":2379\")[]")
 
