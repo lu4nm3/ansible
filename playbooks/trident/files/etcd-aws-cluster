@@ -41,14 +41,19 @@ if [[ ! $ec2_instance_ip ]]; then
     exit 3
 fi
 
-etcd_peer_urls=$(aws ec2 describe-instances --region $region --instance-ids $(aws autoscaling describe-auto-scaling-groups --region $region --auto-scaling-group-name $asg_name | jq '.AutoScalingGroups[0].Instances[] | select(.LifecycleState  == "InService") | .InstanceId' | xargs) | jq -r ".Reservations[].Instances | map(\"$etcd_client_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_client_port\")[]")
+# Retrieve the auto scaling group name that this instance belongs to.
+asg_name=$(aws autoscaling describe-auto-scaling-groups --region "$region" | jq --raw-output ".[] | map(select(.Instances[].InstanceId | contains(\"$ec2_instance_id\"))) | .[].AutoScalingGroupName")
+if [[ ! $asg_name ]]; then
+    echo "$pkg: failed to get the auto scaling group name"
+    exit 4
+fi
 
+# Retrieve possible peer URLs of current members of the auto scaling group in the "http://w.x.y.z:4001" format
+etcd_peer_urls=$(aws ec2 describe-instances --region "$region" --instance-ids "$(aws autoscaling describe-auto-scaling-groups --region "$region" --auto-scaling-group-name "$asg_name" | jq '.AutoScalingGroups[0].Instances[] | select(.LifecycleState  == "InService") | .InstanceId' | xargs)" | jq -r ".Reservations[].Instances | map(\"$etcd_client_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_client_port\")[]")
 if [[ ! $etcd_peer_urls ]]; then
     echo "$pkg: unable to find members of auto scaling group"
     exit 5
 fi
-
-echo "etcd_peer_urls=$etcd_peer_urls"
 
 etcd_existing_peer_urls=
 etcd_existing_peer_names=
@@ -56,17 +61,15 @@ etcd_good_member_url=
 
 for url in $etcd_peer_urls; do
     case "$url" in
-        # If we're in proxy mode this is an error, but unlikely to happen?
         *$ec2_instance_ip*) continue;;
     esac
 
-    etcd_members=$(curl $ETCD_CURLOPTS -f -s $url/v2/members)
+    etcd_members=$(curl "$ETCD_CURLOPTS" -f -s "$url"/v2/members)
 
     if [[ $? == 0 && $etcd_members ]]; then
         etcd_good_member_url="$url"
-		echo "etcd_members=$etcd_members"
         etcd_existing_peer_urls=$(echo "$etcd_members" | jq --raw-output .[][].peerURLs[0])
-		etcd_existing_peer_names=$(echo "$etcd_members" | jq --raw-output .[][].name)
+	etcd_existing_peer_names=$(echo "$etcd_members" | jq --raw-output .[][].name)
 	break
     fi
 done
