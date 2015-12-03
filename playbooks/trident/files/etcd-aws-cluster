@@ -73,20 +73,20 @@ for url in $etcd_peer_urls; do
     # If the curl command above did not fail (ie. The return value of the last executed command is 0) 
     # and there are existing cluster members.
     if [[ $? == 0 && $etcd_members ]]; then
-    	# Stores the last "good" member of the etcd cluster from the etcd_peer_urls. 
-    	# It will be used later on to perform additional actions on the cluster.
+    	# Stores the first "good" member of the etcd cluster from the etcd_peer_urls as well as all
+    	# of the existing members of the cluster. 
         etcd_good_member_url="$url"
         etcd_existing_peer_urls=$(echo "$etcd_members" | jq --raw-output .[][].peerURLs[0])
 	etcd_existing_peer_names=$(echo "$etcd_members" | jq --raw-output .[][].name)
+	
+	# As long as we can retrieve information about the cluster from one member, we don't need 
+	# to go through the rest of them.
 	break
     fi
 done
 
-# if I am not listed as a member of the cluster assume that this is a existing cluster
-# this will also be the case for a proxy situation
+# If there is an existing cluster and this instance is not a member, then add it as a new member.
 if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_id"* ]]; then
-    echo "joining existing cluster"
-
     # eject bad members from cluster
     peer_regexp=$(echo "$etcd_peer_urls" | sed 's/^.*https\{0,1\}:\/\/\([0-9.]*\):[0-9]*.*$/contains(\\"\/\/\1:\\")/' | xargs | sed 's/  */ or /g')
     if [[ ! $peer_regexp ]]; then
