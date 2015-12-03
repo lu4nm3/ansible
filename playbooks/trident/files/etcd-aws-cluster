@@ -53,16 +53,17 @@ if [[ ! $asg_name ]]; then
     exit 4
 fi
 
-# Retrieve peer URLs of possible members of the auto scaling group in the "http://w.x.y.z:4001" format
-etcd_peer_urls=$(aws ec2 describe-instances --region "$region" --instance-ids "$(aws autoscaling describe-auto-scaling-groups --region "$region" --auto-scaling-group-name "$asg_name" | jq '.AutoScalingGroups[0].Instances[] | select(.LifecycleState  == "InService") | .InstanceId' | xargs)" | jq -r ".Reservations[].Instances | map(\"$etcd_client_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_client_port\")[]")
-if [[ ! $etcd_peer_urls ]]; then
+# Retrieve all instances of the auto scaling group in the "http://w.x.y.z:4001" format
+asg_instances=$(aws ec2 describe-instances --region "$region" --instance-ids "$(aws autoscaling describe-auto-scaling-groups --region "$region" --auto-scaling-group-name "$asg_name" | jq '.AutoScalingGroups[0].Instances[] | select(.LifecycleState  == "InService") | .InstanceId' | xargs)" | jq -r ".Reservations[].Instances | map(\"$etcd_client_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_client_port\")[]")
+if [[ ! $asg_instances ]]; then
     echo "$pkg: unable to find members of auto scaling group"
     exit 5
 fi
 
-# Retrieves information about members of the existing etcd cluster (if there is one) and stores 
-# this information in the etcd_existing_peer_urls and etcd_existing_peer_names variables.
-for url in $etcd_peer_urls; do
+# Go through all of the instances of the auto scaling group and check to see if any of them are already
+# part of an etcd cluster. If there is an existing member of the cluster, then retrieve information 
+# about the cluster.
+for url in $asg_instances; do
     case "$url" in
         *$ec2_instance_ip*) continue;;
     esac
@@ -73,22 +74,22 @@ for url in $etcd_peer_urls; do
     # If the curl command above did not fail (ie. The return value of the last executed command is 0) 
     # and there are existing cluster members.
     if [[ $? == 0 && $etcd_members ]]; then
-    	# Stores the first "good" member of the etcd cluster from the etcd_peer_urls as well as all
-    	# of the existing members of the cluster. 
+    	# Stores the first auto scaling group instance that was found to be a member of the etcd cluster 
+    	# from the asg_instances as well as all other members of the cluster. 
         etcd_good_member_url="$url"
         etcd_existing_peer_urls=$(echo "$etcd_members" | jq --raw-output .[][].peerURLs[0])
 	etcd_existing_peer_names=$(echo "$etcd_members" | jq --raw-output .[][].name)
 	
-	# As long as we can retrieve information about the cluster from one member, we don't need 
-	# to go through the rest of them.
+	# As long as we can retrieve information about the cluster from one member, we don't need to go 
+	# through the remaining instances.
 	break
     fi
 done
 
-# If there is an existing cluster and this instance is not a member, then add it as a new member.
+# If there is an existing etcd cluster and the current instance is not a member, then add it to the cluster.
 if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_id"* ]]; then
     # eject bad members from cluster
-    peer_regexp=$(echo "$etcd_peer_urls" | sed 's/^.*https\{0,1\}:\/\/\([0-9.]*\):[0-9]*.*$/contains(\\"\/\/\1:\\")/' | xargs | sed 's/  */ or /g')
+    peer_regexp=$(echo "$asg_instances" | sed 's/^.*https\{0,1\}:\/\/\([0-9.]*\):[0-9]*.*$/contains(\\"\/\/\1:\\")/' | xargs | sed 's/  */ or /g')
     if [[ ! $peer_regexp ]]; then
         echo "$pkg: failed to create peer regular expression"
         exit 6
