@@ -90,14 +90,13 @@ done
 # cluster. In addition, remove any members from the cluster that are not instances of the auto
 # scaling group.
 if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_id"* ]]; then
-    # Generate regex to filter out etcd members that are no longer exist using the auto scaling group instances.
+    # Generate regex to filter out etcd members that no longer exist using the instances that are currently part of the auto scaling group.
     asg_regexp=$(echo "$asg_instances" | sed 's/^.*https\{0,1\}:\/\/\([0-9.]*\):[0-9]*.*$/contains(\\"\/\/\1:\\")/' | xargs | sed 's/  */ or /g')
     if [[ ! $asg_regexp ]]; then
         echo "$pkg: failed to create peer regular expression"
         exit 6
     fi
 
-    echo "asg_regexp=$asg_regexp"
     bad_peer=$(echo "$etcd_members" | jq --raw-output ".[] | map(select(.peerURLs[] | $asg_regexp | not )) | .[].id")
     echo "bad_peer=$bad_peer"
 
