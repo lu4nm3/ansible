@@ -21,42 +21,42 @@ etcd_good_member_url=
 
 # If the script has already run just exit.
 if [ -f "$etcd_peers_file_path" ]; then
-    echo "$pkg: etcd-peers file $etcd_peers_file_path already created, exiting"
+    echo "$pkg: etcd-peers file $etcd_peers_file_path already created. Exiting..."
     exit 0
 fi
 
 # Get AWS region that this instance is in.
 region=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq --raw-output .region)
 if [[ ! $region ]]; then
-    echo "$pkg: failed to get region"
+    echo "$pkg: Railed to get AWS region for this EC2 instance."
     exit 1
 fi
 
 # Retrieve the instance id of this instance.
 ec2_instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 if [[ ! $ec2_instance_id ]]; then
-    echo "$pkg: failed to get instance id from instance metadata"
+    echo "$pkg: Failed to get instance id for this EC2 instance from the AWS instance metadata."
     exit 2
 fi
 
 # Retrieve the instance IP of this instance.
 ec2_instance_ip=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 if [[ ! $ec2_instance_ip ]]; then
-    echo "$pkg: failed to get instance IP address"
+    echo "$pkg: Failed to get instance IP address for this EC2 instance from the AWS instance metadata."
     exit 3
 fi
 
 # Retrieve the auto scaling group name that this instance belongs to.
 asg_name=$(aws autoscaling describe-auto-scaling-groups --region "$region" | jq --raw-output ".[] | map(select(.Instances[].InstanceId | contains(\"$ec2_instance_id\"))) | .[].AutoScalingGroupName")
 if [[ ! $asg_name ]]; then
-    echo "$pkg: failed to get the auto scaling group name"
+    echo "$pkg: Failed to get the auto scaling group name."
     exit 4
 fi
 
 # Retrieve all instances of the auto scaling group in the "http://w.x.y.z:4001" format
 asg_instances=$(aws ec2 describe-instances --region "$region" --instance-ids "$(aws autoscaling describe-auto-scaling-groups --region "$region" --auto-scaling-group-name "$asg_name" | jq '.AutoScalingGroups[0].Instances[] | select(.LifecycleState  == "InService") | .InstanceId' | xargs)" | jq -r ".Reservations[].Instances | map(\"$etcd_client_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_client_port\")[]")
 if [[ ! $asg_instances ]]; then
-    echo "$pkg: unable to find members of auto scaling group"
+    echo "$pkg: Unable to find members of auto scaling group."
     exit 5
 fi
 
@@ -86,55 +86,45 @@ for url in $asg_instances; do
     fi
 done
 
-# If there is an existing etcd cluster and the current instance is not a member, then add it to the 
-# cluster. In addition, remove any members from the cluster that are not instances of the auto
-# scaling group.
+# If there is an existing etcd cluster and the current instance is not a member, then add it to the existing cluster. 
+# In addition, remove any members from the cluster that are no longer part of the auto scaling group.
 if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_id"* ]]; then
     # Generate regex to filter out etcd members that no longer exist using the instances that are currently part of the auto scaling group.
     asg_regexp=$(echo "$asg_instances" | sed 's/^.*https\{0,1\}:\/\/\([0-9.]*\):[0-9]*.*$/contains(\\"\/\/\1:\\")/' | xargs | sed 's/  */ or /g')
     if [[ ! $asg_regexp ]]; then
-        echo "$pkg: failed to create peer regular expression"
+        echo "$pkg: Failed to create regular expression to remove bad peers"
         exit 6
     fi
 
+    # Retrieve bad peers by obtaining members of the etcd cluster that are no longer part of the auto scaling group using the regex 
+    # expression that was generated above.
     bad_peer=$(echo "$etcd_members" | jq --raw-output ".[] | map(select(.peerURLs[] | $asg_regexp | not )) | .[].id")
-    echo "bad_peer=$bad_peer"
-
+    
+    # Remove the bad etcd peers.
     if [[ $bad_peer ]]; then
-        for bp in $bad_peer; do
-            echo "removing bad peer $bp"
-            status=$(curl $ETCD_CURLOPTS -f -s -w %{http_code} "$etcd_good_member_url/v2/members/$bp" -XDELETE)
+        for peer in $bad_peer; do
+            # Obtain the HTTP status after making a call to remove the peer.
+            status=$(curl $ETCD_CURLOPTS -f -s -w "%{http_code}" "$etcd_good_member_url/v2/members/$peer" -XDELETE)
+            
             if [[ $status != $etcd_delete_ok ]]; then
-                echo "$pkg: ERROR: failed to remove bad peer: $bad_peer, return code $status."
+                echo "$pkg: Failed to remove bad peer: $peer. API HTTP return code was $status."
                 exit 7
             fi
         done
     fi
 
-    # If we're not a proxy we add ourselves as a member to the cluster
-    if [[ ! $PROXY_ASG ]]; then
-        etcd_initial_cluster=$(curl $ETCD_CURLOPTS -s -f "$etcd_good_member_url/v2/members" | jq --raw-output '.[] | map(.name + "=" + .peerURLs[0]) | .[]' | xargs | sed 's/  */,/g')$(echo ",$ec2_instance_id=${etcd_peer_scheme}://${ec2_instance_ip}:$etcd_peer_port")
-        echo "etcd_initial_cluster=$etcd_initial_cluster"
-        if [[ ! $etcd_initial_cluster ]]; then
-            echo "$pkg: docker command to get etcd peers failed"
-            exit 8
-        fi
-
-        # join an existing cluster
-        echo "adding instance ID $ec2_instance_id with IP $ec2_instance_ip"
-        status=$(curl $ETCD_CURLOPTS -f -s -w %{http_code} -o /dev/null -XPOST "$etcd_good_member_url/v2/members" -H "Content-Type: application/json" -d "{\"peerURLs\": [\"$etcd_peer_scheme://$ec2_instance_ip:$etcd_peer_port\"], \"name\": \"$ec2_instance_id\"}")
-        if [[ $status != $etcd_add_ok && $status != $etcd_already_added ]]; then
-            echo "$pkg: unable to add $ec2_instance_ip to the cluster: return code $status."
-            exit 9
-        fi
-    # If we are a proxy we just want the list for the actual cluster
-    else
-        etcd_initial_cluster=$(curl $ETCD_CURLOPTS -s -f "$etcd_good_member_url/v2/members" | jq --raw-output '.[] | map(.name + "=" + .peerURLs[0]) | .[]' | xargs | sed 's/  */,/g')
-        echo "etcd_initial_cluster=$etcd_initial_cluster"
-        if [[ ! $etcd_initial_cluster ]]; then
-            echo "$pkg: docker command to get etcd peers failed"
-            exit 8
-        fi
+    # Retrieve list of current members of the etcd cluster and add this instance to it.
+    etcd_initial_cluster=$(curl $ETCD_CURLOPTS -s -f "$etcd_good_member_url/v2/members" | jq --raw-output '.[] | map(.name + "=" + .peerURLs[0]) | .[]' | xargs | sed 's/  */,/g')$(echo ",$ec2_instance_id=${etcd_peer_scheme}://${ec2_instance_ip}:$etcd_peer_port")
+    if [[ ! $etcd_initial_cluster ]]; then
+        echo "$pkg: Failed to retrieve etcd members of the existing cluster."
+        exit 8
+    fi
+	
+    # Add this instance to the etcd cluster through an API call.
+    status=$(curl $ETCD_CURLOPTS -f -s -w "%{http_code}" -o /dev/null -XPOST "$etcd_good_member_url/v2/members" -H "Content-Type: application/json" -d "{\"peerURLs\": [\"$etcd_peer_scheme://$ec2_instance_ip:$etcd_peer_port\"], \"name\": \"$ec2_instance_id\"}")
+    if [[ $status != $etcd_add_ok && $status != $etcd_already_added ]]; then
+        echo "$pkg: Unable to add $ec2_instance_ip to the cluster. API HTTP return code was $status."
+        exit 9
     fi
 
     cat > "$etcd_peers_file_path" <<EOF
@@ -144,11 +134,19 @@ ETCD_INITIAL_CLUSTER="$etcd_initial_cluster"
 ETCD_PROXY=$etcd_proxy
 EOF
 
-# otherwise I was already listed as a member so assume that this is a new cluster
+# Otherwise this is 1 of 2 possible scenarios.
+#
+# The first is that there were no existing etcd members in the cluster. In that case this instance will become the first 
+# member of the cluster.
+#
+# The second is that the cluster was still in the bootstrap process. When this happens, this instance will be shown to be 
+# a part of the etcd cluster even though it hasn't actually joined yet. The reason for this is that another node might have 
+# started up before this one and it reported the current instances of the auto scaling group as the initial members for the 
+# etcd cluster even though they might not have all actually joined the cluster yet. The logic below shows how the instance
+# obtains the value of etcd_initial_cluster from the auto scaling group instances.
+#
+# For both of these cases, the instance will be added as a member to a new etcd cluster.
 else
-    # create a new cluster
-    echo "creating new cluster"
-
     etcd_initial_cluster=$(aws ec2 describe-instances --region $region --instance-ids $(aws autoscaling describe-auto-scaling-groups --region $region --auto-scaling-group-name $asg_name | jq .AutoScalingGroups[0].Instances[].InstanceId | xargs) | jq -r ".Reservations[].Instances | map(.InstanceId + \"=$etcd_peer_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_peer_port\")[]" | xargs | sed 's/  */,/g')
     echo "etcd_initial_cluster=$etcd_initial_cluster"
     if [[ ! $etcd_initial_cluster ]]; then
