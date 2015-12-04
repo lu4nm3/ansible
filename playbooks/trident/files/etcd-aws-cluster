@@ -104,9 +104,9 @@ if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_i
     if [[ $bad_peer ]]; then
         for peer in $bad_peer; do
             # Obtain the HTTP status after making a call to remove the peer.
-            status=$(curl $ETCD_CURLOPTS -f -s -w "%{http_code}" "$etcd_good_member_url/v2/members/$peer" -XDELETE)
+            status=$(curl "$ETCD_CURLOPTS" -f -s -w "%{http_code}" "$etcd_good_member_url/v2/members/$peer" -XDELETE)
             
-            if [[ $status != $etcd_delete_ok ]]; then
+            if [[ $status != "$etcd_delete_ok" ]]; then
                 echo "$pkg: Failed to remove bad peer: $peer. API HTTP return code was $status."
                 exit 7
             fi
@@ -114,25 +114,24 @@ if [[ $etcd_existing_peer_urls && $etcd_existing_peer_names != *"$ec2_instance_i
     fi
 
     # Retrieve list of current members of the etcd cluster and add this instance to it.
-    etcd_initial_cluster=$(curl $ETCD_CURLOPTS -s -f "$etcd_good_member_url/v2/members" | jq --raw-output '.[] | map(.name + "=" + .peerURLs[0]) | .[]' | xargs | sed 's/  */,/g')$(echo ",$ec2_instance_id=${etcd_peer_scheme}://${ec2_instance_ip}:$etcd_peer_port")
+    etcd_initial_cluster=$(curl "$ETCD_CURLOPTS" -s -f "$etcd_good_member_url/v2/members" | jq --raw-output '.[] | map(.name + "=" + .peerURLs[0]) | .[]' | xargs | sed 's/  */,/g')$(echo ",$ec2_instance_id=${etcd_peer_scheme}://${ec2_instance_ip}:$etcd_peer_port")
     if [[ ! $etcd_initial_cluster ]]; then
         echo "$pkg: Failed to retrieve etcd members of the existing cluster."
         exit 8
     fi
 	
     # Add this instance to the etcd cluster through an API call.
-    status=$(curl $ETCD_CURLOPTS -f -s -w "%{http_code}" -o /dev/null -XPOST "$etcd_good_member_url/v2/members" -H "Content-Type: application/json" -d "{\"peerURLs\": [\"$etcd_peer_scheme://$ec2_instance_ip:$etcd_peer_port\"], \"name\": \"$ec2_instance_id\"}")
-    if [[ $status != $etcd_add_ok && $status != $etcd_already_added ]]; then
+    status=$(curl "$ETCD_CURLOPTS" -f -s -w "%{http_code}" -o /dev/null -XPOST "$etcd_good_member_url/v2/members" -H "Content-Type: application/json" -d "{\"peerURLs\": [\"$etcd_peer_scheme://$ec2_instance_ip:$etcd_peer_port\"], \"name\": \"$ec2_instance_id\"}")
+    if [[ $status != "$etcd_add_ok" && $status != "$etcd_already_added" ]]; then
         echo "$pkg: Unable to add $ec2_instance_ip to the cluster. API HTTP return code was $status."
         exit 9
     fi
 
-    cat > "$etcd_peers_file_path" <<EOF
-ETCD_INITIAL_CLUSTER_STATE=existing
-ETCD_NAME=$ec2_instance_id
-ETCD_INITIAL_CLUSTER="$etcd_initial_cluster"
-ETCD_PROXY=$etcd_proxy
-EOF
+    cat > "$etcd_peers_file_path" <<-EOF
+	ETCD_INITIAL_CLUSTER_STATE=existing
+	ETCD_NAME=$ec2_instance_id
+	ETCD_INITIAL_CLUSTER="$etcd_initial_cluster"
+	EOF
 
 # Otherwise this is 1 of 2 possible scenarios.
 #
@@ -147,18 +146,18 @@ EOF
 #
 # For both of these cases, the instance will be added as a member to a new etcd cluster.
 else
-    etcd_initial_cluster=$(aws ec2 describe-instances --region $region --instance-ids $(aws autoscaling describe-auto-scaling-groups --region $region --auto-scaling-group-name $asg_name | jq .AutoScalingGroups[0].Instances[].InstanceId | xargs) | jq -r ".Reservations[].Instances | map(.InstanceId + \"=$etcd_peer_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_peer_port\")[]" | xargs | sed 's/  */,/g')
-    echo "etcd_initial_cluster=$etcd_initial_cluster"
+    etcd_initial_cluster=$(aws ec2 describe-instances --region "$region" --instance-ids "$(aws autoscaling describe-auto-scaling-groups --region "$region" --auto-scaling-group-name "$asg_name" | jq .AutoScalingGroups[0].Instances[].InstanceId | xargs)" | jq -r ".Reservations[].Instances | map(.InstanceId + \"=$etcd_peer_scheme://\" + .NetworkInterfaces[].PrivateIpAddress + \":$etcd_peer_port\")[]" | xargs | sed 's/  */,/g')
+
     if [[ ! $etcd_initial_cluster ]]; then
-        echo "$pkg: unable to get peers from auto scaling group"
+        echo "$pkg: Unable to find members of auto scaling group."
         exit 10
     fi
 
-    cat > "$etcd_peers_file_path" <<EOF
-ETCD_INITIAL_CLUSTER_STATE=new
-ETCD_NAME=$ec2_instance_id
-ETCD_INITIAL_CLUSTER="$etcd_initial_cluster"
-EOF
+    cat > "$etcd_peers_file_path" <<-EOF
+	ETCD_INITIAL_CLUSTER_STATE=new
+	ETCD_NAME=$ec2_instance_id
+	ETCD_INITIAL_CLUSTER="$etcd_initial_cluster"
+	EOF
 fi
 
 exit 0
