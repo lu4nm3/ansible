@@ -20,6 +20,7 @@
     - role: key_pair
     - role: iam
     - role: lc
+    - role: asg
 #    - role: ec2
 
 ## Initial Kubernetes Setup

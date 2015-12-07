@@ -1,0 +1,22 @@
+---
+# Create EC2 Autoscaling Group
+- name: Creating EC2 Autoscaling Group
+  ec2_asg:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    health_check_period: "{{ item.health_check_period | default(omit) }}"
+    health_check_type: "{{ item.health_check_type | default(omit) }}"
+    launch_config_name: "{{ item.launch_config_name }}"
+    load_balancers: "{{ item.load_balancers | default(omit) }}"
+    max_size: "{{ item.max_size }}"
+    min_size: "{{ item.min_size }}"
+    name: "{{ item.name }}"
+    region: "{{ aws.region }}"
+    replace_all_instances: "{{ item.replace_all_instances | default(omit) }}"
+    replace_batch_size: "{{ item.replace_batch_size | default(omit) }}"
+    state: "{{ item.state }}"
+    termination_policies: "{{ item.termination_policies | default(omit) }}"
+    vpc_zone_identifier: "{{ vpc_register.subnets | map(attribute='id') | list }}"
+    wait_for_instances: "{{ item.wait_for_instances | default(omit) }}"
+  with_items: aws.asg
+  register: as_register

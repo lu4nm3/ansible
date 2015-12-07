@@ -1,5 +1,14 @@
 ---
 aws:
+  asg:
+    - health_check_period: 60
+      health_check_type: EC2 #TODO change to ELB
+      launch_config_name: Kubernetes Master Launch Configuration
+      load_balancers: ["Kubernetes-Master"]
+      max_size: 1
+      min_size: 1
+      name: Kubernetes Master Cluster
+      state: present
   ec2:
     - ansible_public_ip_groups: masters, ec2, coreos, kubernetes
       ansible_private_ip_groups: etcd, masters_private_ips
@@ -48,10 +57,10 @@ aws:
         healthy_threshold: 10
       listeners:
         - { protocol: tcp, load_balancer_port: 7001, instance_port: 7001 }
-      name: Etcd
+      name: Kubernetes-Master
       purge_subnets: true
       scheme: internal
-      security_group_names: ["etcd"]
+      security_group_names: ["Kubernetes"]
       state: present
 
   iam:
@@ -74,12 +83,12 @@ aws:
   lc:
     - assign_public_ip: yes
       ebs_optimized: false #TODO change to true
-      image_id: ami-46d2c227
+      image_id: ami-658e9c04
       instance_monitoring: no
       instance_profile_name: kubernetes-master-role
       instance_type: t2.micro
       key_name: Trident
-      name: Kubernetes Master Cluster
+      name: Kubernetes Master Launch Configuration
       security_groups: ["SSH", "Ping", "Kubernetes"]
       state: present
       volumes:
